@@ -1,5 +1,5 @@
 // TODO: реализовать страницу CatalogPage
-import LikeIcon from '@/shared/assets/icons/like.svg?react';
+import LikeIcon from '@/shared/assets/icons/Like.svg?react';
 
 export default function CatalogPage() {
   return (
