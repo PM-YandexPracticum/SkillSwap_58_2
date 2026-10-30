@@ -42,3 +42,15 @@ export interface AuthUser {
   email: string
   token: string
 }
+
+export interface InputProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  type?: 'text' | 'email' | 'password';
+  clear?: boolean;
+  error?: boolean;
+  errorMessage?: string;
+  className?: string;
+  searchIcon?: React.ReactNode;
+}
