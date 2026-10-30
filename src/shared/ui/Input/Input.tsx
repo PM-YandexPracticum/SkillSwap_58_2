@@ -1,54 +1,75 @@
-import type { InputProps } from "@/shared/types";
-import { useRef } from "react";
-import styles from "./Input.module.css"
+import type { InputProps } from '@/shared/types'
+import { useRef } from 'react'
+import styles from './Input.module.css'
 
 export const Input = ({
-    value,
-    onChange,
-    placeholder = '',
-    type = 'text',
-    clear = false,
-    error = false,
-    className = '',
-    searchIcon,
-}: InputProps) => {
+  value,
+  onChange,
+  label,
+  placeholder = '',
+  type = 'text',
+  clear = false,
+  error = false,
+  errorMessage,
+  helperText,
+  leftIcon,
+  rightIcon,
+  className = '',
+  containerClassName = '',
+}: InputProps & { containerClassName?: string }) => {
+  
+  const inputRef = useRef<HTMLInputElement>(null)
 
-    const inputRef = useRef<HTMLInputElement>(null);
+  const handleClear = () => {
+    onChange('')
+    inputRef.current?.focus()
+  }
 
-    const handleClear = () => {
-        onChange('');
-        inputRef.current?.focus();
-    };
+  return (
+    <div className={`${styles.wrapper} ${className}`}>
 
-    return (
-        <div className={`${styles.wrapper} ${className}`}>
-            <div className={`${styles.container} ${error ? styles.error : ''}`}>
-                {searchIcon && (
-                    <span className={styles.iconWrapper}>
-                        {searchIcon}
-                    </span>
-                )}
+      {label && <label className={styles.label}>{label}</label>}
 
-                <input
-                    ref={inputRef}
-                    type={type}
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    placeholder={placeholder}
-                    className={styles.input}
-                />
+      <div className={`${styles.container} ${containerClassName} ${error ? styles.error : ''}`}>
+        {leftIcon && (
+          <span className={styles.leftIcon}>
+            {leftIcon}
+          </span>
+        )}
 
-                {clear && value.length > 0 && (
-                    <button
-                    type="button"
-                    onClick={handleClear}
-                    className={styles.clearButton}
-                    aria-label="Очистить поле"
-                    >
-                       × 
-                    </button>
-                )}
-            </div>
-        </div>
-    )
+        <input
+          ref={inputRef}
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className={styles.input}
+        />
+
+        {rightIcon && (
+          <span className={styles.rightIcon}>
+            {rightIcon}
+          </span>
+        )}
+
+        {clear && value.length > 0 && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className={styles.clearButton}
+            aria-label="Очистить поле"
+          >
+            ×
+          </button>
+        )}
+      </div>
+
+      {(error && errorMessage) || helperText ? (
+        <span className={`${styles.helperText} ${error ? styles.errorText : ''}`}>
+          {error ? errorMessage : helperText}
+        </span>
+      ) : null}
+
+    </div>
+  )
 }
