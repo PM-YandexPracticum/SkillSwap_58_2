@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FilterLabel } from './FilterLabel';
 
@@ -14,6 +15,24 @@ export default meta;
 type Story = StoryObj<typeof FilterLabel>;
 
 export const Default: Story = {};
+
+export const Close: Story = {
+  render: (args) => {
+    const [isVisible, setIsVisible] = useState(true);
+
+     if (!isVisible) return null;
+
+    return (
+      <FilterLabel 
+        {...args} 
+        onRemove={() => {
+          args.onRemove?.(args.text); 
+          setIsVisible(false);        
+        }} 
+      />
+    );
+  },
+};
 
 export const MultipleFilters: Story = {
   render: () => (
