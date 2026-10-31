@@ -14,16 +14,22 @@
   display: flex;
   align-items: center;
   background-color: #fff;
-  border: 1px solid transparent;
+  border: 1px solid var(--input-border-color, transparent);
   border-radius: 12px;
   padding: 12px;
   box-sizing: border-box;
   transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.container:hover {
+  background-color: #fff;
+  border-color: var(--input-focus-border-color, #ABD27A);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 5%);
+}
+
 .container:focus-within {
   background-color: #fff;
-  border-color: #ABD27A;
+  border-color: var(--input-focus-border-color, #ABD27A);
   box-shadow: 0 2px 8px rgb(0 0 0 / 5%);
 }
 
@@ -96,10 +102,13 @@
 }
 
 .helperText {
-  font-size: 12px;
+  margin-top: 4px;
+  font-size: 13px;
   color: #253017;
 }
 
 .errorText {
+  margin-top: 4px;
+  font-size: 13px;
   color: #BF3920 ;
 }
