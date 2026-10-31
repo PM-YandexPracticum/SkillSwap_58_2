@@ -1,0 +1,58 @@
+.form {
+  width: 100%;
+}
+
+.searchContainer {
+  height: 48px;
+}
+
+.searchButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.searchButton svg {
+  color: #69735D;
+  transition: color 0.2s ease;
+}
+
+.searchButton:hover svg{
+  color: #3f3f3f;
+}
+
+.searchButton:focus-visible svg{
+  outline: 2px solid #ABD27A;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.clearButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #69735D;
+  padding: 0;
+  width: 15px;
+  height: 15px;
+  font-size: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.clearButton:hover {
+  background-color: #ebe8e8;
+  color: #4e4e4e;
+}
