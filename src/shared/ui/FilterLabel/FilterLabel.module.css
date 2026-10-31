@@ -1,0 +1,48 @@
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  font-family: Roboto, var(--font-sans, sans-serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  color: #253017;
+  white-space: nowrap;
+}
+
+.cross {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.cross svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.label:hover .cross {
+  color: #69735d;
+}
+
+.cross:active {
+  opacity: 0.7;
+}
+
+.cross:focus-visible {
+  outline: 2px solid #abd27a;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
