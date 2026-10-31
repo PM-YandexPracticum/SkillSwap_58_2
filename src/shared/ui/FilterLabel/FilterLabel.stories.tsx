@@ -20,7 +20,7 @@ export const Close: Story = {
   render: (args) => {
     const [isVisible, setIsVisible] = useState(true);
 
-     if (!isVisible) return null;
+     if (!isVisible) return <></>;
 
     return (
       <FilterLabel 
