@@ -1,0 +1,22 @@
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 159px;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    color: #ABD27A;
+}
+
+.logo svg {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.text {
+    font-size: 24px;
+    line-height: 32px;
+    color: #253017;
+}
