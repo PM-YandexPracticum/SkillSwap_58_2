@@ -1,0 +1,52 @@
+.radiobutton {
+  display: flex;
+  padding: 2px;
+  gap: 8px;
+  font-family: var(--font-family-main, 'Roboto', sans-serif);
+  font-size: var(--font-size-base, 16px);
+  line-height: var(--line-height-base, 24px);
+  color: var(--color-text-primary, #253017);
+}
+
+.label {
+  letter-spacing: 2%;
+}
+
+.hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  inline-size: 1px;
+  block-size: 1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.pseudoradio {
+  display: block;
+  block-size: 10px;
+  inline-size: 10px;
+  border-radius: 50%;
+  outline: 2px solid #000;
+  padding: 5px;
+  cursor: pointer;
+  align-self: end;
+}
+
+.pseudoradio::after {
+  content: "";
+  display: block;
+  block-size: 100%;
+  border-radius: 50%;
+  width: 100%;
+  opacity: 0;
+  background-color: #508826;
+}
+
+.hidden:checked + .pseudoradio {
+  outline: 2px solid #508826;
+}
+
+.hidden:checked + .pseudoradio::after {
+  opacity: 1;
+}
