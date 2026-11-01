@@ -1,0 +1,20 @@
+.label {
+    display: inline-flex;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #253017;
+    font-family: Roboto, var(--font-sans, sans-serif);
+}
+
+/* 
+Цвета:
+Счетчик - #E8ECF7
+Бизнес и карьера - #EEE7F7
+Иностранные языки - #EBE5C5
+Дом и уют - #F7EBE5
+Творчество и искусство - #F7E7F2
+Образование и развитие - #E7F2F6
+Здоровье и лайфстайл - #E9F7E7
+*/
