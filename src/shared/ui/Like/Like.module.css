@@ -46,6 +46,10 @@
 }
 
 .button:focus {
+  outline: none;
+}
+
+.button:focus-visible {
   outline: solid 1px #253017;
 }
 
