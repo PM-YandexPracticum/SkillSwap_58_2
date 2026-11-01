@@ -17,7 +17,7 @@ const meta: Meta<typeof SkillLabel> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const SkillText: Story = {
+export const SkillLabelExample: Story = {
   args: {
     label: 'Тайм менеджмент',
     color: '#E7F2F6',
