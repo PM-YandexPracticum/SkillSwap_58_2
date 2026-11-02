@@ -1,4 +1,4 @@
-import { type ReactNode, type ButtonHTMLAttributes, useState } from 'react'
+import { type ReactNode, type ButtonHTMLAttributes } from 'react'
 import styles from './LinkButton.module.css'
 import ChevronIcon from '../../assets/icons/Chevron.svg?react'
 
@@ -10,29 +10,17 @@ export interface LinkButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
 
 export const LinkButton = ({
   children,
-  isOpen: controlledIsOpen,
+  isOpen = false,
   onClick,
   className,
   disabled,
   ...props
 }: LinkButtonProps) => {
-  const [internalIsOpen, setInternalIsOpen] = useState(false)
-  const isControlled = controlledIsOpen !== undefined
-  const isOpen = isControlled ? controlledIsOpen : internalIsOpen
-
-  const handleClick = () => {
-    if (disabled) return
-    if (!isControlled) {
-      setInternalIsOpen((prev) => !prev)
-    }
-    onClick?.()
-  }
-
   return (
     <button
       type="button"
       className={`${styles.linkButton} ${className || ''}`}
-      onClick={handleClick}
+      onClick={onClick}
       disabled={disabled}
       aria-expanded={isOpen}
       {...props}
