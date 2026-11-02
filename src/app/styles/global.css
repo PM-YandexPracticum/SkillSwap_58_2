@@ -1,3 +1,12 @@
+/* ─── Шрифты ─────────────────────────────────────────────── */
+@font-face {
+  font-family: Jost;
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../shared/assets/fonts/Jost-SemiBold.woff2') format('woff2');
+}
+
 /* ─── CSS Custom Properties ─────────────────────────────── */
 :root {
   /* Colors */
