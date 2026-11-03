@@ -4,7 +4,7 @@ import CrossIcon from '../shared/assets/icons/Cross.svg?react';
 import CheckboxEmptyIcon from '../shared/assets/icons/CheckboxEmpty.svg?react';
 import CheckboxDoneIcon from '../shared/assets/icons/CheckboxDone.svg?react';
 import CheckboxRemoveIcon from '../shared/assets/icons/CheckboxRemove.svg?react';
-
+import Chevron from '../shared/assets/icons/Chevron.svg?react';
 
 const IconsGallery = () => {
   const iconStyle = { width: '24px', height: '24px', color: '#253017' };
@@ -43,6 +43,11 @@ const IconsGallery = () => {
       <div style={{ textAlign: 'center' }}>
         <CheckboxRemoveIcon style={iconStyle} />
         <p style={{ marginTop: '8px', fontSize: '12px' }}>Checkbox Remove</p>
+      </div>
+
+            <div style={{ textAlign: 'center' }}>
+        <Chevron style={iconStyle} />
+        <p style={{ marginTop: '8px', fontSize: '12px' }}>Chevron</p>
       </div>
       {/* Конец блока */}
     </div>

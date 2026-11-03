@@ -1,0 +1,45 @@
+.linkButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  color: #508826;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.text {
+  color: #508826;
+  transition: color 0.2s ease;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: #253017;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.iconOpen {
+  transform: rotate(180deg);
+}
+
+.iconWrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+.linkButton:hover .text,
+.linkButton:hover .iconWrapper {
+  color: #ABD27A;
+}
