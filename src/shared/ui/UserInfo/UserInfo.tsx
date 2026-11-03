@@ -3,7 +3,7 @@ import { Avatar } from "../Avatar";
 import { LikeComponent } from "../Like/Like";
 import styles from './UserInfo.module.css'
 
-interface UserInfoProps {
+export interface UserInfoProps {
     avatar?: string;
     name?: string;
     city?: string;
