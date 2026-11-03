@@ -1,5 +1,11 @@
 /* Общий фон страницы по макету (#f9faf7), чтобы шапка не выделялась белым фоном */
 .page {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: #f9faf7;
+}
+
+.content {
+  flex: 1;
 }
