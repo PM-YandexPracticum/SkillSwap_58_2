@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   gap: 12px;
-  width: 284px;
+  width: 100%;
   font-family: var(--font-family-main, 'Roboto', sans-serif);
   font-size: 12px;
   line-height: 16px;

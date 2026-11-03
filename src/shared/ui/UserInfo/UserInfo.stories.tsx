@@ -21,6 +21,13 @@ const meta: Meta<typeof UserInfo> = {
     birth_date: '2000-01-01',
     likes: 0,
   },
+  decorators: [
+    (Story) => (
+      <div style={{ width: 284 }}>
+        <Story />
+      </div>
+    ),
+  ]
 }
 
 export default meta
