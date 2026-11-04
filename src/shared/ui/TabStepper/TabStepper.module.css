@@ -1,0 +1,38 @@
+.stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.title {
+  font-family: Jost, var(--font-sans);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: -0.011em;
+  text-align: center;
+  color: #253017;
+}
+
+.bars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.bar,
+.barActive {
+  width: 60px;
+  height: 4px;
+  border-radius: 8px;
+}
+
+.bar {
+  background-color: #e4e8df;
+}
+
+.barActive {
+  background-color: #abd27a;
+}
