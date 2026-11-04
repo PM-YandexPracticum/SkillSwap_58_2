@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { UserInfo } from './UserInfo'
-import users from '../../../../public/db/users.json'
 import photo from '../Avatar/avatar-example.svg'
+
+const mockUsers = [
+  { name: 'Алексей', city: 'Москва', birth_date: '1988-03-14', likes: 1247 },
+  { name: 'Мария', city: 'Краснодар', birth_date: '2005-11-27', likes: 3820 },
+  { name: 'Илона', city: 'Екатеринбург', birth_date: '1993-05-02', likes: 12 },
+]
 
 const meta: Meta<typeof UserInfo> = {
   title: 'Component/UserInfo',
@@ -27,7 +32,7 @@ const meta: Meta<typeof UserInfo> = {
         <Story />
       </div>
     ),
-  ]
+  ],
 }
 
 export default meta
@@ -35,23 +40,12 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 const RandomUser = () => {
-  const pathStart = '../../../../public/db/'
-  const data = users
-  const randomIndex = Math.floor(Math.random() * data.length)
-  const user = data[randomIndex]
-  return (
-    <UserInfo
-      avatar={`${pathStart}${user['avatar']}`}
-      name={user['name']}
-      city={user['city']}
-      birth_date={user['birth_date']}
-      likes={user['likes']}
-    />
-  )
+  const user = mockUsers[Math.floor(Math.random() * mockUsers.length)]
+  return <UserInfo avatar={photo} {...user} />
 }
 
 export const Default: Story = {
-  args: {}
+  args: {},
 }
 
 export const User: Story = {
