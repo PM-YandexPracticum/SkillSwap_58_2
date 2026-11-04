@@ -70,6 +70,8 @@
 }
 
 .arrow {
+  width: 20px;
+  height: 20px;
   color: #253017;
   transition: transform 0.2s ease;
 }
