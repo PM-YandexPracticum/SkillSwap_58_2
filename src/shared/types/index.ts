@@ -65,3 +65,9 @@ export interface SkillCategory {
   icon: string
   subcategories: string[]
 }
+
+// ─── City (public/db/cities.json) ────────────────────────
+export interface City {
+  id: string
+  name: string
+}

@@ -4,7 +4,7 @@ import { RadioGroup } from '../../shared/ui/RadioGroup/RadioGroup'
 import { Radio } from '../../shared/ui/RadioGroup/Radio'
 import { CheckboxTree } from '../../shared/ui/CheckboxTree/CheckboxTree'
 import type { TreeItem } from '../../shared/ui/CheckboxTree/types'
-import type { SkillCategory } from '../../shared/types'
+import type { SkillCategory, City } from '../../shared/types'
 import {
   selectFilter,
   setSkillType,
@@ -15,26 +15,13 @@ import {
 import type { SkillTypeFilter, GenderFilter } from '../../features/catalog-filter/model/filterSlice'
 import styles from './Sidebar.module.css'
 
-export const CITIES = [
-  'Москва',
-  'Санкт-Петербург',
-  'Новосибирск',
-  'Екатеринбург',
-  'Казань',
-  'Нижний Новгород',
-  'Краснодар',
-  'Самара',
-  'Ростов-на-Дону',
-  'Уфа',
-]
-
 export interface SidebarProps {
   categories: SkillCategory[]
-  cities?: string[]
+  cities: City[]
   className?: string
 }
 
-export const Sidebar = ({ categories, cities = CITIES, className }: SidebarProps) => {
+export const Sidebar = ({ categories, cities, className }: SidebarProps) => {
   const dispatch = useAppDispatch()
   const filter = useAppSelector(selectFilter)
 
@@ -49,7 +36,7 @@ export const Sidebar = ({ categories, cities = CITIES, className }: SidebarProps
   )
 
   const cityItems = useMemo<TreeItem[]>(
-    () => cities.map((city) => ({ id: city, label: city })),
+    () => cities.map((city) => ({ id: city.name, label: city.name })),
     [cities],
   )
 

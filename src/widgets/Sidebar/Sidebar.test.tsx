@@ -36,11 +36,16 @@ const categories = [
   { id: 1, category: 'Иностранные языки', icon: '', subcategories: ['Английский'] },
 ]
 
+const cities = [
+  { id: '1', name: 'Москва' },
+  { id: '2', name: 'Казань' },
+]
+
 const renderSidebar = () => {
   const store = configureStore({ reducer: { filter: filterReducer } })
   render(
     <Provider store={store}>
-      <Sidebar categories={categories} />
+      <Sidebar categories={categories} cities={cities} />
     </Provider>,
   )
   return store

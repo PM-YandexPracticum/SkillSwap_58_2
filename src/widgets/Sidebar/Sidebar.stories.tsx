@@ -4,7 +4,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { Sidebar } from './Sidebar'
 import filterReducer, { selectFilter } from '../../features/catalog-filter/model/filterSlice'
 import { useAppSelector } from '../../store/hooks'
-import type { SkillCategory } from '../../shared/types'
+import type { SkillCategory, City } from '../../shared/types'
 
 const mockCategories: SkillCategory[] = [
   {
@@ -40,18 +40,32 @@ const mockCategories: SkillCategory[] = [
   { id: 5, category: 'Дом и уют', icon: '', subcategories: ['Уборка и организация', 'Ремонт'] },
 ]
 
+const mockCities: City[] = [
+  { id: '1', name: 'Москва' },
+  { id: '2', name: 'Санкт-Петербург' },
+  { id: '3', name: 'Новосибирск' },
+  { id: '4', name: 'Екатеринбург' },
+  { id: '5', name: 'Казань' },
+  { id: '6', name: 'Краснодар' },
+  { id: '7', name: 'Самара' },
+]
+
 const store = configureStore({ reducer: { filter: filterReducer } })
 
 const FilterStateView = () => {
-  const filter = useAppSelector(selectFilter)
-  return <pre style={{ fontSize: 12 }}>{JSON.stringify(filter, null, 2)}</pre>
+  const { skillType, skills, gender, cities } = useAppSelector(selectFilter)
+  return (
+    <pre style={{ fontSize: 12 }}>
+      {JSON.stringify({ skillType, skills, gender, cities }, null, 2)}
+    </pre>
+  )
 }
 
 const meta: Meta<typeof Sidebar> = {
   title: 'Widgets/Sidebar',
   component: Sidebar,
   tags: ['autodocs'],
-  args: { categories: mockCategories },
+  args: { categories: mockCategories, cities: mockCities },
   decorators: [
     (Story) => (
       <Provider store={store}>
