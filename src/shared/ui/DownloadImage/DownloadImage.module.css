@@ -1,0 +1,115 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #69735D;
+  border-radius: 12px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  overflow: hidden;
+}
+
+.wrapper:hover {
+  border-color: #ABD27A;
+  background-color: #f8faf5;
+}
+
+.dragOver {
+  border-color: #ABD27A;
+  background-color: #E8F0E0;
+}
+
+.input {
+  display: none;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+}
+
+.placeholderText {
+  font-size: 16px;
+  color: #69735D;
+  text-align: center;
+  margin: 0;
+  font-family: var(--font-sans, sans-serif);
+}
+
+.selectButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 7px;
+  color: #508826;
+  font-size: 16px;
+  font-family: var(--font-sans, sans-serif);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.selectButton:hover {
+  color: #416e1e;
+  background-color: rgba(105 115 93 / 8%);
+}
+
+.selectButton svg {
+  width: 24px;
+  height: 24px;
+}
+
+.previewContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview {
+  max-width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+}
+
+.removeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(255 255 255 / 9%);
+  border: 1px solid #69735D;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  color: #69735D;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  padding: 0;
+}
+
+.removeButton:hover {
+  background-color: #fff;
+  color: #BF3920;
+  border-color: #BF3920;
+}
+
+.removeButton:focus-visible {
+  outline: 2px solid #ABD27A;
+  outline-offset: 2px;
+}
