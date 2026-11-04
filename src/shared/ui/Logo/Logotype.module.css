@@ -16,7 +16,10 @@
 }
 
 .text {
+    font-family: Jost, var(--font-sans);
     font-size: 24px;
+    font-weight: 600;
     line-height: 32px;
+    letter-spacing: -0.011em;
     color: #253017;
 }

@@ -1,0 +1,50 @@
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border: 1px solid #abd27a;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+  font-family: Roboto, var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  color: #253017;
+  animation: toast-in 0.25s ease;
+}
+
+.text {
+  margin: 0;
+}
+
+.close {
+  display: inline-flex;
+  padding: 4px;
+  border: none;
+  background: none;
+  color: #69735d;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.close:hover {
+  color: #253017;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
