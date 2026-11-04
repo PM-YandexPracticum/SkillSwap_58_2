@@ -80,6 +80,8 @@ export const CheckboxTree = ({
   defaultSelectedIds = [],
   onChange,
   className,
+  showAllLabel = 'Все категории',
+  hideLabel = 'Скрыть категории',
 }: CheckboxTreeProps) => {
   const [internalSelectedIds, setInternalSelectedIds] = useState<string[]>(defaultSelectedIds)
   const selectedIds = controlledSelectedIds ?? internalSelectedIds
@@ -147,7 +149,7 @@ export const CheckboxTree = ({
           onClick={() => setIsShowAll((prev) => !prev)}
           className={styles.showAll}
         >
-          {isShowAll ? 'Скрыть категории' : 'Все категории'}
+          {isShowAll ? hideLabel : showAllLabel}
         </LinkButton>
       )}
     </div>
