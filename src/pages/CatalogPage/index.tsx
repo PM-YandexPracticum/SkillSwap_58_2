@@ -1,8 +1,9 @@
-// TODO: реализовать страницу CatalogPage
 import { useEffect } from 'react'
 import { Header } from '@/widgets/Header'
 import { Footer } from '@/widgets/Footer'
 import { Sidebar } from '@/widgets/Sidebar'
+import { StandardSection } from '@/widgets/Sections/StandardSection'
+import { SkillCard } from '@/widgets/SkillCard'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
   loadFilterOptions,
@@ -10,29 +11,57 @@ import {
   selectCityOptions,
   selectFilterStatus,
 } from '@/features/catalog-filter/model/filterSlice'
+import {
+  loadUsers,
+  selectNewUsers,
+  selectPopularUsers,
+  selectUsersStatus,
+} from '@/entities/user/model/usersSlice'
+import { toSkillCardProps } from './lib/toSkillCardProps'
 import styles from './CatalogPage.module.css'
 
 export default function CatalogPage() {
   const dispatch = useAppDispatch()
   const categories = useAppSelector(selectCategoryOptions)
   const cities = useAppSelector(selectCityOptions)
-  const status = useAppSelector(selectFilterStatus)
+  const filterStatus = useAppSelector(selectFilterStatus)
+  const usersStatus = useAppSelector(selectUsersStatus)
+  const popularUsers = useAppSelector(selectPopularUsers)
+  const newUsers = useAppSelector(selectNewUsers)
 
   useEffect(() => {
-    if (status === 'idle') dispatch(loadFilterOptions())
-  }, [dispatch, status])
+    if (filterStatus === 'idle') dispatch(loadFilterOptions())
+  }, [dispatch, filterStatus])
+
+  useEffect(() => {
+    if (usersStatus === 'idle') dispatch(loadUsers())
+  }, [dispatch, usersStatus])
 
   return (
     <div className={styles.page}>
       <Header />
       <main className={styles.content}>
         <div className={styles.layout}>
-          {status === 'succeeded' && <Sidebar categories={categories} cities={cities} />}
-          {status === 'failed' && <p>Не удалось загрузить фильтры</p>}
-          <section className={styles.catalog}>
-            <h1>CatalogPage</h1>
-            <p>Страница в разработке</p>
-          </section>
+          {filterStatus === 'succeeded' && <Sidebar categories={categories} cities={cities} />}
+          {filterStatus === 'failed' && <p>Не удалось загрузить фильтры</p>}
+
+          <div className={styles.catalog}>
+            {usersStatus === 'succeeded' && (
+              <>
+                <StandardSection title="Популярное">
+                  {popularUsers.map((user) => (
+                    <SkillCard key={user.id} {...toSkillCardProps(user, categories)} />
+                  ))}
+                </StandardSection>
+                <StandardSection title="Новое">
+                  {newUsers.map((user) => (
+                    <SkillCard key={user.id} {...toSkillCardProps(user, categories)} />
+                  ))}
+                </StandardSection>
+              </>
+            )}
+            {usersStatus === 'failed' && <p>Не удалось загрузить пользователей</p>}
+          </div>
         </div>
       </main>
       <Footer />
