@@ -57,3 +57,17 @@ export interface InputProps {
   rightIcon?: React.ReactNode;
   helperText?: string;
 }
+
+// ─── Skill category (public/db/skills.json) ──────────────
+export interface SkillCategory {
+  id: number
+  category: string
+  icon: string
+  subcategories: string[]
+}
+
+// ─── City (public/db/cities.json) ────────────────────────
+export interface City {
+  id: string
+  name: string
+}

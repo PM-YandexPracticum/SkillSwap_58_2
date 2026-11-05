@@ -9,3 +9,13 @@
 .content {
   flex: 1;
 }
+
+.layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.catalog {
+  flex: 1;
+}

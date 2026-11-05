@@ -11,4 +11,6 @@ export interface CheckboxTreeProps {
   defaultSelectedIds?: string[]
   onChange?: (selectedIds: string[]) => void
   className?: string
+  showAllLabel?: string
+  hideLabel?: string
 }
