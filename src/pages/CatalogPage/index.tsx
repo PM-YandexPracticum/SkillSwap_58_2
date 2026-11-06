@@ -1,7 +1,4 @@
-// TODO: реализовать страницу CatalogPage
 import { useEffect } from 'react'
-import { Header } from '@/widgets/Header'
-import { Footer } from '@/widgets/Footer'
 import { Sidebar } from '@/widgets/Sidebar'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
@@ -23,19 +20,15 @@ export default function CatalogPage() {
   }, [dispatch, status])
 
   return (
-    <div className={styles.page}>
-      <Header />
-      <main className={styles.content}>
-        <div className={styles.layout}>
-          {status === 'succeeded' && <Sidebar categories={categories} cities={cities} />}
-          {status === 'failed' && <p>Не удалось загрузить фильтры</p>}
-          <section className={styles.catalog}>
-            <h1>CatalogPage</h1>
-            <p>Страница в разработке</p>
-          </section>
-        </div>
-      </main>
-      <Footer />
-    </div>
+    <main>
+      <div className={styles.layout}>
+        {status === 'succeeded' && <Sidebar categories={categories} cities={cities} />}
+        {status === 'failed' && <p>Не удалось загрузить фильтры</p>}
+        <section className={styles.catalog}>
+          <h1>CatalogPage</h1>
+          <p>Страница в разработке</p>
+        </section>
+      </div>
+    </main>
   )
 }
