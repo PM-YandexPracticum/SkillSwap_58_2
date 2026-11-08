@@ -1,0 +1,129 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-sizing: border-box;
+}
+
+.calendar {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+  width: 280px;
+  height: 360px;
+  border: 1px solid #69735d;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.calendar > div:first-child {
+  position: static;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+}
+
+.calendar > div:first-child > div:first-child > div:first-child {
+  justify-content: center;
+  align-items: center;
+  max-height: 40px;
+}
+
+.calendar > div:first-child > div:first-child > div:first-child > div:first-child {
+  gap: 0;
+}
+
+.calendar table {
+  max-width: 224px;
+  font-family: var(--font-family-main, 'Roboto', sans-serif);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 2%;
+  table-layout: fixed;
+}
+
+.calendar table thead {
+  width: 100%;
+}
+
+.calendar table th {
+  width: 100%;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: 2%;
+  color: #508826
+}
+
+.calendar table td {
+  width: 32px;
+  height: 32px;
+}
+
+.calendar table button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: background-color 0.15s ease;
+}
+
+.calendar table button:hover {
+  background-color: #deebc5;
+}
+
+.footer {
+  display: flex;
+  gap: 8px;
+  max-height: 48px;
+}
+
+.declineButton {
+  max-width: 125px;
+  height: 100%;
+}
+
+.applyButton {
+  max-width: 115px;
+  height: 100%;
+}
+
+.selector {
+  height: 40px;
+}
+
+.selector > div {
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  color: #253017;
+}
+
+.selector span {
+  color: #253017;
+  font-weight: 400;
+  text-align: right;
+}
+
+.selector button {
+  height: 100%;
+  padding: 0 16px;
+}
+
+.selector ul {
+  border: 1px solid #69735d;
+  border-radius: 12px;
+  font-weight: 400;
+  background-color: #fff;
+}
+
+.selectedDay {
+  border-radius: 50%;
+  color: #253017;
+  background-color: #abd27a;
+}
+
+.today {
+  color: #253017;
+}

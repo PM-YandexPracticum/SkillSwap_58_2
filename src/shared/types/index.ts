@@ -56,6 +56,7 @@ export interface InputProps {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   helperText?: string;
+  disabled?: boolean;
 }
 
 // ─── Skill category (public/db/skills.json) ──────────────

@@ -16,6 +16,7 @@ export const Input = ({
   rightIcon,
   className = '',
   containerClassName = '',
+  disabled = false,
 }: InputProps & { containerClassName?: string }) => {
   
   const inputRef = useRef<HTMLInputElement>(null)
@@ -44,6 +45,7 @@ export const Input = ({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={styles.input}
+          disabled={disabled}
         />
 
         {rightIcon && (

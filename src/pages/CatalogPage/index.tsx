@@ -1,6 +1,4 @@
 import { useEffect } from 'react'
-import { Header } from '@/widgets/Header'
-import { Footer } from '@/widgets/Footer'
 import { Sidebar } from '@/widgets/Sidebar'
 import { StandardSection } from '@/widgets/Sections/StandardSection'
 import { SkillCard } from '@/widgets/SkillCard'
@@ -38,33 +36,29 @@ export default function CatalogPage() {
   }, [dispatch, usersStatus])
 
   return (
-    <div className={styles.page}>
-      <Header />
-      <main className={styles.content}>
-        <div className={styles.layout}>
-          {filterStatus === 'succeeded' && <Sidebar categories={categories} cities={cities} />}
-          {filterStatus === 'failed' && <p>Не удалось загрузить фильтры</p>}
+    <main>
+      <div className={styles.layout}>
+        {filterStatus === 'succeeded' && <Sidebar categories={categories} cities={cities} />}
+        {filterStatus === 'failed' && <p>Не удалось загрузить фильтры</p>}
 
-          <div className={styles.catalog}>
-            {usersStatus === 'succeeded' && (
-              <>
-                <StandardSection title="Популярное">
-                  {popularUsers.map((user) => (
-                    <SkillCard key={user.id} {...toSkillCardProps(user, categories)} />
-                  ))}
-                </StandardSection>
-                <StandardSection title="Новое">
-                  {newUsers.map((user) => (
-                    <SkillCard key={user.id} {...toSkillCardProps(user, categories)} />
-                  ))}
-                </StandardSection>
-              </>
-            )}
-            {usersStatus === 'failed' && <p>Не удалось загрузить пользователей</p>}
-          </div>
+        <div className={styles.catalog}>
+          {usersStatus === 'succeeded' && (
+            <>
+              <StandardSection title="Популярное">
+                {popularUsers.map((user) => (
+                  <SkillCard key={user.id} {...toSkillCardProps(user, categories)} />
+                ))}
+              </StandardSection>
+              <StandardSection title="Новое">
+                {newUsers.map((user) => (
+                  <SkillCard key={user.id} {...toSkillCardProps(user, categories)} />
+                ))}
+              </StandardSection>
+            </>
+          )}
+          {usersStatus === 'failed' && <p>Не удалось загрузить пользователей</p>}
         </div>
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </main>
   )
 }
