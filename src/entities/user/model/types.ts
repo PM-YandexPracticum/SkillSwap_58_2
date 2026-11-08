@@ -1,1 +1,1 @@
-export type { User, AuthUser } from '@/shared/types'
+export type { User, AuthUser, UserProfile, TeachSkill } from '@/shared/types'
