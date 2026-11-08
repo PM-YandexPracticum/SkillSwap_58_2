@@ -72,3 +72,26 @@ export interface City {
   id: string
   name: string
 }
+
+// ─── User profile (public/db/users.json) ─────────────────
+export interface TeachSkill {
+  name: string
+  category: string
+  subcategory: string
+  description: string
+  images: string[]
+}
+
+export interface UserProfile {
+  id: number
+  name: string
+  avatar: string
+  birth_date: string
+  gender: string
+  city: string
+  likes: number
+  date_created: string
+  bio: string
+  can_teach: TeachSkill
+  want_to_learn: string[]
+}
