@@ -3,25 +3,49 @@ import { fetchUserProfiles } from '../../../api/users'
 import type { UserProfile } from '../../../shared/types'
 
 export const SECTION_LIMIT = 9
+export const RECOMMENDED_STEP = 6
 
 export type UsersStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export interface UsersState {
   items: UserProfile[]
   status: UsersStatus
+  recommendedOrder: number[]
+  recommendedCount: number
 }
 
 export const initialState: UsersState = {
   items: [],
   status: 'idle',
+  recommendedOrder: [],
+  recommendedCount: 0,
 }
 
-export const loadUsers = createAsyncThunk('users/load', async () => fetchUserProfiles())
+const shuffle = <T>(array: T[]): T[] => {
+  const result = [...array]
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[result[i], result[j]] = [result[j], result[i]]
+  }
+  return result
+}
+
+export const loadUsers = createAsyncThunk('users/load', async () => {
+  const items = await fetchUserProfiles()
+  return { items, recommendedOrder: shuffle(items.map((user) => user.id)) }
+})
 
 const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    showMoreRecommended(state) {
+      state.recommendedCount = Math.min(
+        state.recommendedCount + RECOMMENDED_STEP,
+        state.recommendedOrder.length,
+      )
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loadUsers.pending, (state) => {
@@ -29,7 +53,9 @@ const usersSlice = createSlice({
       })
       .addCase(loadUsers.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.items = action.payload
+        state.items = action.payload.items
+        state.recommendedOrder = action.payload.recommendedOrder
+        state.recommendedCount = Math.min(RECOMMENDED_STEP, action.payload.recommendedOrder.length)
       })
       .addCase(loadUsers.rejected, (state) => {
         state.status = 'failed'
@@ -37,10 +63,14 @@ const usersSlice = createSlice({
   },
 })
 
+export const { showMoreRecommended } = usersSlice.actions
+
 type StateWithUsers = { users: UsersState }
 
 export const selectUsers = (state: StateWithUsers) => state.users.items
 export const selectUsersStatus = (state: StateWithUsers) => state.users.status
+const selectRecommendedOrder = (state: StateWithUsers) => state.users.recommendedOrder
+const selectRecommendedCount = (state: StateWithUsers) => state.users.recommendedCount
 
 export const selectPopularUsers = createSelector([selectUsers], (users) =>
   [...users].sort((a, b) => b.likes - a.likes).slice(0, SECTION_LIMIT),
@@ -49,5 +79,19 @@ export const selectPopularUsers = createSelector([selectUsers], (users) =>
 export const selectNewUsers = createSelector([selectUsers], (users) =>
   [...users].sort((a, b) => b.date_created.localeCompare(a.date_created)).slice(0, SECTION_LIMIT),
 )
+
+export const selectRecommendedUsers = createSelector(
+  [selectUsers, selectRecommendedOrder, selectRecommendedCount],
+  (users, order, count) => {
+    const usersById = new Map(users.map((user) => [user.id, user]))
+    return order
+      .slice(0, count)
+      .map((id) => usersById.get(id))
+      .filter((user): user is UserProfile => user !== undefined)
+  },
+)
+
+export const selectHasMoreRecommended = (state: StateWithUsers) =>
+  state.users.recommendedCount < state.users.recommendedOrder.length
 
 export default usersSlice.reducer
