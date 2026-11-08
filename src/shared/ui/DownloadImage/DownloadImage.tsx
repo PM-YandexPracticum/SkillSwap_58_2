@@ -4,6 +4,7 @@ import UploadImage from '../../assets/icons/UploadImage.svg?react';
 
 interface ImageUploaderProps {
   onFileSelect?: (file: File) => void;
+  onRemove?: () => void;
   className?: string;
   placeholderText?: string;
   buttonText?: string;
@@ -11,6 +12,7 @@ interface ImageUploaderProps {
 
 export const ImageUploader = ({
   onFileSelect,
+  onRemove,
   className = '',
   placeholderText = 'Перетащите или выберите изображения навыка',
   buttonText = 'Выбрать изображения',
@@ -78,6 +80,7 @@ export const ImageUploader = ({
     if (inputRef.current) {
       inputRef.current.value = '';
     }
+    onRemove?.();
   };
 
   return (
