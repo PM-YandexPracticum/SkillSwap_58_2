@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Sidebar } from '@/widgets/Sidebar'
 import { StandardSection } from '@/widgets/Sections/StandardSection'
+import { InfinityScrollSection } from '@/widgets/Sections/InfinityScrollSection'
 import { SkillCard } from '@/widgets/SkillCard'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
@@ -11,9 +12,12 @@ import {
 } from '@/features/catalog-filter/model/filterSlice'
 import {
   loadUsers,
+  selectHasMoreRecommended,
   selectNewUsers,
   selectPopularUsers,
+  selectRecommendedUsers,
   selectUsersStatus,
+  showMoreRecommended,
 } from '@/entities/user/model/usersSlice'
 import { toSkillCardProps } from './lib/toSkillCardProps'
 import styles from './CatalogPage.module.css'
@@ -26,6 +30,8 @@ export default function CatalogPage() {
   const usersStatus = useAppSelector(selectUsersStatus)
   const popularUsers = useAppSelector(selectPopularUsers)
   const newUsers = useAppSelector(selectNewUsers)
+  const recommendedUsers = useAppSelector(selectRecommendedUsers)
+  const hasMoreRecommended = useAppSelector(selectHasMoreRecommended)
 
   useEffect(() => {
     if (filterStatus === 'idle') dispatch(loadFilterOptions())
@@ -54,6 +60,15 @@ export default function CatalogPage() {
                   <SkillCard key={user.id} {...toSkillCardProps(user, categories)} />
                 ))}
               </StandardSection>
+              <InfinityScrollSection
+                title="Рекомендуем"
+                hasMore={hasMoreRecommended}
+                onLoadMore={() => dispatch(showMoreRecommended())}
+              >
+                {recommendedUsers.map((user) => (
+                  <SkillCard key={user.id} {...toSkillCardProps(user, categories)} />
+                ))}
+              </InfinityScrollSection>
             </>
           )}
           {usersStatus === 'failed' && <p>Не удалось загрузить пользователей</p>}
