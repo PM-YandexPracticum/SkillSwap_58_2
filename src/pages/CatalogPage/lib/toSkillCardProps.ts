@@ -2,12 +2,12 @@ import type { SkillCardProps } from '../../../widgets/SkillCard'
 import type { SkillCategory, UserProfile } from '../../../shared/types'
 import { getCategoryColor } from '../../../shared/lib/categoryColors'
 
-const findCategoryName = (subcategory: string, categories: SkillCategory[]) =>
+const findCategoryName = (subcategory: string, categories: Omit<SkillCategory, 'color'>[]) =>
   categories.find((category) => category.subcategories.includes(subcategory))?.category
 
 export const toSkillCardProps = (
   user: UserProfile,
-  categories: SkillCategory[],
+  categories: Omit<SkillCategory, 'color'>[],
 ): Pick<SkillCardProps, 'user' | 'canTeach' | 'wantToLearn'> => ({
   user: {
     avatar: `/db/${user.avatar}`,
