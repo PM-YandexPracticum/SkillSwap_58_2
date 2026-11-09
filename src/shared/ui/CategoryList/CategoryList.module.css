@@ -3,23 +3,22 @@
   --icon-gap: 12px;
 
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-family: Roboto, var(--font-sans);
+  gap: 12px;
   color: #253017;
+  font-family: Roboto, var(--font-sans);
 }
 
 .header {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: var(--icon-gap);
 }
 
 .icon {
   display: inline-flex;
   flex-shrink: 0;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: var(--icon-size);
   height: var(--icon-size);
   border-radius: 50%;
@@ -27,21 +26,24 @@
 
 .title {
   margin: 0;
-  font-size: 20px;
-  font-weight: 700;
+  font-family: Jost, sans-serif;
+  font-weight: 500;
+  font-size: 24px;
   line-height: 28px;
+  letter-spacing: -1.1%;
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   margin: 0;
-  padding: 0 0 0 calc(var(--icon-size) + var(--icon-gap));
+  padding: 0;
   list-style: none;
 }
 
 .item {
   font-size: 16px;
   line-height: 24px;
+  letter-spacing: 2%;
 }
