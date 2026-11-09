@@ -4,6 +4,10 @@ import { Header } from '@/widgets/Header'
 import { Footer } from '@/widgets/Footer'
 import styles from './MainLayout.module.css'
 
+const links = {
+  skills: 'skills',
+}
+
 export function MainLayout() {
   return (
     <div className={styles.layout}>
@@ -12,7 +16,7 @@ export function MainLayout() {
         <Outlet />
       </Suspense>
       <div className={styles.footer}>
-        <Footer />
+        <Footer links={links} />
       </div>
     </div>
   )
