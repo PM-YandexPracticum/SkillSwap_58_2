@@ -1,0 +1,5 @@
+.skillsPage {
+  display: flex;
+  justify-content: center;
+  padding: 32px 0 60px;
+}
