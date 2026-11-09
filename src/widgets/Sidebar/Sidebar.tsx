@@ -16,7 +16,7 @@ import type { SkillTypeFilter, GenderFilter } from '../../features/catalog-filte
 import styles from './Sidebar.module.css'
 
 export interface SidebarProps {
-  categories: SkillCategory[]
+  categories: Omit<SkillCategory, 'color'>[]
   cities: City[]
   className?: string
 }
