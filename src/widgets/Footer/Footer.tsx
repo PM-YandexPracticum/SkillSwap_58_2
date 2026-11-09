@@ -1,6 +1,7 @@
 import { Logotype } from '@/shared/ui/Logo/Logotype'
 
 import styles from './Footer.module.css'
+import { Link } from 'react-router-dom'
 
 export type FooterLinkId = 'about' | 'skills' | 'contacts' | 'blog' | 'privacy' | 'terms'
 
@@ -42,7 +43,7 @@ export function Footer({ links, className }: FooterProps) {
                     {label}
                   </a>
                 ) : (
-                  <span>{label}</span>
+                  <Link to={id}>{label}</Link>
                 )}
               </li>
             ))}
