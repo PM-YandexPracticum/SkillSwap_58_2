@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from '@/features/auth/model/authSlice'
+import filterReducer from '@/features/catalog-filter/model/filterSlice'
+import usersReducer from '@/entities/user/model/usersSlice'
 import { LOCAL_STORAGE_KEYS } from '@/shared/lib/constants'
 import { AppRouter } from './RouterProvider'
 
@@ -14,6 +16,7 @@ vi.mock('@/pages/FavoritesPage', () => ({ default: () => <main>Избранно�
 vi.mock('@/pages/ProfilePage', () => ({ default: () => <main>Профиль</main> }))
 vi.mock('@/pages/CreateSkillPage', () => ({ default: () => <main>Создание</main> }))
 vi.mock('@/pages/LoginPage', () => ({ default: () => <main>Вход</main> }))
+vi.mock('@/pages/RegisterPage', () => ({ default: () => <main>Регистрация</main> }))
 vi.mock('@/pages/NotFoundPage', () => ({ default: () => <main>404</main> }))
 
 const AUTH_USER = { id: '0', name: 'Алексей', email: 'alexey@example.com', token: 'mock_token_0' }
@@ -22,7 +25,9 @@ const openPage = (path: string, isAuth = false) => {
   if (isAuth) {
     localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_USER, JSON.stringify(AUTH_USER))
   }
-  const store = configureStore({ reducer: { auth: authReducer } })
+  const store = configureStore({
+    reducer: { auth: authReducer, filter: filterReducer, users: usersReducer },
+  })
   window.history.pushState({}, '', path)
   render(
     <Provider store={store}>
@@ -74,10 +79,13 @@ describe('AppRouter и общая обёртка страниц', () => {
     },
   )
 
-  it.each(['/login', '/register'])('на странице %s шапки и футера нет', async (path) => {
+  it.each([
+    ['/login', 'Вход'],
+    ['/register', 'Регистрация'],
+  ])('на странице %s шапки и футера нет', async (path, content) => {
     openPage(path)
 
-    expect(await screen.findByText('Вход')).toBeInTheDocument()
+    expect(await screen.findByText(content)).toBeInTheDocument()
     expect(screen.queryByText('Шапка')).not.toBeInTheDocument()
     expect(screen.queryByText('Футер')).not.toBeInTheDocument()
   })

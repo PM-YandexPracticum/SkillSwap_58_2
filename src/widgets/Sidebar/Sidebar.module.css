@@ -9,12 +9,38 @@
   background-color: #fff;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .title {
   font-family: Jost, sans-serif;
   font-size: 24px;
   line-height: 28px;
   font-weight: 500;
   color: #253017;
+}
+
+.reset {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #58664a;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.reset:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.reset:not(:disabled):hover {
+  text-decoration: underline;
 }
 
 .filters {

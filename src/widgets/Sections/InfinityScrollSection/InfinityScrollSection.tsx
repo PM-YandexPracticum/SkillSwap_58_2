@@ -5,10 +5,11 @@ import styles from './InfinityScrollSection.module.css'
 export const LOAD_DELAY = 1000
 
 export interface InfinityScrollSectionProps {
-  title: string
+  title: ReactNode
   children: ReactNode
   hasMore: boolean
   onLoadMore: () => void
+  headerAction?: ReactNode
   className?: string
 }
 
@@ -17,6 +18,7 @@ export function InfinityScrollSection({
   children,
   hasMore,
   onLoadMore,
+  headerAction,
   className,
 }: InfinityScrollSectionProps) {
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -59,7 +61,10 @@ export function InfinityScrollSection({
 
   return (
     <section className={classNames}>
-      <h2 className={styles.title}>{title}</h2>
+      <div className={styles.header}>
+        <h2 className={styles.title}>{title}</h2>
+        {headerAction}
+      </div>
       <div className={styles.grid}>{children}</div>
       {isLoading && <div className={styles.loader} role="status" aria-label="Загрузка" />}
       {hasMore && <div ref={sentinelRef} className={styles.sentinel} aria-hidden="true" />}

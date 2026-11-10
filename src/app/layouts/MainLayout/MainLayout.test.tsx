@@ -1,15 +1,22 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { MainLayout } from './MainLayout'
 import { Provider } from 'react-redux'
-import { store } from '@/store'
+import { configureStore } from '@reduxjs/toolkit'
+import { MainLayout } from './MainLayout'
+import filterReducer from '@/features/catalog-filter/model/filterSlice'
+import usersReducer from '@/entities/user/model/usersSlice'
+import authReducer from '@/features/auth/model/authSlice'
 
 vi.mock('@/widgets/Header', () => ({ Header: () => <header>Шапка</header> }))
 vi.mock('@/widgets/Footer', () => ({ Footer: () => <footer>Футер</footer> }))
 
 describe('MainLayout', () => {
   it('показывает шапку, содержимое страницы и футер в таком порядке', () => {
+    const store = configureStore({
+      reducer: { filter: filterReducer, users: usersReducer, auth: authReducer },
+    })
+
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/']}>
