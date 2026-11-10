@@ -10,6 +10,7 @@ vi.mock('@/pages/FavoritesPage', () => ({ default: () => <main>Избранно�
 vi.mock('@/pages/ProfilePage', () => ({ default: () => <main>Профиль</main> }))
 vi.mock('@/pages/CreateSkillPage', () => ({ default: () => <main>Создание</main> }))
 vi.mock('@/pages/LoginPage', () => ({ default: () => <main>Вход</main> }))
+vi.mock('@/pages/RegisterPage', () => ({ default: () => <main>Регистрация</main> }))
 vi.mock('@/pages/NotFoundPage', () => ({ default: () => <main>404</main> }))
 
 const openPage = (path: string) => {
@@ -37,10 +38,13 @@ describe('AppRouter и общая обёртка страниц', () => {
     expect(screen.getByText('Футер')).toBeInTheDocument()
   })
 
-  it.each(['/login', '/register'])('на странице %s шапки и футера нет', async (path) => {
+  it.each([
+    ['/login', 'Вход'],
+    ['/register', 'Регистрация'],
+  ])('на странице %s шапки и футера нет', async (path, content) => {
     openPage(path)
 
-    expect(await screen.findByText('Вход')).toBeInTheDocument()
+    expect(await screen.findByText(content)).toBeInTheDocument()
     expect(screen.queryByText('Шапка')).not.toBeInTheDocument()
     expect(screen.queryByText('Футер')).not.toBeInTheDocument()
   })
