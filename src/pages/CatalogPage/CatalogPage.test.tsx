@@ -18,7 +18,7 @@ vi.mock('@/shared/assets/icons/Cross.svg?react', () => ({ default: () => null })
 vi.mock('@/shared/assets/icons/Like.svg?react', () => ({ default: () => null }))
 
 const categories = [
-  { id: 0, category: 'Языки', icon: '', subcategories: ['Английский'] },
+  { id: 0, category: 'Языки', icon: '', subcategories: ['Английский'], color: '#fff' },
 ]
 const cities = [{ id: '1', name: 'Москва' }, { id: '2', name: 'Казань' }]
 
