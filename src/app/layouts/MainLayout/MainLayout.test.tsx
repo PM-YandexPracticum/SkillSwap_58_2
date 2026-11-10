@@ -2,6 +2,8 @@ import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { MainLayout } from './MainLayout'
+import { Provider } from 'react-redux'
+import { store } from '@/store'
 
 vi.mock('@/widgets/Header', () => ({ Header: () => <header>Шапка</header> }))
 vi.mock('@/widgets/Footer', () => ({ Footer: () => <footer>Футер</footer> }))
@@ -9,13 +11,15 @@ vi.mock('@/widgets/Footer', () => ({ Footer: () => <footer>Футер</footer> }
 describe('MainLayout', () => {
   it('показывает шапку, содержимое страницы и футер в таком порядке', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <Routes>
-          <Route element={<MainLayout />}>
-            <Route path="/" element={<main>Содержимое</main>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>,
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<main>Содержимое</main>} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </Provider>,
     )
 
     const header = screen.getByText('Шапка')
