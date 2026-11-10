@@ -13,6 +13,7 @@ export interface FilterState {
   gender: GenderFilter
   cities: string[]
   categoryOptions: Omit<SkillCategory, 'color'>[]
+  searchQuery: string
   cityOptions: City[]
   status: LoadingStatus
 }
@@ -22,6 +23,7 @@ export const initialState: FilterState = {
   skills: [],
   gender: 'any',
   cities: [],
+  searchQuery: '',
   categoryOptions: [],
   cityOptions: [],
   status: 'idle',
@@ -48,11 +50,15 @@ const filterSlice = createSlice({
     setCities(state, action: PayloadAction<string[]>) {
       state.cities = action.payload
     },
+    setSearchQuery(state, action: PayloadAction<string>) {
+      state.searchQuery = action.payload
+    },
     resetFilters(state) {
       state.skillType = initialState.skillType
       state.skills = []
       state.gender = initialState.gender
       state.cities = []
+      state.searchQuery = initialState.searchQuery
     },
   },
   extraReducers: (builder) => {
@@ -71,12 +77,29 @@ const filterSlice = createSlice({
   },
 })
 
-export const { setSkillType, setSkills, setGender, setCities, resetFilters } = filterSlice.actions
+export const {
+  setSkillType,
+  setSkills,
+  setGender,
+  setCities,
+  setSearchQuery,
+  resetFilters,
+} = filterSlice.actions
 
 type StateWithFilter = { filter: FilterState }
 export const selectFilter = (state: StateWithFilter) => state.filter
 export const selectCategoryOptions = (state: StateWithFilter) => state.filter.categoryOptions
 export const selectCityOptions = (state: StateWithFilter) => state.filter.cityOptions
 export const selectFilterStatus = (state: StateWithFilter) => state.filter.status
+export const selectActiveFilterCount = (state: StateWithFilter) => {
+  const { skillType, skills, gender, cities, searchQuery } = state.filter
+  return (
+    Number(skillType !== 'all') +
+    skills.length +
+    Number(gender !== 'any') +
+    cities.length +
+    Number(searchQuery.trim().length > 0)
+  )
+}
 
 export default filterSlice.reducer

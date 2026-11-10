@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useState } from 'react'
 import { Header } from './Header'
 
 // В конфиге Vitest нет плагина svgr, поэтому SVG-иконки (?react) заменяем заглушками
@@ -40,5 +41,31 @@ describe('Header', () => {
     await userEvent.type(screen.getByPlaceholderText('Искать навык'), '  Английский  {enter}')
 
     expect(onSearch).toHaveBeenCalledWith('Английский')
+  })
+
+  it('передаёт изменения поиска и использует переданное значение', async () => {
+    const onSearchChange = vi.fn()
+    const ControlledHeader = () => {
+      const [searchValue, setSearchValue] = useState('Английский')
+      return (
+        <Header
+          searchValue={searchValue}
+          onSearchChange={(value) => {
+            onSearchChange(value)
+            setSearchValue(value)
+          }}
+        />
+      )
+    }
+
+    render(<ControlledHeader />)
+
+    const input = screen.getByPlaceholderText('Искать навык')
+    expect(input).toHaveValue('Английский')
+
+    await userEvent.clear(input)
+    await userEvent.type(input, 'Рисование')
+
+    expect(onSearchChange).toHaveBeenLastCalledWith('Рисование')
   })
 })

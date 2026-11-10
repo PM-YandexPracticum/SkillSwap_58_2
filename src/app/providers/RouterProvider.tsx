@@ -9,6 +9,7 @@ const ProfilePage = lazy(() => import('@/pages/ProfilePage'))
 const FavoritesPage = lazy(() => import('@/pages/FavoritesPage'))
 const CreateSkillPage = lazy(() => import('@/pages/CreateSkillPage'))
 const LoginPage = lazy(() => import('@/pages/LoginPage'))
+const RegisterPage = lazy(() => import('@/pages/RegisterPage'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 const SkillsPage = lazy(() => import('@/pages/SkillsPage'))
 const ServerErrorPage = lazy(() => import('@/pages/ServerErrorPage'))
@@ -18,11 +19,10 @@ export function AppRouter() {
     <BrowserRouter>
       <Suspense fallback={<div>Загрузка...</div>}>
         <Routes>
-          
           <Route element={<MainLayout />}>
             <Route path={ROUTES.HOME} element={<CatalogPage />} />
             <Route path={ROUTES.SKILL} element={<SkillPage />} />
-            <Route path={ROUTES.FAVORITES} element={<FavoritesPage />} />            
+            <Route path={ROUTES.FAVORITES} element={<FavoritesPage />} />
             <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
             <Route path={ROUTES.CREATE} element={<CreateSkillPage />} />
             <Route path={ROUTES.SKILLS} element={<SkillsPage />} />
@@ -31,7 +31,7 @@ export function AppRouter() {
           </Route>
 
           <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-          <Route path={ROUTES.REGISTER} element={<LoginPage />} />
+          <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

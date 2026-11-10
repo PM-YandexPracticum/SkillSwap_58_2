@@ -11,6 +11,8 @@ import {
   setSkills,
   setGender,
   setCities,
+  resetFilters,
+  selectActiveFilterCount,
 } from '../../features/catalog-filter/model/filterSlice'
 import type { SkillTypeFilter, GenderFilter } from '../../features/catalog-filter/model/filterSlice'
 import styles from './Sidebar.module.css'
@@ -24,6 +26,7 @@ export interface SidebarProps {
 export const Sidebar = ({ categories, cities, className }: SidebarProps) => {
   const dispatch = useAppDispatch()
   const filter = useAppSelector(selectFilter)
+  const activeFilterCount = useAppSelector(selectActiveFilterCount)
 
   const skillItems = useMemo<TreeItem[]>(
     () =>
@@ -44,7 +47,17 @@ export const Sidebar = ({ categories, cities, className }: SidebarProps) => {
 
   return (
     <aside className={sidebarClass}>
-      <h2 className={styles.title}>Фильтры</h2>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Фильтры ({activeFilterCount})</h2>
+        <button
+          type="button"
+          className={styles.reset}
+          disabled={activeFilterCount === 0}
+          onClick={() => dispatch(resetFilters())}
+        >
+          Сбросить
+        </button>
+      </div>
 
       <div className={styles.filters}>
         <RadioGroup

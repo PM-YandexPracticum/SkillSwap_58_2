@@ -75,4 +75,16 @@ describe('Sidebar', () => {
     await userEvent.click(screen.getByLabelText('Казань'))
     expect(store.getState().filter.cities).toEqual(['Казань'])
   })
+
+  it('показывает счётчик активных условий и сбрасывает их', async () => {
+    const store = renderSidebar()
+    expect(screen.getByText('Фильтры (0)')).toBeInTheDocument()
+
+    await userEvent.click(screen.getByLabelText('Казань'))
+    expect(screen.getByText('Фильтры (1)')).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Сбросить' }))
+    expect(store.getState().filter.cities).toEqual([])
+    expect(screen.getByText('Фильтры (0)')).toBeInTheDocument()
+  })
 })
