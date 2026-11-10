@@ -63,6 +63,7 @@ export interface InputProps {
 export interface SkillCategory {
   id: number
   category: string
+  color: string
   icon: string
   subcategories: string[]
 }

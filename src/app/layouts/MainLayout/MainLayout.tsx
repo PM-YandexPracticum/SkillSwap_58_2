@@ -6,6 +6,10 @@ import { setSearchQuery, selectFilter } from '@/features/catalog-filter/model/fi
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import styles from './MainLayout.module.css'
 
+const links = {
+  skills: 'skills',
+}
+
 export function MainLayout() {
   const dispatch = useAppDispatch()
   const searchQuery = useAppSelector((state) => selectFilter(state).searchQuery)
@@ -21,7 +25,7 @@ export function MainLayout() {
         <Outlet />
       </Suspense>
       <div className={styles.footer}>
-        <Footer />
+        <Footer links={links} />
       </div>
     </div>
   )

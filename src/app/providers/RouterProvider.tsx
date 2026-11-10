@@ -11,6 +11,7 @@ const CreateSkillPage = lazy(() => import('@/pages/CreateSkillPage'))
 const LoginPage = lazy(() => import('@/pages/LoginPage'))
 const RegisterPage = lazy(() => import('@/pages/RegisterPage'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
+const SkillsPage = lazy(() => import('@/pages/SkillsPage'))
 const ServerErrorPage = lazy(() => import('@/pages/ServerErrorPage'))
 
 export function AppRouter() {
@@ -24,6 +25,7 @@ export function AppRouter() {
             <Route path={ROUTES.FAVORITES} element={<FavoritesPage />} />
             <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
             <Route path={ROUTES.CREATE} element={<CreateSkillPage />} />
+            <Route path={ROUTES.SKILLS} element={<SkillsPage />} />
             <Route path="*" element={<NotFoundPage />} />
             <Route path={ROUTES.SERVER_ERROR} element={<ServerErrorPage />} />
           </Route>

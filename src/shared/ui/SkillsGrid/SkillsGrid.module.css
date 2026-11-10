@@ -1,0 +1,16 @@
+.categoryList {
+  column-gap: 40px;
+  width: 1136px;
+  border-radius: 12px;
+  padding: 60px 60px 20px;
+  list-style: none;
+  background-color: #fff;
+  column-count: 2;
+}
+
+.categoryInfo {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+  break-inside: avoid;
+}
