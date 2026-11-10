@@ -9,6 +9,9 @@ import styles from './Header.module.css'
 export interface HeaderProps {
   /** Вызывается при отправке поиска (Enter или клик по лупе) */
   onSearch?: (query: string) => void
+  /** Значение поиска, если оно хранится во внешнем состоянии */
+  searchValue?: string
+  onSearchChange?: (query: string) => void
   onLoginClick?: () => void
   onRegisterClick?: () => void
   /** Пока только иконка по макету, смена темы будет отдельной задачей */
@@ -18,13 +21,21 @@ export interface HeaderProps {
 
 export function Header({
   onSearch,
+  searchValue,
+  onSearchChange,
   onLoginClick,
   onRegisterClick,
   onThemeToggle,
   className,
 }: HeaderProps) {
   const [query, setQuery] = useState('')
+  const currentQuery = searchValue ?? query
   const classNames = [styles.header, className].filter(Boolean).join(' ')
+
+  const handleQueryChange = (value: string) => {
+    setQuery(value)
+    onSearchChange?.(value)
+  }
 
   return (
     <header className={classNames}>
@@ -40,8 +51,8 @@ export function Header({
 
       <SearchInput
         className={styles.search}
-        value={query}
-        onChange={setQuery}
+        value={currentQuery}
+        onChange={handleQueryChange}
         onSearch={(value) => onSearch?.(value)}
       />
 

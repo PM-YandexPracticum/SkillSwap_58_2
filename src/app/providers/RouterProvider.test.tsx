@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { AppRouter } from './RouterProvider'
+import { StoreProvider } from './StoreProvider'
 
 vi.mock('@/widgets/Header', () => ({ Header: () => <header>Шапка</header> }))
 vi.mock('@/widgets/Footer', () => ({ Footer: () => <footer>Футер</footer> }))
@@ -14,7 +15,11 @@ vi.mock('@/pages/NotFoundPage', () => ({ default: () => <main>404</main> }))
 
 const openPage = (path: string) => {
   window.history.pushState({}, '', path)
-  render(<AppRouter />)
+  render(
+    <StoreProvider>
+      <AppRouter />
+    </StoreProvider>,
+  )
 }
 
 describe('AppRouter и общая обёртка страниц', () => {

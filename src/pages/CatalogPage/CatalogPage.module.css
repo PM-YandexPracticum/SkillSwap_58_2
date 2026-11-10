@@ -10,3 +10,30 @@
   flex-direction: column;
   gap: 40px;
 }
+
+.activeFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sortButton {
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 12px;
+  background-color: #fff;
+  color: #253017;
+  font: inherit;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.sortButton:hover {
+  background-color: #deebc5;
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  margin: 0;
+}

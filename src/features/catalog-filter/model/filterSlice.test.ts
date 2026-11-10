@@ -6,6 +6,7 @@ import reducer, {
   setSkills,
   setGender,
   setCities,
+  setSearchQuery,
   resetFilters,
 } from './filterSlice'
 
@@ -30,7 +31,8 @@ describe('filterSlice', () => {
   })
 
   it('сбрасывает фильтры', () => {
-    const changed = reducer(initialState, setGender('male'))
+    let changed = reducer(initialState, setGender('male'))
+    changed = reducer(changed, setSearchQuery('Английский'))
     expect(reducer(changed, resetFilters())).toEqual(initialState)
   })
 
