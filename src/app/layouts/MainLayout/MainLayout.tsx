@@ -8,6 +8,10 @@ import { setSearchQuery, selectFilter } from '@/features/catalog-filter/model/fi
 import { ROUTES } from '@/shared/lib/constants'
 import styles from './MainLayout.module.css'
 
+const links = {
+  skills: 'skills',
+}
+
 export function MainLayout() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -36,7 +40,7 @@ export function MainLayout() {
         <Outlet />
       </Suspense>
       <div className={styles.footer}>
-        <Footer />
+        <Footer links={links} />
       </div>
     </div>
   )

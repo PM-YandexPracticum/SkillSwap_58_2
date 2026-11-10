@@ -16,20 +16,19 @@ export function CategoryList({ icon, color, title, items, className }: CategoryL
 
   return (
     <div className={classNames}>
+      <span className={styles.icon} style={{ backgroundColor: color }}>
+        {icon}
+      </span>
       <div className={styles.header}>
-        <span className={styles.icon} style={{ backgroundColor: color }}>
-          {icon}
-        </span>
         <h3 className={styles.title}>{title}</h3>
+        <ul className={styles.list}>
+          {items.map((item) => (
+            <li key={item} className={styles.item}>
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
-
-      <ul className={styles.list}>
-        {items.map((item) => (
-          <li key={item} className={styles.item}>
-            {item}
-          </li>
-        ))}
-      </ul>
     </div>
   )
 }

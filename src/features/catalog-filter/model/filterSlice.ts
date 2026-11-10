@@ -12,8 +12,8 @@ export interface FilterState {
   skills: string[]
   gender: GenderFilter
   cities: string[]
+  categoryOptions: Omit<SkillCategory, 'color'>[]
   searchQuery: string
-  categoryOptions: SkillCategory[]
   cityOptions: City[]
   status: LoadingStatus
 }

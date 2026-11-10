@@ -6,7 +6,7 @@ import filterReducer, { selectFilter } from '../../features/catalog-filter/model
 import { useAppSelector } from '../../store/hooks'
 import type { SkillCategory, City } from '../../shared/types'
 
-const mockCategories: SkillCategory[] = [
+const mockCategories: Omit<SkillCategory, 'color'>[] = [
   {
     id: 0,
     category: 'Бизнес и карьера',

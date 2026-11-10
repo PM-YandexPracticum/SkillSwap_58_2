@@ -22,7 +22,7 @@ const user: UserProfile = {
   want_to_learn: ['Английский', 'Неизвестное'],
 }
 
-const categories: SkillCategory[] = [
+const categories: Omit<SkillCategory, 'color'>[] = [
   { id: 1, category: 'Иностранные языки', icon: '', subcategories: ['Английский'] },
 ]
 
