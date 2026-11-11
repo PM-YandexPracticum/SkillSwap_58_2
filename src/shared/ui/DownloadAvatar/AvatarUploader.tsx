@@ -9,6 +9,7 @@ interface AvatarUploaderProps {
   inputComponent: ReactNode
   buttonIcon: ReactNode
   onRemove?: () => void
+  className?: string
 }
 
 export const AvatarUploader = ({
@@ -16,12 +17,13 @@ export const AvatarUploader = ({
   inputComponent,
   buttonIcon,
   onRemove,
+  className=''
 }: AvatarUploaderProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [avatar, setAvatar] = useState<string | undefined>('')
 
   return (
-    <div className={styles.wrap}>
+    <div className={`${styles.wrap} ${className}`}>
       <Avatar className={styles.plug} src={avatar ? avatar : plug} alt="Аватар пользователя" />
       <button
         className={styles.addButton}

@@ -13,6 +13,8 @@ export const EmailInput = ({
   errorMessage,
   helperText,
   className = '',
+  rightIcon,
+  disabled = false,
 }: EmailInputProps) => {
   return (
     <div className={`${styles.wrapper} ${className}`}>
@@ -27,6 +29,8 @@ export const EmailInput = ({
         helperText={helperText}
         clear={value.length > 0}
         containerClassName={styles.formContainer}
+        rightIcon={rightIcon}
+        disabled={disabled}
       />
     </div>
   )

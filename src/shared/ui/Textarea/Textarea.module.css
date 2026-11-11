@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 4px;
   inline-size: 100%;
+  position: relative;
 }
 
 .label {
@@ -65,4 +66,11 @@
 
 .messageError {
   color: #bf3920;
+}
+
+.rightIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  z-index: 1;
 }

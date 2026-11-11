@@ -18,6 +18,7 @@ export const PasswordInput = ({
   errorMessage,
   helperText,
   className = '',
+  disabled = false
 }: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,6 +44,7 @@ export const PasswordInput = ({
             <EyePassword />
           </button>
         }
+        disabled={disabled}
       />
     </div>
   );
