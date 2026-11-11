@@ -5,6 +5,9 @@ import { useState } from 'react'
 import { Header } from './Header'
 
 // В конфиге Vitest нет плагина svgr, поэтому SVG-иконки (?react) заменяем заглушками
+vi.mock('@/shared/assets/icons/Notification.svg?react', () => ({ default: () => null }))
+vi.mock('@/shared/assets/icons/Like.svg?react', () => ({ default: () => null }))
+vi.mock('@/shared/assets/icons/Logout.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/ChevronDown.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Moon.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Logo.svg?react', () => ({ default: () => null }))
@@ -67,5 +70,34 @@ describe('Header', () => {
     await userEvent.type(input, 'Рисование')
 
     expect(onSearchChange).toHaveBeenLastCalledWith('Рисование')
+  })
+
+  it('для авторизованного пользователя показывает имя вместо кнопок входа', () => {
+    render(<Header user={{ name: 'Мария' }} />)
+    expect(screen.getByText('Мария')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Уведомления' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Избранное' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Войти' })).not.toBeInTheDocument()
+  })
+
+  it('по клику на пользователя открывает меню с личным кабинетом и выходом', async () => {
+    const onProfileClick = vi.fn()
+    const onLogoutClick = vi.fn()
+    render(
+      <Header
+        user={{ name: 'Мария' }}
+        onProfileClick={onProfileClick}
+        onLogoutClick={onLogoutClick}
+      />,
+    )
+
+    await userEvent.click(screen.getByRole('button', { name: /Мария/ }))
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Личный кабинет' }))
+    expect(onProfileClick).toHaveBeenCalledTimes(1)
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('button', { name: /Мария/ }))
+    await userEvent.click(screen.getByRole('menuitem', { name: /Выйти из аккаунта/ }))
+    expect(onLogoutClick).toHaveBeenCalledTimes(1)
   })
 })

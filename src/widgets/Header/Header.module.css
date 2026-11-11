@@ -31,7 +31,7 @@
   min-width: 0;
 }
 
-.themeButton {
+.iconButton {
   display: flex;
   flex-shrink: 0;
   width: 24px;
@@ -40,7 +40,7 @@
   color: #253017;
 }
 
-.themeButton:focus-visible {
+.iconButton:focus-visible {
   outline: 2px solid #abd27a;
   outline-offset: 2px;
   border-radius: 4px;
@@ -61,4 +61,90 @@
   color: inherit;
   cursor: pointer;
   display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.icons {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 20px;
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 24px;
+}
+
+.user {
+  position: relative;
+}
+
+.userButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  font-family: Roboto, var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  color: #253017;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.userButton:focus-visible {
+  outline: 2px solid #abd27a;
+  outline-offset: 2px;
+  border-radius: 24px;
+}
+
+.userMenu {
+  position: absolute;
+  inset-block-start: calc(100% + 12px);
+  inset-inline-end: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  inline-size: 260px;
+  padding: 40px;
+  border: 1px solid #b2b9a9;
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  font-family: Roboto, var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #253017;
+  text-align: start;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  opacity: 0.7;
+}
+
+.menuItem svg {
+  inline-size: 24px;
+  block-size: 24px;
 }
