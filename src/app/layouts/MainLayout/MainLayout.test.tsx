@@ -6,6 +6,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { MainLayout } from './MainLayout'
 import filterReducer from '@/features/catalog-filter/model/filterSlice'
 import usersReducer from '@/entities/user/model/usersSlice'
+import authReducer from '@/features/auth/model/authSlice'
 
 vi.mock('@/widgets/Header', () => ({ Header: () => <header>Шапка</header> }))
 vi.mock('@/widgets/Footer', () => ({ Footer: () => <footer>Футер</footer> }))
@@ -13,7 +14,7 @@ vi.mock('@/widgets/Footer', () => ({ Footer: () => <footer>Футер</footer> }
 describe('MainLayout', () => {
   it('показывает шапку, содержимое страницы и футер в таком порядке', () => {
     const store = configureStore({
-      reducer: { filter: filterReducer, users: usersReducer },
+      reducer: { filter: filterReducer, users: usersReducer, auth: authReducer },
     })
 
     render(
