@@ -1,9 +1,11 @@
-/* Размеры из Figma: 232 px в высоту при ширине страницы 1440 px. */
+/* Размеры из Figma: 232 px в высоту при ширине страницы 1440 px.
+   Фон на всю ширину, контент ограничен 1368px — как центральный блок каталога */
 .footer {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px 24px;
-  padding: 32px 36px;
+  padding-block: 32px;
+  padding-inline: max(36px, (100% - 1368px) / 2);
   color: #253017;
   background-color: #fff;
   font-family: Roboto, var(--font-sans);
