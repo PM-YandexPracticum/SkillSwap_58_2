@@ -34,6 +34,7 @@ import {
 import { toSkillCardProps } from './lib/toSkillCardProps'
 import type { UserProfile } from '@/shared/types'
 import styles from './CatalogPage.module.css'
+import { loadSkillCategories } from '@/entities/skills/model/skillCategoriesSlice'
 
 type ActiveFilterChip = {
   id: string
@@ -185,6 +186,10 @@ export default function CatalogPage() {
   useEffect(() => {
     if (usersStatus === 'idle') dispatch(loadUsers())
   }, [dispatch, usersStatus])
+
+  useEffect(() => {
+    dispatch(loadSkillCategories())
+  }, [dispatch])
 
   return (
     <main>
