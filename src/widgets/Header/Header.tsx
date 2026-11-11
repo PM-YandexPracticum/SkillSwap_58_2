@@ -3,7 +3,6 @@ import { Button } from '@/shared/ui/Button'
 import { Logotype } from '@/shared/ui/Logo/Logotype'
 import { Avatar } from '@/shared/ui/Avatar'
 import { SearchInput } from '@/shared/ui/Input/SearchInput/SearchInput'
-import {SkillsModal} from '@/shared/ui/SkillsModal/SkillsModal'
 import ChevronDownIcon from '@/shared/assets/icons/ChevronDown.svg?react'
 import MoonIcon from '@/shared/assets/icons/Moon.svg?react'
 import NotificationIcon from '@/shared/assets/icons/Notification.svg?react'
@@ -32,6 +31,8 @@ export interface HeaderProps {
   onFavoritesClick?: () => void
   onProfileClick?: () => void
   onLogoutClick?: () => void
+  onSkillsClick?: () => void
+  skillsButtonRef?: React.RefObject<HTMLButtonElement>
   className?: string
 }
 
@@ -47,6 +48,8 @@ export function Header({
   onFavoritesClick,
   onProfileClick,
   onLogoutClick,
+  onSkillsClick,
+  skillsButtonRef,
   className,
 }: HeaderProps) {
   const [query, setQuery] = useState('')
@@ -54,9 +57,6 @@ export function Header({
   const userRef = useRef<HTMLDivElement>(null)
   const currentQuery = searchValue ?? query
   const classNames = [styles.header, className].filter(Boolean).join(' ')
-
-  const [isSkillsOpen, setIsSkillsOpen] = useState(false)
-  const skillsButtonRef = useRef<HTMLButtonElement>(null)
 
   const handleQueryChange = (value: string) => {
     setQuery(value)
@@ -126,8 +126,8 @@ export function Header({
             ref={skillsButtonRef}
             type="button"
             className={styles.navLink}
-            onClick={() => setIsSkillsOpen(!isSkillsOpen)}
-            aria-expanded={isSkillsOpen}
+            onClick={onSkillsClick}
+            aria-expanded={false}
           >
             Все навыки
             <ChevronDownIcon aria-hidden="true" />
@@ -197,13 +197,6 @@ export function Header({
           </div>
         </>
       )}
-
-      <SkillsModal
-        isOpen={isSkillsOpen}
-        onClose={() => setIsSkillsOpen(false)}
-        anchorRef={skillsButtonRef}
-      />
-      
     </header>
   )
 }
