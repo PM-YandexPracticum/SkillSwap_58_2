@@ -8,6 +8,11 @@ import styles from './DatePicker.module.css'
 import { ru } from 'react-day-picker/locale'
 import { Select } from '../Select/Select'
 
+interface DatePickerProps {
+  value?: string;
+  onChange?: (value: string) => void
+}
+
 const CustomSelector = (props: DropdownProps) => {
   const { options, value, onChange } = props
   const handleValueChange = (newValue: string) => {
@@ -33,7 +38,7 @@ const CustomSelector = (props: DropdownProps) => {
   )
 }
 
-export const DatePickerComponent = () => {
+export const DatePickerComponent = ({value = '', onChange,}: DatePickerProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [month, setMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
@@ -46,6 +51,10 @@ export const DatePickerComponent = () => {
       setSelectedDate(date)
     }
   }
+
+  useEffect(() => {
+    setInputValue(value)
+  }, [value])
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -63,6 +72,7 @@ export const DatePickerComponent = () => {
         label="Дата рождения"
         onChange={(value: string) => {
           setInputValue(value)
+          onChange?.(value)
         }}
         onClick={() => {
           if (!isOpen) setIsOpen(true)
