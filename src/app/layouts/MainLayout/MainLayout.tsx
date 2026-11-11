@@ -1,7 +1,8 @@
-import { Suspense } from 'react'
+import { Suspense, useState, useRef } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Header } from '@/widgets/Header'
 import { Footer } from '@/widgets/Footer'
+import { SkillsModal } from '@/shared/ui/SkillsModal/SkillsModal'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { logout, selectAuthUser } from '@/features/auth/model/authSlice'
 import { setSearchQuery, selectFilter } from '@/features/catalog-filter/model/filterSlice'
@@ -17,6 +18,9 @@ export function MainLayout() {
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectAuthUser)
   const searchQuery = useAppSelector((state) => selectFilter(state).searchQuery)
+
+  const [isSkillsOpen, setIsSkillsOpen] = useState(false)
+  const skillsButtonRef = useRef<HTMLButtonElement>(null)
 
   const handleLogout = async () => {
     await dispatch(logout())
@@ -35,6 +39,8 @@ export function MainLayout() {
         onFavoritesClick={() => navigate(ROUTES.FAVORITES)}
         onProfileClick={() => navigate(ROUTES.PROFILE)}
         onLogoutClick={handleLogout}
+        onSkillsClick={() => setIsSkillsOpen(true)}
+        skillsButtonRef={skillsButtonRef}
       />
       <Suspense fallback={<div>Загрузка...</div>}>
         <Outlet />
@@ -42,6 +48,13 @@ export function MainLayout() {
       <div className={styles.footer}>
         <Footer links={links} />
       </div>
+
+      <SkillsModal
+        isOpen={isSkillsOpen}
+        onClose={() => setIsSkillsOpen(false)}
+        anchorRef={skillsButtonRef}
+      />
+
     </div>
   )
 }
