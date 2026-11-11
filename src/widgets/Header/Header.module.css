@@ -51,3 +51,14 @@
   flex-shrink: 0;
   gap: 8px;
 }
+
+.skillsWrapper {
+  position: relative;
+}
+
+.navLink {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+}
