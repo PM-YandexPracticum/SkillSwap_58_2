@@ -37,6 +37,7 @@ export const login = createAsyncThunk<AuthUser, LoginCredentials, { rejectValue:
       name: found.name,
       email: found.login,
       avatar: `/db/${found.avatar}`,
+      favorites: found.favorites ?? [],
     })
   },
 )
