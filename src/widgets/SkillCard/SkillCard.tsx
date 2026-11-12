@@ -54,6 +54,7 @@ export const SkillCard = ({
                     key={`${tag.label}-${index}`}
                     label={tag.label}
                     color={tag.color ?? DEFAULT_TAG_COLOR}
+                    className={styles.tag}
                   />
                 ))}
                 {hiddenCount > 0 && <SkillLabel count={hiddenCount} />}
