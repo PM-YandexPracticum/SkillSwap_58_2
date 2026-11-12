@@ -5,6 +5,10 @@ import CheckboxEmptyIcon from '../shared/assets/icons/CheckboxEmpty.svg?react';
 import CheckboxDoneIcon from '../shared/assets/icons/CheckboxDone.svg?react';
 import CheckboxRemoveIcon from '../shared/assets/icons/CheckboxRemove.svg?react';
 import Chevron from '../shared/assets/icons/Chevron.svg?react';
+import ShareIcon from '../shared/assets/icons/Share.svg?react';
+import MoreIcon from '../shared/assets/icons/More.svg?react';
+import ClockIcon from '../shared/assets/icons/Clock.svg?react';
+import BellLargeIcon from '../shared/assets/icons/BellLarge.svg?react';
 
 const IconsGallery = () => {
   const iconStyle = { width: '24px', height: '24px', color: '#253017' };
@@ -19,13 +23,11 @@ const IconsGallery = () => {
         fontFamily: 'sans-serif',
       }}
     >
-      {/* Начало блока. При добавлении новой иконки продублировать блок и импортировать нужную иконку */}
       <div style={{ textAlign: 'center' }}>
         <LikeIcon style={iconStyle} />
         <p style={{ marginTop: '8px', fontSize: '12px' }}>Like</p>
       </div>
 
-      {/* Иконка крестика */}
       <div style={{ textAlign: 'center' }}>
         <CrossIcon style={iconStyle} />
         <p style={{ marginTop: '8px', fontSize: '12px' }}>Cross</p>
@@ -49,7 +51,25 @@ const IconsGallery = () => {
         <Chevron style={iconStyle} />
         <p style={{ marginTop: '8px', fontSize: '12px' }}>Chevron</p>
       </div>
-      {/* Конец блока */}
+      <div style={{ textAlign: 'center' }}>
+        <ShareIcon style={iconStyle} />
+        <p style={{ marginTop: '8px', fontSize: '12px' }}>Share</p>
+      </div>
+
+      <div style={{ textAlign: 'center' }}>
+        <MoreIcon style={iconStyle} />
+        <p style={{ marginTop: '8px', fontSize: '12px' }}>More</p>
+      </div>
+
+      <div style={{ textAlign: 'center' }}>
+        <ClockIcon style={iconStyle} />
+        <p style={{ marginTop: '8px', fontSize: '12px' }}>Clock</p>
+      </div>
+
+      <div style={{ textAlign: 'center' }}>
+        <BellLargeIcon style={iconStyle} />
+        <p style={{ marginTop: '8px', fontSize: '12px' }}>Bell Large</p>
+      </div>
     </div>
   );
 };
