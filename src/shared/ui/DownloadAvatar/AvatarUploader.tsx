@@ -10,6 +10,7 @@ interface AvatarUploaderProps {
   buttonIcon: ReactNode
   onRemove?: () => void
   size?: number
+  className?: string
 }
 
 export const AvatarUploader = ({
@@ -18,12 +19,16 @@ export const AvatarUploader = ({
   buttonIcon,
   onRemove,
   size,
+  className = '',
 }: AvatarUploaderProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [avatar, setAvatar] = useState<string | undefined>('')
 
   return (
-    <div className={styles.wrap} style={size ? { width: size, height: size } : undefined}>
+    <div
+      className={`${styles.wrap} ${className}`}
+      style={size ? { width: size, height: size } : undefined}
+    >
       <Avatar className={styles.plug} src={avatar ? avatar : plug} alt="Аватар пользователя" />
       <button
         className={styles.addButton}

@@ -1,9 +1,14 @@
-/* Значения взяты из макета Figma (Header): отступы 36/36/20, gap 32 */
+/* Значения взяты из макета Figma (Header): отступы 36/36/20, gap 32.
+   Фон на всю ширину, контент ограничен 1368px — как центральный блок каталога */
 .header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 100;
   display: flex;
   align-items: center;
   gap: 32px;
-  padding: 36px 36px 20px;
+  padding-block: 36px 20px;
+  padding-inline: max(36px, (100% - 1368px) / 2);
   background-color: #f9faf7;
   color: #253017;
 }

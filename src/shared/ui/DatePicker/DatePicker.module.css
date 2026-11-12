@@ -3,10 +3,15 @@
   flex-direction: column;
   gap: 4px;
   box-sizing: border-box;
+  position: relative;
+  width: 100%
 }
 
 .calendar {
-  position: static;
+  position: absolute;
+  z-index: 1;
+  top: 90px;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -91,6 +96,7 @@
 
 .selector {
   height: 40px;
+  position: static;
 }
 
 .selector > div {

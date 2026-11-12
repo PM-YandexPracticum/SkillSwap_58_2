@@ -32,14 +32,25 @@
   line-height: 24px;
   font-weight: 500;
   color: #253017;
+  letter-spacing: 2%;
+  font-family: Roboto, sans-serif;
 }
 
 .tags {
   display: flex;
-  flex-wrap: wrap;
   gap: 4px;
 }
 
 .button {
   inline-size: 100%;
+}
+
+.tag {
+  overflow: hidden;
+}
+
+.tag > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

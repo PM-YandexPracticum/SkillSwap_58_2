@@ -6,10 +6,11 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   label?: string
   hint?: string
   error?: string
+  rightIcon?: React.ReactNode
 }
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ label, hint, error, id, className, ...props }, ref) => {
+  ({ rightIcon, label, hint, error, id, className, ...props }, ref) => {
     const generatedId = useId()
     const fieldId = id ?? generatedId
     const messageId = `${fieldId}-message`
@@ -25,6 +26,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           <label htmlFor={fieldId} className={styles.label}>
             {label}
           </label>
+        )}
+        {rightIcon && (
+          <span className={styles.rightIcon}>
+            {rightIcon}
+          </span>
         )}
         <textarea
           id={fieldId}
