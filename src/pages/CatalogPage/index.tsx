@@ -31,6 +31,7 @@ import {
   selectUsersStatus,
   showMoreRecommended,
 } from '@/entities/user/model/usersSlice'
+import { loadSkillCategories } from '@/entities/skills/model/skillCategoriesSlice'
 import { toSkillCardProps } from './lib/toSkillCardProps'
 import type { UserProfile } from '@/shared/types'
 import styles from './CatalogPage.module.css'
@@ -185,6 +186,10 @@ export default function CatalogPage() {
   useEffect(() => {
     if (usersStatus === 'idle') dispatch(loadUsers())
   }, [dispatch, usersStatus])
+
+  useEffect(() => {
+    dispatch(loadSkillCategories())
+  }, [dispatch])
 
   return (
     <main>
