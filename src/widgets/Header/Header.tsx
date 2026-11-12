@@ -29,6 +29,8 @@ export interface HeaderProps {
   user?: HeaderUser | null
   onNotificationsClick?: () => void
   onFavoritesClick?: () => void
+  /** Подсветить сердечко, когда открыта страница избранного */
+  isFavoritesActive?: boolean
   onProfileClick?: () => void
   onLogoutClick?: () => void
   className?: string
@@ -44,6 +46,7 @@ export function Header({
   user,
   onNotificationsClick,
   onFavoritesClick,
+  isFavoritesActive = false,
   onProfileClick,
   onLogoutClick,
   className,
@@ -99,8 +102,13 @@ export function Header({
           </button>
           <button
             type="button"
-            className={styles.iconButton}
+            className={
+              isFavoritesActive
+                ? `${styles.iconButton} ${styles.iconButtonActive}`
+                : styles.iconButton
+            }
             aria-label="Избранное"
+            aria-current={isFavoritesActive ? 'page' : undefined}
             onClick={onFavoritesClick}
           >
             <LikeIcon aria-hidden="true" />
