@@ -44,7 +44,6 @@ describe('AppRouter и общая обёртка страниц', () => {
 
   it.each([
     ['/', 'Каталог'],
-    ['/favorites', 'Избранное'],
     ['/unknown-page', '404'],
   ])('на странице %s показываются шапка и футер', async (path, content) => {
     openPage(path)
@@ -56,6 +55,7 @@ describe('AppRouter и общая обёртка страниц', () => {
 
   it.each([
     ['/profile', 'Профиль'],
+    ['/favorites', 'Избранное'],
     ['/create', 'Создание'],
     ['/skill/1', 'Навык'],
   ])(
@@ -69,7 +69,7 @@ describe('AppRouter и общая обёртка страниц', () => {
     },
   )
 
-  it.each(['/profile', '/create', '/skill/1'])(
+  it.each(['/profile', '/favorites', '/create', '/skill/1'])(
     'гостя со страницы %s отправляет на вход',
     async (path) => {
       openPage(path)
