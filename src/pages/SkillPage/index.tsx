@@ -8,6 +8,7 @@ import {
   selectCategoryOptions,
   selectFilterStatus,
 } from '@/features/catalog-filter/model/filterSlice'
+import { useFavorite } from '@/features/auth/model/useFavorite'
 import { loadUsers, selectUsers, selectUsersStatus } from '@/entities/user/model/usersSlice'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import type { UserProfile } from '@/shared/types'
@@ -74,6 +75,7 @@ interface SkillPageContentProps {
 function SkillPageContent({ user, similarUsers, categories }: SkillPageContentProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isExchangeProposed, setIsExchangeProposed] = useState(false)
+  const { getLikeProps } = useFavorite()
 
   const { can_teach: skill } = user
   const cardProps = toSkillCardProps(user, categories)
@@ -100,9 +102,16 @@ function SkillPageContent({ user, similarUsers, categories }: SkillPageContentPr
       </div>
 
       <SliderSection title="Похожие предложения">
-        {similarUsers.map((item) => (
-          <SkillCard key={item.id} {...toSkillCardProps(item, categories)} />
-        ))}
+        {similarUsers.map((item) => {
+          const similarProps = toSkillCardProps(item, categories)
+          return (
+            <SkillCard
+              key={item.id}
+              {...similarProps}
+              user={{ ...similarProps.user, ...getLikeProps(item.id) }}
+            />
+          )
+        })}
       </SliderSection>
 
       <ExchangeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

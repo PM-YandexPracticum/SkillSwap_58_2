@@ -7,7 +7,8 @@ import { InfinityScrollSection } from '@/widgets/Sections/InfinityScrollSection'
 import { SkillCard } from '@/widgets/SkillCard'
 import { Button } from '@/shared/ui/Button'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { selectAuthUser } from '@/features/auth/model/authSlice'
+import { selectFavoriteIds } from '@/features/auth/model/authSlice'
+import { useFavorite } from '@/features/auth/model/useFavorite'
 import {
   loadFilterOptions,
   selectCategoryOptions,
@@ -31,13 +32,14 @@ import styles from './FavoritesPage.module.css'
 export default function FavoritesPage() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const authUser = useAppSelector(selectAuthUser)
+  const favoriteIds = useAppSelector(selectFavoriteIds)
   const users = useAppSelector(selectUsers)
   const usersStatus = useAppSelector(selectUsersStatus)
   const filter = useAppSelector(selectFilter)
   const filterStatus = useAppSelector(selectFilterStatus)
   const categories = useAppSelector(selectCategoryOptions)
   const cities = useAppSelector(selectCityOptions)
+  const { getLikeProps } = useFavorite()
   const [visibleCount, setVisibleCount] = useState(SECTION_LIMIT)
 
   useEffect(() => {
@@ -48,13 +50,14 @@ export default function FavoritesPage() {
     if (usersStatus === 'idle') dispatch(loadUsers())
   }, [dispatch, usersStatus])
 
-  // Порядок как в массиве favorites у пользователя
-  const favoriteUsers = useMemo(() => {
-    const ids = authUser?.favorites ?? []
-    return ids
-      .map((id) => users.find((user) => user.id === id))
-      .filter((user): user is UserProfile => Boolean(user))
-  }, [authUser, users])
+  // Порядок как в массиве favorites; снятый лайк сразу убирает карточку
+  const favoriteUsers = useMemo(
+    () =>
+      favoriteIds
+        .map((id) => users.find((user) => user.id === id))
+        .filter((user): user is UserProfile => Boolean(user)),
+    [favoriteIds, users],
+  )
 
   const filteredUsers = useMemo(() => filterUsers(favoriteUsers, filter), [favoriteUsers, filter])
   const visibleUsers = filteredUsers.slice(0, visibleCount)
@@ -90,7 +93,7 @@ export default function FavoritesPage() {
                     <SkillCard
                       key={user.id}
                       {...cardProps}
-                      user={{ ...cardProps.user, isLiked: true }}
+                      user={{ ...cardProps.user, ...getLikeProps(user.id) }}
                     />
                   )
                 })

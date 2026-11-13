@@ -6,6 +6,8 @@ import { clearAuthUser, getAuthUser, persistAuthUser, saveAuthUser } from './aut
 export const LOGIN_ERROR =
   'Email или пароль введён неверно. Пожалуйста проверьте правильность введённых данных'
 
+export const FAVORITE_AUTH_ERROR = 'Чтобы добавить в избранное, нужно войти'
+
 export type AuthStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export interface AuthState {
@@ -18,6 +20,8 @@ export interface LoginCredentials {
   email: string
   password: string
 }
+
+type StateWithAuth = { auth: AuthState }
 
 export type AuthUserUpdate = Partial<
   Pick<AuthUser, 'name' | 'email' | 'avatar' | 'birthDate' | 'gender' | 'city' | 'bio'>
@@ -71,6 +75,24 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   clearAuthUser()
 })
 
+/** Добавляет пользователя в избранное или убирает, если он уже там. Сохраняет в localStorage */
+export const toggleFavorite = createAsyncThunk<
+  number[],
+  number,
+  { state: StateWithAuth; rejectValue: string }
+>('auth/toggleFavorite', async (userId, { getState, rejectWithValue }) => {
+  const user = getState().auth.user
+  if (!user) return rejectWithValue(FAVORITE_AUTH_ERROR)
+
+  const current = user.favorites ?? []
+  const favorites = current.includes(userId)
+    ? current.filter((id) => id !== userId)
+    : [...current, userId]
+
+  saveAuthUser({ ...user, favorites })
+  return favorites
+})
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: (): AuthState => ({ user: getAuthUser(), status: 'idle', error: null }),
@@ -110,16 +132,21 @@ const authSlice = createSlice({
         state.status = 'idle'
         state.error = null
       })
+      .addCase(toggleFavorite.fulfilled, (state, action) => {
+        if (state.user) state.user.favorites = action.payload
+      })
   },
 })
 
 export const { clearAuthError } = authSlice.actions
 
-type StateWithAuth = { auth: AuthState }
+const EMPTY_FAVORITES: number[] = []
 
 export const selectAuthUser = (state: StateWithAuth) => state.auth.user
 export const selectIsAuth = (state: StateWithAuth) => state.auth.user !== null
 export const selectAuthStatus = (state: StateWithAuth) => state.auth.status
 export const selectAuthError = (state: StateWithAuth) => state.auth.error
+export const selectFavoriteIds = (state: StateWithAuth) =>
+  state.auth.user?.favorites ?? EMPTY_FAVORITES
 
 export default authSlice.reducer

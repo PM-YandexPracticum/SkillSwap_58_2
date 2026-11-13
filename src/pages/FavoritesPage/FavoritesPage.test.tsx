@@ -17,10 +17,17 @@ vi.mock('@/widgets/Sidebar', () => ({
 }))
 
 vi.mock('@/widgets/SkillCard', () => ({
-  SkillCard: ({ user }: { user: { name: string; isLiked?: boolean } }) => (
+  SkillCard: ({
+    user,
+  }: {
+    user: { name: string; isLiked?: boolean; onLikeChange?: (isLiked: boolean) => void }
+  }) => (
     <article>
       {user.name}
       {user.isLiked && ' (в избранном)'}
+      <button type="button" onClick={() => user.onLikeChange?.(!user.isLiked)}>
+        Лайк {user.name}
+      </button>
     </article>
   ),
 }))
@@ -79,6 +86,7 @@ function renderPage(favorites?: number[]) {
 
 describe('FavoritesPage', () => {
   beforeEach(() => {
+    localStorage.clear()
     vi.stubGlobal(
       'IntersectionObserver',
       vi.fn(() => ({ observe: vi.fn(), disconnect: vi.fn(), unobserve: vi.fn() })),
@@ -112,5 +120,14 @@ describe('FavoritesPage', () => {
     renderPage(undefined)
 
     expect(screen.getByRole('button', { name: 'Вернуться в каталог' })).toBeInTheDocument()
+  })
+
+  it('снятый лайк сразу убирает карточку из избранного', async () => {
+    renderPage([2, 5])
+
+    await userEvent.click(screen.getByRole('button', { name: 'Лайк Пользователь 2' }))
+
+    expect(screen.queryByText(/Пользователь 2/)).not.toBeInTheDocument()
+    expect(screen.getByText('Пользователь 5 (в избранном)')).toBeInTheDocument()
   })
 })
