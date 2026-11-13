@@ -113,7 +113,9 @@ export const DatePickerComponent = ({value = '', onChange,}: DatePickerProps) =>
                     return
                   } else {
                     setMonth(selectedDate)
-                    setInputValue(format(selectedDate, 'dd.MM.yyyy'))
+                    const formattedDate = format(selectedDate, 'dd.MM.yyyy')
+                    setInputValue(formattedDate)
+                    onChange?.(formattedDate)
                   }
                 }}
                 className={styles.applyButton}

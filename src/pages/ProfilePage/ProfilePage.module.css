@@ -1,7 +1,10 @@
 .container {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 24px;
   width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
   padding: 32px 36px 60px;
 }
 
@@ -63,6 +66,10 @@
   background-color: #DEEBC5;
 }
 
+.sidebar .active {
+  background-color: #DEEBC5;
+}
+
 .userInfo {
   display: flex;
   gap: 196px;
@@ -105,4 +112,10 @@
 
 .form .selector ul {
   background-color: #fff;
+}
+
+.error {
+  margin: 0;
+  color: #BF3920;
+  font-size: 14px;
 }

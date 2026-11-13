@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { fetchUserProfiles } from '../../../api/users'
 import type { AuthUser, UserProfile } from '../../../shared/types'
-import { clearAuthUser, getAuthUser, saveAuthUser } from './authUtils'
+import { clearAuthUser, getAuthUser, persistAuthUser, saveAuthUser } from './authUtils'
 
 export const LOGIN_ERROR =
   'Email или пароль введён неверно. Пожалуйста проверьте правильность введённых данных'
@@ -19,7 +19,17 @@ export interface LoginCredentials {
   password: string
 }
 
+export type AuthUserUpdate = Partial<
+  Pick<AuthUser, 'name' | 'email' | 'avatar' | 'birthDate' | 'gender' | 'city' | 'bio'>
+>
+
 type UserWithCredentials = UserProfile & { login: string; password: string }
+
+const normalizeGender = (gender: string): NonNullable<AuthUser['gender']> => {
+  if (gender === 'Мужской' || gender === 'male') return 'male'
+  if (gender === 'Женский' || gender === 'female') return 'female'
+  return 'not_specified'
+}
 
 export const login = createAsyncThunk<AuthUser, LoginCredentials, { rejectValue: string }>(
   'auth/login',
@@ -37,9 +47,24 @@ export const login = createAsyncThunk<AuthUser, LoginCredentials, { rejectValue:
       name: found.name,
       email: found.login,
       avatar: `/db/${found.avatar}`,
+      birthDate: found.birth_date,
+      gender: normalizeGender(found.gender),
+      city: found.city,
+      bio: found.bio,
     })
   },
 )
+
+export const updateAuthUser = createAsyncThunk<
+  AuthUser,
+  AuthUserUpdate,
+  { rejectValue: string }
+>('auth/updateUser', async (updates, { getState, rejectWithValue }) => {
+  const currentUser = (getState() as { auth: AuthState }).auth.user
+  if (!currentUser) return rejectWithValue('Пользователь не авторизован')
+
+  return persistAuthUser({ ...currentUser, ...updates })
+})
 
 export const logout = createAsyncThunk('auth/logout', async () => {
   clearAuthUser()
@@ -66,6 +91,18 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.payload ?? LOGIN_ERROR
+      })
+      .addCase(updateAuthUser.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(updateAuthUser.fulfilled, (state, action) => {
+        state.status = 'succeeded'
+        state.user = action.payload
+      })
+      .addCase(updateAuthUser.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.payload ?? action.error.message ?? 'Не удалось сохранить профиль'
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null

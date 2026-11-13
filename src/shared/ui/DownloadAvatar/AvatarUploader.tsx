@@ -9,6 +9,7 @@ interface AvatarUploaderProps {
   inputComponent: ReactNode
   buttonIcon: ReactNode
   onRemove?: () => void
+  onChange?: (url: string) => void
   className?: string
 }
 
@@ -17,10 +18,11 @@ export const AvatarUploader = ({
   inputComponent,
   buttonIcon,
   onRemove,
+  onChange,
   className=''
 }: AvatarUploaderProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [avatar, setAvatar] = useState<string | undefined>('')
+  const [avatar, setAvatar] = useState<string | undefined>(url)
 
   return (
     <div className={`${styles.wrap} ${className}`}>
@@ -28,6 +30,7 @@ export const AvatarUploader = ({
       <button
         className={styles.addButton}
         type="button"
+        aria-label="Изменить аватар"
         onClick={() => {
           if (!isOpen) setIsOpen(true)
           else setIsOpen(false)
@@ -42,6 +45,7 @@ export const AvatarUploader = ({
             onClick={() => {
               setIsOpen(false)
               setAvatar(url)
+              if (url) onChange?.(url)
               onRemove?.()
             }}
             disabled={url ? false : true}
