@@ -9,6 +9,7 @@ import { ROUTES } from '@/shared/lib/constants'
 import styles from './MainLayout.module.css'
 
 const links = {
+  about: ROUTES.ABOUT,
   skills: 'skills',
 }
 
