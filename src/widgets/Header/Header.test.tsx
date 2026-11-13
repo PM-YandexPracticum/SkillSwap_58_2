@@ -3,6 +3,9 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useState } from 'react'
 import { Header } from './Header'
+import { Provider } from 'react-redux'
+import { configureStore } from '@reduxjs/toolkit'
+import skillCategoriesReducer from '@/entities/skills/model/skillCategoriesSlice'
 
 // В конфиге Vitest нет плагина svgr, поэтому SVG-иконки (?react) заменяем заглушками
 vi.mock('@/shared/assets/icons/Notification.svg?react', () => ({ default: () => null }))
@@ -13,9 +16,21 @@ vi.mock('@/shared/assets/icons/Moon.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Logo.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Search.svg?react', () => ({ default: () => null }))
 
+const createTestStore = () =>
+  configureStore({
+    reducer: {
+      skillCategories: skillCategoriesReducer,
+    },
+  })
+
+const renderWithStore = (ui: React.ReactElement) => {
+  const store = createTestStore()
+  return render(<Provider store={store}>{ui}</Provider>)
+}
+
 describe('Header', () => {
   it('показывает логотип, меню, кнопки и переключатель темы', () => {
-    render(<Header />)
+    renderWithStore(<Header />)
     expect(screen.getByText('SkillSwap')).toBeInTheDocument()
     expect(screen.getByText('О проекте')).toBeInTheDocument()
     expect(screen.getByText('Все навыки')).toBeInTheDocument()
@@ -28,7 +43,7 @@ describe('Header', () => {
   it('вызывает onLoginClick и onRegisterClick', async () => {
     const onLoginClick = vi.fn()
     const onRegisterClick = vi.fn()
-    render(<Header onLoginClick={onLoginClick} onRegisterClick={onRegisterClick} />)
+    renderWithStore(<Header onLoginClick={onLoginClick} onRegisterClick={onRegisterClick} />)
 
     await userEvent.click(screen.getByRole('button', { name: 'Войти' }))
     await userEvent.click(screen.getByRole('button', { name: 'Зарегистрироваться' }))
@@ -39,7 +54,7 @@ describe('Header', () => {
 
   it('отправляет поисковый запрос без лишних пробелов', async () => {
     const onSearch = vi.fn()
-    render(<Header onSearch={onSearch} />)
+    renderWithStore(<Header onSearch={onSearch} />)
 
     await userEvent.type(screen.getByPlaceholderText('Искать навык'), '  Английский  {enter}')
 
@@ -61,7 +76,7 @@ describe('Header', () => {
       )
     }
 
-    render(<ControlledHeader />)
+    renderWithStore(<ControlledHeader />)
 
     const input = screen.getByPlaceholderText('Искать навык')
     expect(input).toHaveValue('Английский')
@@ -73,7 +88,7 @@ describe('Header', () => {
   })
 
   it('для авторизованного пользователя показывает имя вместо кнопок входа', () => {
-    render(<Header user={{ name: 'Мария' }} />)
+    renderWithStore(<Header user={{ name: 'Мария' }} />)
     expect(screen.getByText('Мария')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Уведомления' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Избранное' })).toBeInTheDocument()
@@ -83,7 +98,7 @@ describe('Header', () => {
   it('по клику на пользователя открывает меню с личным кабинетом и выходом', async () => {
     const onProfileClick = vi.fn()
     const onLogoutClick = vi.fn()
-    render(
+    renderWithStore(
       <Header
         user={{ name: 'Мария' }}
         onProfileClick={onProfileClick}

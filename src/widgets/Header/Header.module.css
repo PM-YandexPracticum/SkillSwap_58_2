@@ -129,3 +129,14 @@
   inline-size: 24px;
   block-size: 24px;
 }
+
+.skillsWrapper {
+  position: relative;
+}
+
+.navLink {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+}

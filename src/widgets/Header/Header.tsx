@@ -3,6 +3,7 @@ import { Button } from '@/shared/ui/Button'
 import { Logotype } from '@/shared/ui/Logo/Logotype'
 import { Avatar } from '@/shared/ui/Avatar'
 import { SearchInput } from '@/shared/ui/Input/SearchInput/SearchInput'
+import { SkillsModal } from '@/shared/ui/SkillsModal/SkillsModal'
 import ChevronDownIcon from '@/shared/assets/icons/ChevronDown.svg?react'
 import MoonIcon from '@/shared/assets/icons/Moon.svg?react'
 import NotificationIcon from '@/shared/assets/icons/Notification.svg?react'
@@ -53,6 +54,9 @@ export function Header({
   const userRef = useRef<HTMLDivElement>(null)
   const currentQuery = searchValue ?? query
   const classNames = [styles.header, className].filter(Boolean).join(' ')
+
+  const [isSkillsOpen, setIsSkillsOpen] = useState(false)
+  const skillsButtonRef = useRef<HTMLButtonElement>(null)
 
   const handleQueryChange = (value: string) => {
     setQuery(value)
@@ -116,10 +120,18 @@ export function Header({
 
       <nav className={styles.menu} aria-label="Основное меню">
         <span>О проекте</span>
-        <span className={styles.dropdown}>
-          Все навыки
-          <ChevronDownIcon aria-hidden="true" />
-        </span>
+        <div className={styles.skillsWrapper}>
+          <button
+            ref={skillsButtonRef}
+            type="button"
+            className={styles.navLink}
+            onClick={() => setIsSkillsOpen((prev) => !prev)}
+            aria-expanded={isSkillsOpen}
+          >
+            Все навыки
+            <ChevronDownIcon aria-hidden="true" />
+          </button>
+        </div>
       </nav>
 
       <SearchInput
@@ -184,6 +196,12 @@ export function Header({
           </div>
         </>
       )}
+
+      <SkillsModal
+        isOpen={isSkillsOpen}
+        onClose={() => setIsSkillsOpen(false)}
+        anchorRef={skillsButtonRef}
+      />
     </header>
   )
 }
