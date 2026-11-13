@@ -7,6 +7,8 @@ import { loadFilterOptions } from '@/features/catalog-filter/model/filterSlice'
 import filterReducer from '@/features/catalog-filter/model/filterSlice'
 import { loadUsers } from '@/entities/user/model/usersSlice'
 import usersReducer from '@/entities/user/model/usersSlice'
+import authReducer from '@/features/auth/model/authSlice'
+import { MemoryRouter } from 'react-router-dom'
 import type { UserProfile } from '@/shared/types'
 import CatalogPage from './index'
 
@@ -20,7 +22,10 @@ vi.mock('@/shared/assets/icons/Like.svg?react', () => ({ default: () => null }))
 const categories = [
   { id: 0, category: 'Языки', icon: '', subcategories: ['Английский'], color: '#fff' },
 ]
-const cities = [{ id: '1', name: 'Москва' }, { id: '2', name: 'Казань' }]
+const cities = [
+  { id: '1', name: 'Москва' },
+  { id: '2', name: 'Казань' },
+]
 
 const users: UserProfile[] = [
   {
@@ -73,13 +78,15 @@ function renderCatalog() {
     loadUsers.fulfilled({ items: users, recommendedOrder: [1, 2] }, 'users-request', undefined),
   )
   const store = configureStore({
-    reducer: { filter: filterReducer, users: usersReducer },
+    reducer: { filter: filterReducer, users: usersReducer, auth: authReducer },
     preloadedState: { filter, users: usersState },
   })
 
   render(
     <Provider store={store}>
-      <CatalogPage />
+      <MemoryRouter>
+        <CatalogPage />
+      </MemoryRouter>
     </Provider>,
   )
 }
@@ -92,9 +99,7 @@ describe('CatalogPage filtering', () => {
     expect(screen.getByRole('heading', { name: 'Популярное' })).toBeInTheDocument()
     await user.click(screen.getByLabelText('Казань'))
 
-    expect(
-      screen.getByRole('heading', { name: 'Подходящие предложения: 1' }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Подходящие предложения: 1' })).toBeInTheDocument()
     expect(screen.getByLabelText('Удалить фильтр Казань')).toBeInTheDocument()
 
     await user.click(screen.getByLabelText('Удалить фильтр Казань'))

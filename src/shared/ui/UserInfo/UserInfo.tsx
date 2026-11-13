@@ -11,6 +11,7 @@ export interface UserInfoProps {
     likes?: number;
     isLiked?: boolean;
     showLikes?: boolean;
+    onLikeChange?: (isLiked: boolean) => void;
 }
 
 const pluralizeYears = (age: number): string => {
@@ -47,7 +48,8 @@ export const UserInfo: React.FC<UserInfoProps> = ({
     birth_date = '2000-01-01',
     likes = 0,
     isLiked = false,
-    showLikes = true
+    showLikes = true,
+    onLikeChange
 }) => {
     return (
       <div className={styles.userinfo}>
@@ -56,7 +58,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({
           <span className={styles.name}>{name}</span>
           <span>{city}, {useAge(birth_date)}</span>
         </div>
-        {showLikes && <LikeComponent counter={likes} isLiked={isLiked}/>}
+        {showLikes && <LikeComponent counter={likes} isLiked={isLiked} onChange={(_, liked) => onLikeChange?.(liked)}/>}
       </div>
     )
 }

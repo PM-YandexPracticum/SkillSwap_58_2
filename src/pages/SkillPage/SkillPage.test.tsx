@@ -9,6 +9,7 @@ import filterReducer, {
   initialState as filterInitialState,
 } from '@/features/catalog-filter/model/filterSlice'
 import usersReducer, { initialState as usersInitialState } from '@/entities/user/model/usersSlice'
+import authReducer from '@/features/auth/model/authSlice'
 import type { UserProfile } from '@/shared/types'
 import SkillPage from './index'
 
@@ -61,7 +62,7 @@ const users = [
 
 const renderPage = (path: string, usersStatus: 'succeeded' | 'failed' | 'idle' = 'succeeded') => {
   const store = configureStore({
-    reducer: { filter: filterReducer, users: usersReducer },
+    reducer: { filter: filterReducer, users: usersReducer, auth: authReducer },
     preloadedState: {
       filter: { ...filterInitialState, status: 'succeeded' as const },
       users: {
