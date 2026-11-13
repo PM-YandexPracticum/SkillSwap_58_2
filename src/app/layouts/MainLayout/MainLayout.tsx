@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Header } from '@/widgets/Header'
 import { Footer } from '@/widgets/Footer'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
@@ -14,6 +14,7 @@ const links = {
 
 export function MainLayout() {
   const navigate = useNavigate()
+  const location = useLocation()
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectAuthUser)
   const searchQuery = useAppSelector((state) => selectFilter(state).searchQuery)
@@ -33,6 +34,7 @@ export function MainLayout() {
         onLoginClick={() => navigate(ROUTES.LOGIN)}
         onRegisterClick={() => navigate(ROUTES.REGISTER)}
         onFavoritesClick={() => navigate(ROUTES.FAVORITES)}
+        isFavoritesActive={location.pathname === ROUTES.FAVORITES}
         onProfileClick={() => navigate(ROUTES.PROFILE)}
         onLogoutClick={handleLogout}
       />

@@ -51,6 +51,7 @@ export const login = createAsyncThunk<AuthUser, LoginCredentials, { rejectValue:
       gender: normalizeGender(found.gender),
       city: found.city,
       bio: found.bio,
+      favorites: found.favorites ?? [],
     })
   },
 )
