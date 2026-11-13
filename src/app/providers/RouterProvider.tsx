@@ -22,12 +22,12 @@ export function AppRouter() {
         <Routes>
           <Route element={<MainLayout />}>
             <Route path={ROUTES.HOME} element={<CatalogPage />} />
-            <Route path={ROUTES.FAVORITES} element={<FavoritesPage />} />
             <Route path={ROUTES.SKILLS} element={<SkillsPage />} />
 
             <Route element={<PrivateRoute />}>
               <Route path={ROUTES.SKILL} element={<SkillPage />} />
               <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+              <Route path={ROUTES.FAVORITES} element={<FavoritesPage />} />
               <Route path={ROUTES.CREATE} element={<CreateSkillPage />} />
             </Route>
 

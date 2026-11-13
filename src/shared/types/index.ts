@@ -41,6 +41,7 @@ export interface AuthUser {
   name: string
   email: string
   avatar?: string
+  favorites?: number[]
   token: string
 }
 
@@ -96,4 +97,6 @@ export interface UserProfile {
   bio: string
   can_teach: TeachSkill
   want_to_learn: string[]
+    /** id пользователей, которых лайкнул этот пользователь */
+  favorites?: number[]
 }

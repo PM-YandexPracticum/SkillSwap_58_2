@@ -51,6 +51,15 @@
   border-radius: 4px;
 }
 
+/* Страница избранного открыта — сердечко зелёное, как в макете */
+.iconButtonActive {
+  color: #abd27a;
+}
+
+.iconButtonActive path {
+  fill: currentcolor;
+}
+
 .buttons {
   display: flex;
   flex-shrink: 0;

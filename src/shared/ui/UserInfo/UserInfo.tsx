@@ -9,6 +9,7 @@ export interface UserInfoProps {
     city?: string;
     birth_date?: string;
     likes?: number;
+    isLiked?: boolean;
     showLikes?: boolean;
 }
 
@@ -45,6 +46,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({
     city = "",
     birth_date = '2000-01-01',
     likes = 0,
+    isLiked = false,
     showLikes = true
 }) => {
     return (
@@ -54,7 +56,7 @@ export const UserInfo: React.FC<UserInfoProps> = ({
           <span className={styles.name}>{name}</span>
           <span>{city}, {useAge(birth_date)}</span>
         </div>
-        {showLikes && <LikeComponent counter={likes}/>}
+        {showLikes && <LikeComponent counter={likes} isLiked={isLiked}/>}
       </div>
     )
 }
