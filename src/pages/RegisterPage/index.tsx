@@ -30,6 +30,7 @@ export default function RegisterPage() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    navigate(ROUTES.REGISTER_STEP_2)
     // переход на шаг 2 добавим, когда будут готовы роуты шагов
   }
 

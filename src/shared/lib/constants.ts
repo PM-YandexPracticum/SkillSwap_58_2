@@ -6,6 +6,9 @@ export const ROUTES = {
   CREATE: '/create',
   LOGIN: '/login',
   REGISTER: '/register',
+  REGISTER_STEP_1: '/register/step1',
+  REGISTER_STEP_2: '/register/step2',
+  REGISTER_STEP_3: '/register/step3',
   SKILLS: '/skills',
   SERVER_ERROR: '/500',
 } as const
