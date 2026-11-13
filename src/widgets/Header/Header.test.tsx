@@ -6,6 +6,7 @@ import { Header } from './Header'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import skillCategoriesReducer from '@/entities/skills/model/skillCategoriesSlice'
+import { MemoryRouter } from 'react-router-dom'
 
 // В конфиге Vitest нет плагина svgr, поэтому SVG-иконки (?react) заменяем заглушками
 vi.mock('@/shared/assets/icons/Notification.svg?react', () => ({ default: () => null }))
@@ -25,7 +26,7 @@ const createTestStore = () =>
 
 const renderWithStore = (ui: React.ReactElement) => {
   const store = createTestStore()
-  return render(<Provider store={store}>{ui}</Provider>)
+  return render(<Provider store={store}><MemoryRouter>{ui}</MemoryRouter></Provider>)
 }
 
 describe('Header', () => {

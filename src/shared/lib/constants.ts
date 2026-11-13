@@ -11,6 +11,7 @@ export const ROUTES = {
   REGISTER_STEP_3: '/register/step3',
   SKILLS: '/skills',
   SERVER_ERROR: '/500',
+  ABOUT: '/about',
 } as const
 
 export const SKILL_CATEGORIES = [

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer, { LOGIN_ERROR, login, logout } from './authSlice'
+import authReducer, { LOGIN_ERROR, login, logout, updateAuthUser } from './authSlice'
 import { fetchUserProfiles } from '../../../api/users'
 import { LOCAL_STORAGE_KEYS } from '../../../shared/lib/constants'
 
@@ -13,6 +13,10 @@ const mockUsers = [
     avatar: 'images/avatars/a.jpg',
     login: 'alexey@example.com',
     password: 'secret123',
+    birth_date: '1988-03-14',
+    gender: 'Мужской',
+    city: 'Москва',
+    bio: 'Открыт к новым навыкам',
   },
 ]
 
@@ -31,8 +35,50 @@ describe('authSlice', () => {
     const { user, status } = store.getState().auth
     expect(status).toBe('succeeded')
     expect(user).toMatchObject({ id: '0', name: 'Алексей', avatar: '/db/images/avatars/a.jpg' })
+    expect(user).toMatchObject({
+      birthDate: '1988-03-14',
+      gender: 'male',
+      city: 'Москва',
+      bio: 'Открыт к новым навыкам',
+    })
     expect(user?.token).toBeTruthy()
     expect(localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_USER)).not.toBeNull()
+  })
+
+  it('обновляет профиль в Redux и localStorage', async () => {
+    const store = createStore()
+    await store.dispatch(login({ email: 'alexey@example.com', password: 'secret123' }))
+
+    await store.dispatch(
+      updateAuthUser({
+        name: 'Алексей Петров',
+        email: 'alexey.petrov@example.com',
+        birthDate: '1988-03-15',
+        gender: 'not_specified',
+        city: 'Казань',
+        bio: 'Люблю учиться',
+        avatar: 'data:image/png;base64,abc',
+      }),
+    )
+
+    expect(store.getState().auth.user).toMatchObject({
+      name: 'Алексей Петров',
+      email: 'alexey.petrov@example.com',
+      birthDate: '1988-03-15',
+      gender: 'not_specified',
+      city: 'Казань',
+      bio: 'Люблю учиться',
+      avatar: 'data:image/png;base64,abc',
+    })
+    expect(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_USER) ?? '{}')).toMatchObject({
+      name: 'Алексей Петров',
+      email: 'alexey.petrov@example.com',
+      birthDate: '1988-03-15',
+      gender: 'not_specified',
+      city: 'Казань',
+      bio: 'Люблю учиться',
+      avatar: 'data:image/png;base64,abc',
+    })
   })
 
   it('игнорирует регистр и пробелы в email', async () => {

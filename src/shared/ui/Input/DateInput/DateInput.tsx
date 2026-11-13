@@ -34,7 +34,12 @@ export const DateInput = ({
         errorMessage={errorMessage}
         containerClassName={styles.formContainer}
         rightIcon={
-          <button type="button" className={styles.calendarButton} onClick={onClick}>
+          <button
+            type="button"
+            className={styles.calendarButton}
+            aria-label="Выбрать дату рождения"
+            onClick={onClick}
+          >
             <Calendar />
           </button>
         }

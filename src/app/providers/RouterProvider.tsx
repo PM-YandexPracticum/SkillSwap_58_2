@@ -15,6 +15,7 @@ const RegisterStep2Page = lazy(() => import('@/pages/RegisterStep2Page'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 const SkillsPage = lazy(() => import('@/pages/SkillsPage'))
 const ServerErrorPage = lazy(() => import('@/pages/ServerErrorPage'))
+const AboutPage = lazy(() => import('@/pages/AboutPage'))
 
 export function AppRouter() {
   return (
@@ -24,6 +25,7 @@ export function AppRouter() {
           <Route element={<MainLayout />}>
             <Route path={ROUTES.HOME} element={<CatalogPage />} />
             <Route path={ROUTES.SKILLS} element={<SkillsPage />} />
+            <Route path={ROUTES.ABOUT} element={<AboutPage />} />
 
             <Route element={<PrivateRoute />}>
               <Route path={ROUTES.SKILL} element={<SkillPage />} />

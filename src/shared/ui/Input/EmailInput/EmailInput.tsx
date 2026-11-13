@@ -2,7 +2,7 @@ import { Input } from '../Input'
 import type { InputProps } from '../../../types/index'
 import styles from './EmailInput.module.css'
 
-type EmailInputProps = Omit<InputProps, 'type' | 'leftIcon' | 'clear'>;
+type EmailInputProps = Omit<InputProps, 'type' | 'leftIcon'>;
 
 export const EmailInput = ({
   value,
@@ -13,6 +13,7 @@ export const EmailInput = ({
   errorMessage,
   helperText,
   className = '',
+  clear = true,
   rightIcon,
   disabled = false,
 }: EmailInputProps) => {
@@ -27,7 +28,7 @@ export const EmailInput = ({
         error={error}
         errorMessage={errorMessage}
         helperText={helperText}
-        clear={value.length > 0}
+        clear={clear && value.length > 0}
         containerClassName={styles.formContainer}
         rightIcon={rightIcon}
         disabled={disabled}

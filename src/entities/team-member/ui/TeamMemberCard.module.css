@@ -1,0 +1,73 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: var(--space-xl) var(--space-lg);
+  background-color: var(--color-surface, #fff);
+  border-radius: var(--radius-lg, 12px);
+  color: var(--color-text, #1f2a1f);
+  font-size: 16px;
+  line-height: 24px;
+  width: 100%; 
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg, 20px);
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs, 4px);
+}
+
+.name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.role {
+  margin: 0;
+}
+
+.about {
+  margin-top: var(--space-lg, 24px);
+}
+
+.label {
+  margin: 0;
+}
+
+.text {
+  margin: var(--space-sm, 12px) 0 0;
+}
+
+.contact {
+  margin-top: var(--space-lg, 24px);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: var(--space-xs, 4px);
+  color: inherit;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
