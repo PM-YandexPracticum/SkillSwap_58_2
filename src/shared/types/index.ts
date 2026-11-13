@@ -42,6 +42,10 @@ export interface AuthUser {
   email: string
   avatar?: string
   favorites?: number[]
+  birthDate?: string
+  gender?: 'not_specified' | 'male' | 'female'
+  city?: string
+  bio?: string
   token: string
 }
 

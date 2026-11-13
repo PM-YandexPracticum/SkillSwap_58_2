@@ -60,6 +60,7 @@ export const Input = ({
             onClick={handleClear}
             className={styles.clearButton}
             aria-label="Очистить поле"
+            disabled={disabled}
           >
             ×
           </button>
