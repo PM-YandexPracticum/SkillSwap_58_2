@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom'
+
 import { Logotype } from '@/shared/ui/Logo/Logotype'
 
 import styles from './Footer.module.css'
+
 
 export type FooterLinkId = 'about' | 'skills' | 'contacts' | 'blog' | 'privacy' | 'terms'
 
@@ -38,9 +41,9 @@ export function Footer({ links, className }: FooterProps) {
             {column.map(({ id, label }) => (
               <li key={id}>
                 {links?.[id] ? (
-                  <a className={styles.link} href={links[id]}>
+                  <Link className={styles.link} to={links[id]}>
                     {label}
-                  </a>
+                  </Link>
                 ) : (
                   <span>{label}</span>
                 )}

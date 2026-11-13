@@ -10,6 +10,8 @@ import NotificationIcon from '@/shared/assets/icons/Notification.svg?react'
 import LikeIcon from '@/shared/assets/icons/Like.svg?react'
 import LogoutIcon from '@/shared/assets/icons/Logout.svg?react'
 import styles from './Header.module.css'
+import { Link } from 'react-router-dom'
+import { ROUTES } from '@/shared/lib/constants'
 
 export interface HeaderUser {
   name: string
@@ -126,8 +128,8 @@ export function Header({
     <header className={classNames}>
       <Logotype />
 
-      <nav className={styles.menu} aria-label="Основное меню">
-        <span>О проекте</span>
+            <nav className={styles.menu} aria-label="Основное меню">
+        <Link to={ROUTES.ABOUT}>О проекте</Link>
         <div className={styles.skillsWrapper}>
           <button
             ref={skillsButtonRef}
