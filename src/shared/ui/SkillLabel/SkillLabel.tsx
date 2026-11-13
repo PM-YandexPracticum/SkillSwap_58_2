@@ -25,7 +25,7 @@ export const SkillLabel = ({
         className={`${styles.label} ${className}`}
         style={{backgroundColor: color}}
         >
-            {content}
+            <span>{content}</span>
         </span>
     )
 }
