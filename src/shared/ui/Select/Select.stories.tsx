@@ -3,13 +3,21 @@ import { useState } from 'react';
 import { Select } from './Select';
 
 const meta: Meta<typeof Select> = {
-  title: 'Components/Select',
+  title: 'Components/Forms/Select',
   component: Select,
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 208, padding: 24 }}>
-        <Story />
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <div style={{ maxWidth: 208, padding: 24 }}>
+          <Story />
+        </div>
       </div>
     ),
   ],

@@ -4,13 +4,26 @@ import { Button } from '../Button'
 import { Toast } from './Toast'
 
 const meta: Meta<typeof Toast> = {
-  title: 'Shared/Toast',
+  title: 'Components/Toast',
   component: Toast,
   args: { children: 'Вы предложили обмен', duration: 5000 },
   argTypes: {
     duration: { control: 'number' },
     actionLabel: { control: 'text' },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 export default meta

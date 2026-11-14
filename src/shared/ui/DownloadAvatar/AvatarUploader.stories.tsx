@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { ImageInput } from '../Input/ImageInput/ImageInput'
 
 const meta: Meta<typeof AvatarUploader> = {
-  title: 'Component/DownloadAvatar',
+  title: 'Components/DownloadAvatar',
   component: AvatarUploader,
   tags: ['autodocs'],
   args: {
@@ -15,8 +15,16 @@ const meta: Meta<typeof AvatarUploader> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ width: 244, height: 244, marginLeft: 90 }}>
-        <Story />
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <div style={{ width: 244, height: 244 }}>
+          <Story />
+        </div>
       </div>
     ),
   ],

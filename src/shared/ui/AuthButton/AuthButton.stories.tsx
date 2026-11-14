@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AuthButton } from './AuthButton'
 
 const meta: Meta<typeof AuthButton> = {
-  title: 'Shared/AuthButton',
+  title: 'Components/Buttons/AuthButton',
   component: AuthButton,
   args: { provider: 'google', children: 'Продолжить с Google' },
   argTypes: {
@@ -11,9 +11,17 @@ const meta: Meta<typeof AuthButton> = {
   },
   decorators: [
     (Story) => (
+      <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      minHeight: '100vh',
+      width: '100%'
+    }}>
       <div style={{ width: 436 }}>
         <Story />
       </div>
+    </div>
     ),
   ],
 }

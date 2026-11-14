@@ -3,10 +3,23 @@ import { Avatar } from './Avatar'
 import photo from './avatar-example.svg'
 
 const meta: Meta<typeof Avatar> = {
-  title: 'Shared/Avatar',
+  title: 'Components/Avatar',
   component: Avatar,
   args: { alt: 'Иван', src: photo },
   argTypes: { size: { control: { type: 'number', min: 24, max: 200 } } },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 export default meta

@@ -85,7 +85,7 @@ const mockData: TreeItem[] = [
 ]
 
 const meta: Meta<typeof CheckboxTree> = {
-  title: 'Shared/CheckboxTree',
+  title: 'Components/Forms/CheckboxTree',
   component: CheckboxTree,
   parameters: {
     layout: 'centered',

@@ -7,8 +7,16 @@ const meta: Meta<typeof ImageUploader> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 436, padding: 24 }}>
-        <Story />
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <div style={{ maxWidth: 436, padding: 24 }}>
+          <Story />
+        </div>
       </div>
     ),
   ],

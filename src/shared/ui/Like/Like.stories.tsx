@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { LikeComponent } from './Like'
 
 const meta: Meta<typeof LikeComponent> = {
-  title: 'Component/Like',
+  title: 'Components/Like',
   component: LikeComponent,
   tags: ['autodocs'],
   argTypes: {
@@ -13,7 +13,20 @@ const meta: Meta<typeof LikeComponent> = {
   args: {
     counter: 0,
     isLiked: false,
-  }
+  },
+   decorators: [
+    (Story) => (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 export default meta

@@ -95,7 +95,7 @@ const mockSkills = [
 
 
 const meta: Meta<typeof SkillsGrid> = {
-  title: 'Component/SkillsGrid',
+  title: 'Components/SkillsGrid',
   component: SkillsGrid,
   tags: ['autodocs'],
   args: {
@@ -103,8 +103,16 @@ const meta: Meta<typeof SkillsGrid> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ width: 1136 }}>
-        <Story />
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <div style={{ width: 1136 }}>
+          <Story />
+        </div>
       </div>
     ),
   ],

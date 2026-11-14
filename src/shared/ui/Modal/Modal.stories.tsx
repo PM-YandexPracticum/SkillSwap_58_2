@@ -4,7 +4,7 @@ import { Button } from '@/shared/ui/Button'
 import { Modal } from './Modal'
 
 const meta: Meta<typeof Modal> = {
-  title: 'Shared/Modal',
+  title: 'Components/Modal',
   component: Modal,
   parameters: { layout: 'centered' },
 }

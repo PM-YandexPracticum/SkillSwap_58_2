@@ -3,12 +3,25 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FilterLabel } from './FilterLabel';
 
 const meta: Meta<typeof FilterLabel> = {
-  title: 'Shared/FilterLabel',
+  title: 'Components/FilterLabel',
   component: FilterLabel,
   args: { text: 'Хочу научиться' },
   argTypes: {
     onRemove: { action: 'removed' },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;

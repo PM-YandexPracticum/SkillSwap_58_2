@@ -13,7 +13,7 @@ const mockOptions: Option[] = [
 ]
 
 const meta: Meta<typeof MultiSelect> = {
-  title: 'Shared/MultiSelect',
+  title: 'Components/Forms/MultiSelect',
   component: MultiSelect,
   parameters: {
     layout: 'centered',

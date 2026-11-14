@@ -14,7 +14,7 @@ const LeafIcon = () => (
 )
 
 const meta: Meta<typeof CategoryList> = {
-  title: 'Shared/CategoryList',
+  title: 'Components/CategoryList',
   component: CategoryList,
   args: {
     icon: <LeafIcon />,
@@ -30,6 +30,19 @@ const meta: Meta<typeof CategoryList> = {
       'Баланс жизни и работы',
     ],
   },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 export default meta
