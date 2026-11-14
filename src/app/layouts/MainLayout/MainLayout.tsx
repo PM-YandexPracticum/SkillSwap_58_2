@@ -5,6 +5,11 @@ import { Footer } from '@/widgets/Footer'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { logout, selectAuthUser } from '@/features/auth/model/authSlice'
 import { setSearchQuery, selectFilter } from '@/features/catalog-filter/model/filterSlice'
+import {
+  clearNotifications,
+  readAllNotifications,
+  selectNotifications,
+} from '@/features/exchange/model/exchangeSlice'
 import { ROUTES } from '@/shared/lib/constants'
 import styles from './MainLayout.module.css'
 
@@ -18,6 +23,7 @@ export function MainLayout() {
   const location = useLocation()
   const dispatch = useAppDispatch()
   const user = useAppSelector(selectAuthUser)
+  const notifications = useAppSelector(selectNotifications)
   const searchQuery = useAppSelector((state) => selectFilter(state).searchQuery)
 
   const handleLogout = async () => {
@@ -34,6 +40,9 @@ export function MainLayout() {
         onSearch={(query) => dispatch(setSearchQuery(query))}
         onLoginClick={() => navigate(ROUTES.LOGIN)}
         onRegisterClick={() => navigate(ROUTES.REGISTER)}
+        notifications={notifications}
+        onReadAllNotifications={() => dispatch(readAllNotifications())}
+        onClearNotifications={() => dispatch(clearNotifications())}
         onFavoritesClick={() => navigate(ROUTES.FAVORITES)}
         isFavoritesActive={location.pathname === ROUTES.FAVORITES}
         onProfileClick={() => navigate(ROUTES.PROFILE)}
