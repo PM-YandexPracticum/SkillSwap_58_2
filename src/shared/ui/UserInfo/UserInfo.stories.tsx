@@ -9,7 +9,7 @@ const mockUsers = [
 ]
 
 const meta: Meta<typeof UserInfo> = {
-  title: 'Component/UserInfo',
+  title: 'Components/UserInfo',
   component: UserInfo,
   tags: ['autodocs'],
   argTypes: {
@@ -28,8 +28,16 @@ const meta: Meta<typeof UserInfo> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ width: 284 }}>
-        <Story />
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <div style={{ width: 284 }}>
+          <Story />
+        </div>
       </div>
     ),
   ],
