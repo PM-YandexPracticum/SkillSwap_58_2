@@ -33,8 +33,8 @@ export const submitStep1 = createAsyncThunk<
   { email: string; password: string },
   { state: ThunkState; rejectValue: string }
 >('registration/submitStep1', async ({ email, password }, { getState, rejectWithValue }) => {
-    let mockUsers: Array<UserProfile & { login?: string }>
-    try {
+  let mockUsers: Array<UserProfile & { login?: string }>
+  try {
     mockUsers = (await fetchUserProfiles()) as Array<UserProfile & { login?: string }>
   } catch {
     return rejectWithValue(EMAIL_CHECK_ERROR)

@@ -49,7 +49,9 @@ export function AppRouter() {
             <Route element={<RegistrationGuard requiredStep={1} />}>
             <Route path={ROUTES.REGISTER_STEP_2} element={<RegisterStep2Page />} />
           </Route>
-          <Route path={ROUTES.REGISTER_STEP_3} element={<RegisterStep3Page />} />
+            <Route element={<RegistrationGuard requiredStep={2} />}>
+            <Route path={ROUTES.REGISTER_STEP_3} element={<RegisterStep3Page />} />
+          </Route>
         </Routes>
       </Suspense>
     </BrowserRouter>
