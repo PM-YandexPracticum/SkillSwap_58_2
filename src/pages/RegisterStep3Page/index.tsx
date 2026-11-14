@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/lib/constants'
 import { Logotype } from '@/shared/ui/Logo/Logotype'
@@ -18,6 +18,9 @@ import {
   selectFilterStatus,
 } from '@/features/catalog-filter/model/filterSlice'
 import {
+  completeRegistration,
+  resetRegistration,
+  SAVE_ERROR,
   saveRegistrationStep,
   selectRegistrationDraft,
 } from '@/features/registration/model/registrationSlice'
@@ -48,6 +51,17 @@ export default function RegisterStep3Page() {
   const [images, setImages] = useState<string[]>(draft.skillImages)
   const [imageError, setImageError] = useState<string | null>(null)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
+  const isDoneRef = useRef(false)
+
+  // Черновик сбрасываем, когда уже ушли со страницы, — иначе защита шагов
+  // успеет перекинуть на шаг 1 раньше, чем откроется каталог
+  useEffect(
+    () => () => {
+      if (isDoneRef.current) dispatch(resetRegistration())
+    },
+    [dispatch],
+  )
 
   useEffect(() => {
     if (filterStatus === 'idle') dispatch(loadFilterOptions())
@@ -124,9 +138,16 @@ export default function RegisterStep3Page() {
     setIsModalOpen(true)
   }
 
-  const handleDone = () => {
-    // сохранение пользователя подключим на следующем этапе
-    navigate(ROUTES.HOME)
+  // «Готово»: сохраняем пользователя, входим и идём в каталог
+  const handleDone = async () => {
+    setSaveError(null)
+    const result = await dispatch(completeRegistration())
+    if (completeRegistration.fulfilled.match(result)) {
+      isDoneRef.current = true
+      navigate(ROUTES.HOME, { replace: true })
+    } else {
+      setSaveError(result.payload ?? SAVE_ERROR)
+    }
   }
 
   return (
@@ -275,6 +296,11 @@ export default function RegisterStep3Page() {
                   Готово
                 </Button>
               </div>
+              {saveError && (
+                <p className={styles.imageError} role="alert">
+                  {saveError}
+                </p>
+              )}
             </div>
             <Gallery
               images={images.map((src, index) => ({

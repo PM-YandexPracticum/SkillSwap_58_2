@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
 import { fetchUserProfiles } from '../../../api/users'
 import type { UserProfile } from '../../../shared/types'
+import { getRegisteredUsers, toProfile } from './registeredUsers'
 
 export const SECTION_LIMIT = 9
 export const RECOMMENDED_STEP = 6
@@ -31,7 +33,8 @@ const shuffle = <T>(array: T[]): T[] => {
 }
 
 export const loadUsers = createAsyncThunk('users/load', async () => {
-  const items = await fetchUserProfiles()
+  // моки из users.json + зарегистрированные пользователи из localStorage
+  const items = [...(await fetchUserProfiles()), ...getRegisteredUsers().map(toProfile)]
   return { items, recommendedOrder: shuffle(items.map((user) => user.id)) }
 })
 
@@ -44,6 +47,14 @@ const usersSlice = createSlice({
         state.recommendedCount + RECOMMENDED_STEP,
         state.recommendedOrder.length,
       )
+    },
+    /** Новый пользователь после регистрации — сразу появляется в каталоге */
+    addUser(state, action: PayloadAction<UserProfile>) {
+      // если список ещё не загружен, пользователь подтянется из localStorage при загрузке
+      if (state.status !== 'succeeded') return
+      if (state.items.some((user) => user.id === action.payload.id)) return
+      state.items.push(action.payload)
+      state.recommendedOrder.unshift(action.payload.id)
     },
   },
   extraReducers: (builder) => {
@@ -63,7 +74,7 @@ const usersSlice = createSlice({
   },
 })
 
-export const { showMoreRecommended } = usersSlice.actions
+export const { showMoreRecommended, addUser } = usersSlice.actions
 
 type StateWithUsers = { users: UsersState }
 

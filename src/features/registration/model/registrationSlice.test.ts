@@ -1,21 +1,61 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { configureStore } from '@reduxjs/toolkit'
 import registrationReducer, {
+  completeRegistration,
   EMAIL_TAKEN_ERROR,
   resetRegistration,
   saveRegistrationStep,
   submitStep1,
 } from './registrationSlice'
-import { saveRegisteredUsers, type RegisteredUser } from './registrationStorage'
-import { SESSION_STORAGE_KEYS } from '@/shared/lib/constants'
+import { EMPTY_DRAFT } from './registrationStorage'
+import {
+  getRegisteredUsers,
+  saveRegisteredUsers,
+  type RegisteredUser,
+} from '@/entities/user/model/registeredUsers'
+import usersReducer, { initialState as usersInitialState } from '@/entities/user/model/usersSlice'
+import authReducer, { login } from '@/features/auth/model/authSlice'
+import { LOCAL_STORAGE_KEYS, SESSION_STORAGE_KEYS } from '@/shared/lib/constants'
+import { toIsoDate } from '../lib/dates'
 
 vi.mock('@/api/users', () => ({
-  fetchUserProfiles: vi.fn(async () => [{ id: 0, login: 'alexey.1988@example.com' }]),
+  fetchUserProfiles: vi.fn(async () => [{ id: 30, login: 'alexey.1988@example.com' }]),
 }))
 
 const makeStore = () => configureStore({ reducer: { registration: registrationReducer } })
 const savedDraft = () =>
   JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEYS.REGISTRATION_DRAFT) ?? 'null')
+
+const fullDraft = {
+  ...EMPTY_DRAFT,
+  email: 'new@example.com',
+  password: '12345678',
+  name: 'Мирас',
+  birthDate: '15.02.2000',
+  gender: 'male',
+  city: 'Москва',
+  learnCategories: ['Иностранные языки'],
+  learnSubcategories: ['Английский'],
+  skillName: 'Гитара',
+  skillCategory: 'Творчество и искусство',
+  skillSubcategory: 'Музыка и звук',
+  skillDescription: 'Научу играть',
+  skillImages: ['data:image/png;base64,AAA'],
+}
+
+const makeFullStore = () =>
+  configureStore({
+    reducer: { registration: registrationReducer, users: usersReducer, auth: authReducer },
+    preloadedState: {
+      registration: {
+        draft: fullDraft,
+        completedStep: 2 as const,
+        status: 'idle' as const,
+        error: null,
+      },
+      users: { ...usersInitialState, status: 'succeeded' as const },
+    },
+  })
 
 describe('registrationSlice', () => {
   beforeEach(() => {
@@ -80,5 +120,40 @@ describe('registrationSlice', () => {
 
     expect(store.getState().registration.completedStep).toBe(0)
     expect(savedDraft()).toBeNull()
+  })
+
+  it('«Готово» сохраняет пользователя в формате users.json, входит и добавляет в каталог', async () => {
+    const store = makeFullStore()
+
+    await store.dispatch(completeRegistration())
+
+    const [saved] = getRegisteredUsers()
+    expect(saved).toMatchObject({
+      id: 31,
+      name: 'Мирас',
+      birth_date: '2000-02-15',
+      gender: 'Мужской',
+      login: 'new@example.com',
+      want_to_learn: ['Английский'],
+      can_teach: { name: 'Гитара', subcategory: 'Музыка и звук' },
+    })
+    expect(store.getState().auth.user?.name).toBe('Мирас')
+    expect(localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_USER)).toContain('new@example.com')
+    expect(store.getState().users.items.map((user) => user.id)).toContain(31)
+  })
+
+  it('под зарегистрированным пользователем можно войти', async () => {
+    await makeFullStore().dispatch(completeRegistration())
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_USER)
+    const store = configureStore({ reducer: { auth: authReducer } })
+
+    await store.dispatch(login({ email: 'new@example.com', password: '12345678' }))
+
+    expect(store.getState().auth.user?.name).toBe('Мирас')
+  })
+
+  it('переводит дату из дд.мм.гггг в гггг-мм-дд', () => {
+    expect(toIsoDate('15.02.2000')).toBe('2000-02-15')
+    expect(toIsoDate('2000-02-15')).toBe('2000-02-15')
   })
 })

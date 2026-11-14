@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { fetchUserProfiles } from '../../../api/users'
 import type { AuthUser, UserProfile } from '../../../shared/types'
+import { getRegisteredUsers } from '../../../entities/user/model/registeredUsers'
+import { resolveDbAsset } from '../../../shared/lib/assets'
+import { completeRegistration } from '../../registration/model/registrationSlice'
 import { clearAuthUser, getAuthUser, persistAuthUser, saveAuthUser } from './authUtils'
 
 export const LOGIN_ERROR =
@@ -38,7 +41,11 @@ const normalizeGender = (gender: string): NonNullable<AuthUser['gender']> => {
 export const login = createAsyncThunk<AuthUser, LoginCredentials, { rejectValue: string }>(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
-    const users = (await fetchUserProfiles()) as UserWithCredentials[]
+    // моки из users.json + пользователи, зарегистрированные в приложении
+    const users = [
+      ...((await fetchUserProfiles()) as UserWithCredentials[]),
+      ...getRegisteredUsers(),
+    ]
     const normalizedEmail = email.trim().toLowerCase()
     const found = users.find(
       (user) => user.login.toLowerCase() === normalizedEmail && user.password === password,
@@ -50,7 +57,7 @@ export const login = createAsyncThunk<AuthUser, LoginCredentials, { rejectValue:
       id: String(found.id),
       name: found.name,
       email: found.login,
-      avatar: `/db/${found.avatar}`,
+      avatar: resolveDbAsset(found.avatar),
       birthDate: found.birth_date,
       gender: normalizeGender(found.gender),
       city: found.city,
@@ -130,6 +137,12 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null
         state.status = 'idle'
+        state.error = null
+      })
+      // после «Готово» в регистрации пользователь сразу входит
+      .addCase(completeRegistration.fulfilled, (state, action) => {
+        state.user = action.payload.authUser
+        state.status = 'succeeded'
         state.error = null
       })
       .addCase(toggleFavorite.fulfilled, (state, action) => {

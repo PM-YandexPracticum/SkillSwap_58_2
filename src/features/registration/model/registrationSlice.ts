@@ -1,11 +1,20 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { fetchUserProfiles } from '@/api/users'
-import type { UserProfile } from '@/shared/types'
+import type { AuthUser, UserProfile } from '@/shared/types'
+import { saveAuthUser } from '@/features/auth/model/authUtils'
+import { addUser } from '@/entities/user/model/usersSlice'
+import {
+  getRegisteredUsers,
+  saveRegisteredUsers,
+  toProfile,
+  type RegisteredUser,
+} from '@/entities/user/model/registeredUsers'
+import { resolveDbAsset } from '@/shared/lib/assets'
+import { toIsoDate } from '../lib/dates'
 import {
   clearDraft,
   EMPTY_DRAFT,
   getDraft,
-  getRegisteredUsers,
   saveDraft,
   type CompletedStep,
   type RegistrationDraft,
@@ -14,6 +23,8 @@ import {
 
 export const EMAIL_TAKEN_ERROR = 'Email уже используется'
 export const EMAIL_CHECK_ERROR = 'Не удалось проверить email. Попробуйте ещё раз'
+export const SAVE_ERROR =
+  'Не удалось сохранить профиль. Попробуйте загрузить изображения меньшего размера'
 
 export interface RegistrationState extends StoredDraft {
   status: 'idle' | 'loading' | 'failed'
@@ -21,6 +32,8 @@ export interface RegistrationState extends StoredDraft {
 }
 
 type ThunkState = { registration: RegistrationState }
+
+const GENDER_LABELS: Record<string, string> = { male: 'Мужской', female: 'Женский' }
 
 const toStored = ({ draft, completedStep }: RegistrationState): StoredDraft => ({
   draft,
@@ -70,6 +83,70 @@ export const saveRegistrationStep = createAsyncThunk<
   return next
 })
 
+/** «Готово»: сохраняем пользователя, добавляем в каталог и сразу входим */
+export const completeRegistration = createAsyncThunk<
+  { profile: UserProfile; authUser: AuthUser },
+  void,
+  { state: ThunkState; rejectValue: string }
+>('registration/complete', async (_, { getState, dispatch, rejectWithValue }) => {
+  const { draft } = getState().registration
+
+  let mockUsers: UserProfile[] = []
+  try {
+    mockUsers = await fetchUserProfiles()
+  } catch {
+    // без моков id посчитаем только по зарегистрированным
+  }
+  const registered = getRegisteredUsers()
+  const id =
+    Math.max(0, ...mockUsers.map((user) => user.id), ...registered.map((user) => user.id)) + 1
+
+  const user: RegisteredUser = {
+    id,
+    name: draft.name,
+    avatar: draft.avatar,
+    birth_date: toIsoDate(draft.birthDate),
+    gender: GENDER_LABELS[draft.gender] ?? '',
+    city: draft.city,
+    likes: 0,
+    date_created: new Date().toISOString().slice(0, 10),
+    bio: '',
+    can_teach: {
+      name: draft.skillName,
+      category: draft.skillCategory,
+      subcategory: draft.skillSubcategory,
+      description: draft.skillDescription,
+      images: draft.skillImages,
+    },
+    want_to_learn: draft.learnSubcategories,
+    favorites: [],
+    login: draft.email,
+    password: draft.password,
+  }
+
+  let authUser: AuthUser
+  try {
+    saveRegisteredUsers([...registered, user])
+    authUser = saveAuthUser({
+      id: String(id),
+      name: user.name,
+      email: user.login,
+      avatar: resolveDbAsset(user.avatar),
+      birthDate: user.birth_date,
+      gender: draft.gender === 'male' || draft.gender === 'female' ? draft.gender : 'not_specified',
+      city: user.city,
+      bio: user.bio,
+      favorites: [],
+    })
+  } catch {
+    return rejectWithValue(SAVE_ERROR)
+  }
+
+  const profile = toProfile(user)
+  dispatch(addUser(profile))
+  return { profile, authUser }
+})
+
 /** Сбросить регистрацию (после «Готово» или при выходе из регистрации) */
 export const resetRegistration = createAsyncThunk('registration/reset', async () => {
   clearDraft()
@@ -105,6 +182,17 @@ const registrationSlice = createSlice({
       .addCase(saveRegistrationStep.fulfilled, (state, action) => {
         state.draft = action.payload.draft
         state.completedStep = action.payload.completedStep
+      })
+      .addCase(completeRegistration.pending, (state) => {
+        state.status = 'loading'
+        state.error = null
+      })
+      .addCase(completeRegistration.fulfilled, (state) => {
+        state.status = 'idle'
+      })
+      .addCase(completeRegistration.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.payload ?? SAVE_ERROR
       })
       .addCase(resetRegistration.fulfilled, (state) => {
         state.draft = EMPTY_DRAFT
