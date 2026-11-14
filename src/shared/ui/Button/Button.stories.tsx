@@ -2,13 +2,26 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from './Button'
 
 const meta: Meta<typeof Button> = {
-  title: 'Shared/Button',
+  title: 'Components/Buttons/Button',
   component: Button,
   args: { children: 'Зарегистрироваться' },
   argTypes: {
     variant: { control: 'radio', options: ['primary', 'secondary'] },
     disabled: { control: 'boolean' },
   },
+   decorators: [
+    (Story) => (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 export default meta
