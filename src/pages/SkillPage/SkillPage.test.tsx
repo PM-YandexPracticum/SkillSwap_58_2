@@ -10,6 +10,7 @@ import filterReducer, {
 } from '@/features/catalog-filter/model/filterSlice'
 import usersReducer, { initialState as usersInitialState } from '@/entities/user/model/usersSlice'
 import authReducer from '@/features/auth/model/authSlice'
+import exchangeReducer from '@/features/exchange/model/exchangeSlice'
 import type { UserProfile } from '@/shared/types'
 import SkillPage from './index'
 
@@ -61,14 +62,25 @@ const users = [
 ]
 
 const renderPage = (path: string, usersStatus: 'succeeded' | 'failed' | 'idle' = 'succeeded') => {
+  localStorage.clear()
   const store = configureStore({
-    reducer: { filter: filterReducer, users: usersReducer, auth: authReducer },
+    reducer: {
+      filter: filterReducer,
+      users: usersReducer,
+      auth: authReducer,
+      exchange: exchangeReducer,
+    },
     preloadedState: {
       filter: { ...filterInitialState, status: 'succeeded' as const },
       users: {
         ...usersInitialState,
         items: usersStatus === 'succeeded' ? users : [],
         status: usersStatus,
+      },
+      auth: {
+        user: { id: '5', name: 'Алексей', email: 'a@example.com', token: 't' },
+        status: 'idle' as const,
+        error: null,
       },
     },
   })

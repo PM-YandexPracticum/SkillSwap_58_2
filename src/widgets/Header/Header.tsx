@@ -1,21 +1,30 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Button } from '@/shared/ui/Button'
 import { Logotype } from '@/shared/ui/Logo/Logotype'
 import { Avatar } from '@/shared/ui/Avatar'
 import { SearchInput } from '@/shared/ui/Input/SearchInput/SearchInput'
 import { SkillsModal } from '@/shared/ui/SkillsModal/SkillsModal'
+import { ROUTES } from '@/shared/lib/constants'
 import ChevronDownIcon from '@/shared/assets/icons/ChevronDown.svg?react'
 import MoonIcon from '@/shared/assets/icons/Moon.svg?react'
 import NotificationIcon from '@/shared/assets/icons/Notification.svg?react'
 import LikeIcon from '@/shared/assets/icons/Like.svg?react'
 import LogoutIcon from '@/shared/assets/icons/Logout.svg?react'
+import IdeaIcon from '@/shared/assets/icons/Idea.svg?react'
 import styles from './Header.module.css'
-import { Link } from 'react-router-dom'
-import { ROUTES } from '@/shared/lib/constants'
 
 export interface HeaderUser {
   name: string
   avatar?: string
+}
+
+export interface HeaderNotification {
+  id: string
+  text: string
+  description?: string
+  createdAt: string
+  isRead: boolean
 }
 
 export interface HeaderProps {
@@ -31,12 +40,72 @@ export interface HeaderProps {
   /** Авторизованный пользователь. Если не передан — показываются кнопки входа и регистрации */
   user?: HeaderUser | null
   onNotificationsClick?: () => void
+  /** Список уведомлений под колокольчиком */
+  notifications?: HeaderNotification[]
+  onReadAllNotifications?: () => void
+  onClearNotifications?: () => void
   onFavoritesClick?: () => void
   /** Подсветить сердечко, когда открыта страница избранного */
   isFavoritesActive?: boolean
   onProfileClick?: () => void
   onLogoutClick?: () => void
   className?: string
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000
+
+/** «сегодня», «вчера» или «23 мая» — как в макете */
+const formatDate = (iso: string) => {
+  const date = new Date(iso)
+  const startOfDay = (value: Date) =>
+    new Date(value.getFullYear(), value.getMonth(), value.getDate()).getTime()
+  const daysAgo = Math.round((startOfDay(new Date()) - startOfDay(date)) / DAY_MS)
+
+  if (daysAgo === 0) return 'сегодня'
+  if (daysAgo === 1) return 'вчера'
+  return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })
+}
+
+/** Закрывает выпадашку по клику вне её и по Escape */
+function useDismiss(isOpen: boolean, ref: React.RefObject<HTMLElement | null>, close: () => void) {
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!ref.current?.contains(event.target as Node)) close()
+    }
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close()
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleEscape)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleEscape)
+    }
+  }, [isOpen, ref, close])
+}
+
+function NotificationList({ items }: { items: HeaderNotification[] }) {
+  return (
+    <ul className={styles.notificationsList}>
+      {items.map((item) => (
+        <li key={item.id} className={styles.notification}>
+          <IdeaIcon className={styles.notificationIcon} aria-hidden="true" />
+          <div className={styles.notificationBody}>
+            <p className={styles.notificationText}>{item.text}</p>
+            {item.description && (
+              <p className={styles.notificationDescription}>{item.description}</p>
+            )}
+          </div>
+          <time className={styles.notificationTime} dateTime={item.createdAt}>
+            {formatDate(item.createdAt)}
+          </time>
+        </li>
+      ))}
+    </ul>
+  )
 }
 
 export function Header({
@@ -48,6 +117,9 @@ export function Header({
   onThemeToggle,
   user,
   onNotificationsClick,
+  notifications = [],
+  onReadAllNotifications,
+  onClearNotifications,
   onFavoritesClick,
   isFavoritesActive = false,
   onProfileClick,
@@ -56,35 +128,24 @@ export function Header({
 }: HeaderProps) {
   const [query, setQuery] = useState('')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
+  const [isSkillsOpen, setIsSkillsOpen] = useState(false)
   const userRef = useRef<HTMLDivElement>(null)
+  const notificationsRef = useRef<HTMLDivElement>(null)
+  const skillsButtonRef = useRef<HTMLButtonElement>(null)
   const currentQuery = searchValue ?? query
   const classNames = [styles.header, className].filter(Boolean).join(' ')
+  const newNotifications = notifications.filter((item) => !item.isRead)
+  const viewedNotifications = notifications.filter((item) => item.isRead)
+  const hasUnread = newNotifications.length > 0
 
-  const [isSkillsOpen, setIsSkillsOpen] = useState(false)
-  const skillsButtonRef = useRef<HTMLButtonElement>(null)
+  useDismiss(isMenuOpen, userRef, () => setIsMenuOpen(false))
+  useDismiss(isNotificationsOpen, notificationsRef, () => setIsNotificationsOpen(false))
 
   const handleQueryChange = (value: string) => {
     setQuery(value)
     onSearchChange?.(value)
   }
-
-  useEffect(() => {
-    if (!isMenuOpen) return
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!userRef.current?.contains(event.target as Node)) setIsMenuOpen(false)
-    }
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setIsMenuOpen(false)
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    document.addEventListener('keydown', handleEscape)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('keydown', handleEscape)
-    }
-  }, [isMenuOpen])
 
   const icons = (
     <div className={styles.icons}>
@@ -98,14 +159,62 @@ export function Header({
       </button>
       {user && (
         <>
-          <button
-            type="button"
-            className={styles.iconButton}
-            aria-label="Уведомления"
-            onClick={onNotificationsClick}
-          >
-            <NotificationIcon aria-hidden="true" />
-          </button>
+          <div className={styles.notifications} ref={notificationsRef}>
+            <button
+              type="button"
+              className={`${styles.iconButton} ${styles.bellButton}`}
+              aria-label={hasUnread ? 'Уведомления, есть новые' : 'Уведомления'}
+              aria-haspopup="dialog"
+              aria-expanded={isNotificationsOpen}
+              onClick={() => {
+                setIsNotificationsOpen((prev) => !prev)
+                onNotificationsClick?.()
+              }}
+            >
+              <NotificationIcon aria-hidden="true" />
+              {hasUnread && <span className={styles.badge} data-testid="notifications-badge" />}
+            </button>
+
+            {isNotificationsOpen && (
+              <div className={styles.notificationsMenu} role="dialog" aria-label="Уведомления">
+                {notifications.length === 0 && (
+                  <p className={styles.notificationsEmpty}>Новых уведомлений нет</p>
+                )}
+
+                {newNotifications.length > 0 && (
+                  <section className={styles.notificationsSection}>
+                    <div className={styles.notificationsHeader}>
+                      <h2 className={styles.notificationsTitle}>Новые уведомления</h2>
+                      <button
+                        type="button"
+                        className={styles.textButton}
+                        onClick={onReadAllNotifications}
+                      >
+                        Прочитать все
+                      </button>
+                    </div>
+                    <NotificationList items={newNotifications} />
+                  </section>
+                )}
+
+                {viewedNotifications.length > 0 && (
+                  <section className={styles.notificationsSection}>
+                    <div className={styles.notificationsHeader}>
+                      <h2 className={styles.notificationsTitle}>Просмотренные</h2>
+                      <button
+                        type="button"
+                        className={styles.textButton}
+                        onClick={onClearNotifications}
+                      >
+                        Очистить
+                      </button>
+                    </div>
+                    <NotificationList items={viewedNotifications} />
+                  </section>
+                )}
+              </div>
+            )}
+          </div>
           <button
             type="button"
             className={
@@ -128,7 +237,7 @@ export function Header({
     <header className={classNames}>
       <Logotype />
 
-            <nav className={styles.menu} aria-label="Основное меню">
+      <nav className={styles.menu} aria-label="Основное меню">
         <Link to={ROUTES.ABOUT}>О проекте</Link>
         <div className={styles.skillsWrapper}>
           <button

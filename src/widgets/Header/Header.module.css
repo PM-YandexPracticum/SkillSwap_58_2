@@ -149,3 +149,131 @@
   cursor: pointer;
   display: inline-flex;
 }
+
+/* Колокольчик и список уведомлений — по макету Figma: ширина 556, отступы 60 */
+.notifications {
+  position: relative;
+}
+
+.bellButton {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 1px;
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+  background-color: #e43a3a;
+}
+
+.notificationsMenu {
+  position: absolute;
+  inset-block-start: calc(100% + 12px);
+  inset-inline-end: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  inline-size: 556px;
+  max-block-size: 640px;
+  box-sizing: border-box;
+  padding: 60px;
+  overflow-y: auto;
+  border: 1px solid #b2b9a9;
+  border-radius: 24px;
+  background-color: #fff;
+  font-family: Roboto, var(--font-sans);
+  color: #253017;
+}
+
+.notificationsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.notificationsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.notificationsTitle {
+  margin: 0;
+  font-family: Jost, var(--font-sans);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+.notificationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notification {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.notificationIcon {
+  flex-shrink: 0;
+  inline-size: 24px;
+  block-size: 24px;
+}
+
+.notificationBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.notificationText {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.notificationDescription {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.notificationTime {
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: #69735d;
+}
+
+.notificationsEmpty {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: #69735d;
+}
+
+.textButton {
+  padding: 0;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #508826;
+  cursor: pointer;
+}
+
+.textButton:hover {
+  text-decoration: underline;
+}

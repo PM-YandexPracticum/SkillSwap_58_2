@@ -41,7 +41,7 @@ export function SkillDetails({
         <p className={styles.description}>{description}</p>
 
         {isExchangeProposed ? (
-          <Button className={styles.button} variant="secondary">
+          <Button className={styles.button} variant="secondary" disabled>
             <ClockIcon width={24} height={24} aria-hidden="true" />
             Обмен предложен
           </Button>
