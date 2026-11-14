@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Navigate, useParams } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { SliderSection } from '@/widgets/Sections/SliderSection'
 import { SkillCard } from '@/widgets/SkillCard'
 import { toSkillCardProps } from '@/pages/CatalogPage/lib/toSkillCardProps'
@@ -9,8 +9,12 @@ import {
   selectFilterStatus,
 } from '@/features/catalog-filter/model/filterSlice'
 import { useFavorite } from '@/features/auth/model/useFavorite'
+import { selectIsAuth } from '@/features/auth/model/authSlice'
+import { proposeExchange, selectProposedTo } from '@/features/exchange/model/exchangeSlice'
 import { loadUsers, selectUsers, selectUsersStatus } from '@/entities/user/model/usersSlice'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { Toast } from '@/shared/ui/Toast'
+import { ROUTES } from '@/shared/lib/constants'
 import type { UserProfile } from '@/shared/types'
 import { ExchangeModal } from './ui/ExchangeModal'
 import { ProfileCard } from './ui/ProfileCard'
@@ -73,16 +77,29 @@ interface SkillPageContentProps {
 }
 
 function SkillPageContent({ user, similarUsers, categories }: SkillPageContentProps) {
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const isAuth = useAppSelector(selectIsAuth)
+  const proposedTo = useAppSelector(selectProposedTo)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isExchangeProposed, setIsExchangeProposed] = useState(false)
+  const [isToastVisible, setIsToastVisible] = useState(false)
   const { getLikeProps } = useFavorite()
 
   const { can_teach: skill } = user
   const cardProps = toSkillCardProps(user, categories)
+  const isExchangeProposed = proposedTo.includes(user.id)
+  const closeToast = useCallback(() => setIsToastVisible(false), [])
 
   const handleProposeExchange = () => {
-    setIsExchangeProposed(true)
+    if (!isAuth) {
+      navigate(ROUTES.LOGIN, { state: { from: location } })
+      return
+    }
+
+    void dispatch(proposeExchange({ userId: user.id, userName: user.name }))
     setIsModalOpen(true)
+    setIsToastVisible(true)
   }
 
   return (
@@ -115,6 +132,8 @@ function SkillPageContent({ user, similarUsers, categories }: SkillPageContentPr
       </SliderSection>
 
       <ExchangeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+      {isToastVisible && <Toast onClose={closeToast}>Вы предложили обмен {user.name}</Toast>}
     </main>
   )
 }
