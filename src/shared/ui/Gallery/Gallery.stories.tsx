@@ -8,7 +8,7 @@ import photo5 from './images/photo-5.svg'
 import photo6 from './images/photo-6.svg'
 
 const meta: Meta<typeof Gallery> = {
-  title: 'Shared/Gallery',
+  title: 'Components/Gallery',
   component: Gallery,
   parameters: { layout: 'centered' },
 }

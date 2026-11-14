@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { LinkButton } from './LinkButton'
 
 const meta: Meta<typeof LinkButton> = {
-  title: 'Shared/LinkButton',
+  title: 'Components/Buttons/LinkButton',
   component: LinkButton,
   parameters: {
     layout: 'centered',

@@ -2,13 +2,26 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { TabStepper } from './TabStepper'
 
 const meta: Meta<typeof TabStepper> = {
-  title: 'Shared/TabStepper',
+  title: 'Components/TabStepper',
   component: TabStepper,
   args: { total: 3, current: 1 },
   argTypes: {
     total: { control: { type: 'number', min: 1, max: 10 } },
     current: { control: { type: 'number', min: 1, max: 10 } },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 export default meta

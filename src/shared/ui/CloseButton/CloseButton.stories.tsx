@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CloseButton } from './CloseButton';
 
 const meta: Meta<typeof CloseButton> = {
-  title: 'Shared/CloseButton',
+  title: 'Components/Buttons/CloseButton',
   component: CloseButton,
   args: { 
     text: 'Закрыть' 
@@ -11,6 +11,19 @@ const meta: Meta<typeof CloseButton> = {
   argTypes: {
     onClick: { action: 'clicked' },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;

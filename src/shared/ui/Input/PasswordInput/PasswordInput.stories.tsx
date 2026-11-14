@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { PasswordInput } from './PasswordInput';
 
 const meta: Meta<typeof PasswordInput> = {
-  title: 'Components/Forms/PasswordInput',
+  title: 'Components/Inputs/PasswordInput',
   component: PasswordInput,
   tags: ['autodocs'],
   decorators: [

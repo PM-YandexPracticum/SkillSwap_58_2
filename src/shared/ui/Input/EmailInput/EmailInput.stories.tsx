@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { EmailInput } from './EmailInput';
 
 const meta: Meta<typeof EmailInput> = {
-  title: 'Components/Forms/EmailInput',
+  title: 'Components/Inputs/EmailInput',
   component: EmailInput,
   tags: ['autodocs'],
   decorators: [

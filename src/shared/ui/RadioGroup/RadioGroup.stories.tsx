@@ -4,7 +4,7 @@ import { ComponentProps, useState } from "react";
 import { Radio } from "./Radio";
 
 const meta: Meta<typeof RadioGroup> = {
-  title: 'Component/RadioGroup',
+  title: 'Components/Forms/RadioGroup',
   component: RadioGroup,
   tags: ['autodocs'],
   argTypes: {
@@ -24,7 +24,20 @@ const meta: Meta<typeof RadioGroup> = {
   },
   args: {
     label: ''
-  }
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 export default meta;

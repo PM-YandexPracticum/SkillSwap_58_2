@@ -2,16 +2,22 @@ import { Meta, StoryObj } from "@storybook/react-vite";
 import { SkillLabel } from "./SkillLabel";
 
 const meta: Meta<typeof SkillLabel> = {
-    title: 'Component/SkillLabel',
+    title: 'Components/SkillLabel',
     component: SkillLabel,
     tags: ['autodocs'],
     decorators: [
-        (Story) => (
-            <div>
-                <Story/>
-            </div>
-        ),
-    ],
+    (Story) => (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '100vh',
+        width: '100%'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
