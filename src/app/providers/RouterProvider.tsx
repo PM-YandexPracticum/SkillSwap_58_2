@@ -12,6 +12,7 @@ const CreateSkillPage = lazy(() => import('@/pages/CreateSkillPage'))
 const LoginPage = lazy(() => import('@/pages/LoginPage'))
 const RegisterPage = lazy(() => import('@/pages/RegisterPage'))
 const RegisterStep2Page = lazy(() => import('@/pages/RegisterStep2Page'))
+const RegisterStep3Page = lazy(() => import('@/pages/RegisterStep3Page'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 const SkillsPage = lazy(() => import('@/pages/SkillsPage'))
 const ServerErrorPage = lazy(() => import('@/pages/ServerErrorPage'))
@@ -45,6 +46,7 @@ export function AppRouter() {
           />
           <Route path={ROUTES.REGISTER_STEP_1} element={<RegisterPage />} />
           <Route path={ROUTES.REGISTER_STEP_2} element={<RegisterStep2Page />} />
+          <Route path={ROUTES.REGISTER_STEP_3} element={<RegisterStep3Page />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
