@@ -123,3 +123,16 @@
     padding-block-start: 40px;
   }
 }
+
+.errors {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: Roboto, var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  color: #e43a3a;
+}

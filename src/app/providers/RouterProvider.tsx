@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react'
 import { ROUTES } from '@/shared/lib/constants'
 import { MainLayout } from '@/app/layouts/MainLayout'
 import { PrivateRoute } from '@/features/auth/ui/PrivateRoute'
+import { RegistrationGuard } from '@/features/registration/ui/RegistrationGuard'
 
 const CatalogPage = lazy(() => import('@/pages/CatalogPage'))
 const SkillPage = lazy(() => import('@/pages/SkillPage'))
@@ -45,8 +46,12 @@ export function AppRouter() {
             element={<Navigate to={ROUTES.REGISTER_STEP_1} replace />}
           />
           <Route path={ROUTES.REGISTER_STEP_1} element={<RegisterPage />} />
-          <Route path={ROUTES.REGISTER_STEP_2} element={<RegisterStep2Page />} />
-          <Route path={ROUTES.REGISTER_STEP_3} element={<RegisterStep3Page />} />
+            <Route element={<RegistrationGuard requiredStep={1} />}>
+            <Route path={ROUTES.REGISTER_STEP_2} element={<RegisterStep2Page />} />
+          </Route>
+            <Route element={<RegistrationGuard requiredStep={2} />}>
+            <Route path={ROUTES.REGISTER_STEP_3} element={<RegisterStep3Page />} />
+          </Route>
         </Routes>
       </Suspense>
     </BrowserRouter>

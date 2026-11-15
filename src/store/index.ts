@@ -4,6 +4,7 @@ import usersReducer from '../entities/user/model/usersSlice'
 import authReducer from '../features/auth/model/authSlice'
 import skillCategoriesReducer from '../entities/skills/model/skillCategoriesSlice'
 import exchangeReducer from '../features/exchange/model/exchangeSlice'
+import registrationReducer from '../features/registration/model/registrationSlice'
 // Импортируй свои slice'ы здесь по мере их создания:
 // import skillsReducer from '@/entities/skill/model/skillsSlice'
 
@@ -14,6 +15,7 @@ export const store = configureStore({
     auth: authReducer,
     skillCategories: skillCategoriesReducer,
     exchange: exchangeReducer,
+    registration: registrationReducer,
     // skills: skillsReducer,
   },
 })

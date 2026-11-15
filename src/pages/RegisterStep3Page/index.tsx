@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/lib/constants'
 import { Logotype } from '@/shared/ui/Logo/Logotype'
@@ -7,49 +7,108 @@ import { TabStepper } from '@/shared/ui/TabStepper'
 import { Input } from '@/shared/ui/Input/Input'
 import { Select } from '@/shared/ui/Select/Select'
 import { Button } from '@/shared/ui/Button'
-import schoolBoard from '@/shared/assets/images/SchoolBoard.svg'
-import styles from './RegisterStep3Page.module.css'
 import { Textarea } from '@/shared/ui/Textarea/Textarea'
 import { ImageUploader } from '@/shared/ui/DownloadImage/DownloadImage'
 import { Modal } from '@/shared/ui/Modal'
 import { Gallery } from '@/shared/ui/Gallery'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import {
+  loadFilterOptions,
+  selectCategoryOptions,
+  selectFilterStatus,
+} from '@/features/catalog-filter/model/filterSlice'
+import {
+  completeRegistration,
+  resetRegistration,
+  SAVE_ERROR,
+  saveRegistrationStep,
+  selectRegistrationDraft,
+} from '@/features/registration/model/registrationSlice'
+import { getSubcategoriesOf } from '@/features/registration/lib/categories'
+import {
+  MAX_IMAGE_SIZE_MB,
+  MAX_IMAGES,
+  readFileAsDataUrl,
+  validateImage,
+} from '@/features/registration/lib/images'
 import Pencil from '@/shared/assets/icons/Pencil.svg?react'
-import photo1 from '../../shared/ui/Gallery/images/photo-1.svg'
-import photo2 from '../../shared/ui/Gallery/images/photo-2.svg'
-import photo3 from '../../shared/ui/Gallery/images/photo-3.svg'
-import photo4 from '../../shared/ui/Gallery/images/photo-4.svg'
-import photo5 from '../../shared/ui/Gallery/images/photo-5.svg'
-import photo6 from '../../shared/ui/Gallery/images/photo-6.svg'
-
-const categoryOptions = [{ value: '1', label: 'Творчество и искусство' }]
-
-const subcategoryOptions = [
-  { value: '1', label: 'Рисование и иллюстрация' },
-  { value: '2', label: 'Фотография' },
-  { value: '3', label: 'Видеомонтаж' },
-  { value: '4', label: 'Музыка и звук' },
-  { value: '5', label: 'Актёрское мастерство' },
-  { value: '6', label: 'Креативное письмо' },
-  { value: '7', label: 'Арт-терапия' },
-  { value: '8', label: 'Декор и DIY' },
-]
+import schoolBoard from '@/shared/assets/images/SchoolBoard.svg'
+import styles from './RegisterStep3Page.module.css'
 
 export default function RegisterStep3Page() {
   const navigate = useNavigate()
   const location = useLocation()
+  const dispatch = useAppDispatch()
+  const draft = useAppSelector(selectRegistrationDraft)
+  const categories = useAppSelector(selectCategoryOptions)
+  const filterStatus = useAppSelector(selectFilterStatus)
+
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [skillName, setSkillName] = useState('Рисование акварелью')
-  const [skillCategory, setSkillCategory] = useState('1')
-  const [skillCategoryName, setSkillCategoryName] = useState<string | undefined>(
-    'Творчество и искусство',
+  const [skillName, setSkillName] = useState(draft.skillName)
+  const [skillCategory, setSkillCategory] = useState(draft.skillCategory)
+  const [skillSubcategory, setSkillSubcategory] = useState(draft.skillSubcategory)
+  const [about, setAbout] = useState(draft.skillDescription)
+  const [images, setImages] = useState<string[]>(draft.skillImages)
+  const [imageError, setImageError] = useState<string | null>(null)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
+  const isDoneRef = useRef(false)
+
+  // Черновик сбрасываем, когда уже ушли со страницы, — иначе защита шагов
+  // успеет перекинуть на шаг 1 раньше, чем откроется каталог
+  useEffect(
+    () => () => {
+      if (isDoneRef.current) dispatch(resetRegistration())
+    },
+    [dispatch],
   )
-  const [skillSubcategory, setSkillSubcategory] = useState('1')
-  const [skillSubcategoryName, setSkillSubcategoryName] = useState<string | undefined>(
-    'Рисование и иллюстрация',
+
+  useEffect(() => {
+    if (filterStatus === 'idle') dispatch(loadFilterOptions())
+  }, [dispatch, filterStatus])
+
+  const categoryOptions = useMemo(
+    () => categories.map((item) => ({ value: item.category, label: item.category })),
+    [categories],
   )
-  const about =
-    'Привет! Я рисую и занимаюсь творчеством уже больше 10 лет — от первых набросков в скетчбуках до профессиональных выставок и работы на заказ. Научу основам рисунка (и как не бояться чистого листа), владеть любимыми материалами, видеть пропорции.'
-  const pictures = [photo1, photo2, photo3, photo4, photo5, photo6]
+  // Подкатегории — только из выбранной категории
+  const subcategoryOptions = useMemo(
+    () =>
+      getSubcategoriesOf(categories, skillCategory ? [skillCategory] : []).map((item) => ({
+        value: item,
+        label: item,
+      })),
+    [categories, skillCategory],
+  )
+
+  const handleCategoryChange = (value: string) => {
+    setSkillCategory(value)
+    // сменили категорию — старая подкатегория к ней уже не подходит
+    setSkillSubcategory('')
+  }
+
+  const handleAddImage = async (file: File) => {
+    const error = validateImage(file, images.length)
+    if (error) {
+      setImageError(error)
+      return
+    }
+    setImageError(null)
+    const url = await readFileAsDataUrl(file)
+    setImages((prev) => [...prev, url])
+  }
+
+  const handleRemoveImage = (index: number) => {
+    setImages((prev) => prev.filter((_, itemIndex) => itemIndex !== index))
+  }
+
+  const errors = [
+    !skillName.trim() && 'Введите название навыка',
+    !skillCategory && 'Выберите категорию навыка',
+    !skillSubcategory && 'Выберите подкатегорию навыка',
+    !about.trim() && 'Опишите, чему можете научить',
+    images.length === 0 && 'Добавьте хотя бы одно изображение',
+  ].filter((error): error is string => Boolean(error))
 
   const handleBack = () => {
     if (location.key !== 'default') {
@@ -59,13 +118,36 @@ export default function RegisterStep3Page() {
     }
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setIsSubmitted(true)
+    if (errors.length > 0) return
+
+    await dispatch(
+      saveRegistrationStep({
+        step: 3,
+        data: {
+          skillName: skillName.trim(),
+          skillCategory,
+          skillSubcategory,
+          skillDescription: about.trim(),
+          skillImages: images,
+        },
+      }),
+    )
     setIsModalOpen(true)
   }
 
-  const handleHome = () => {
-    navigate(ROUTES.HOME)
+  // «Готово»: сохраняем пользователя, входим и идём в каталог
+  const handleDone = async () => {
+    setSaveError(null)
+    const result = await dispatch(completeRegistration())
+    if (completeRegistration.fulfilled.match(result)) {
+      isDoneRef.current = true
+      navigate(ROUTES.HOME, { replace: true })
+    } else {
+      setSaveError(result.payload ?? SAVE_ERROR)
+    }
   }
 
   return (
@@ -81,43 +163,76 @@ export default function RegisterStep3Page() {
 
       <main className={styles.content}>
         <section className={styles.card}>
-          <form className={styles.form} onSubmit={handleSubmit}>
+          <form className={styles.form} onSubmit={handleSubmit} noValidate>
             <Input
               containerClassName={styles.input}
               label="Название навыка"
               placeholder="Введите название вашего навыка"
               value={skillName}
-              onChange={(value) => {
-                setSkillName(value)
-              }}
+              onChange={setSkillName}
             />
             <Select
               label="Категория навыка"
               placeholder="Выберите категорию навыка"
               options={categoryOptions}
               value={skillCategory}
-              onChange={(value) => {
-                setSkillCategory(value)
-                setSkillCategoryName(categoryOptions.find((category) => category.value == value )?.label)
-              }}
+              onChange={handleCategoryChange}
             />
             <Select
               label="Подкатегория навыка"
-              placeholder="Выберите подкатегорию навыка"
+              placeholder={
+                skillCategory ? 'Выберите подкатегорию навыка' : 'Сначала выберите категорию'
+              }
               options={subcategoryOptions}
               value={skillSubcategory}
-              onChange={(value) => {
-                setSkillSubcategory(value)
-                setSkillSubcategoryName(subcategoryOptions.find((subcategory) => subcategory.value == value )?.label)
-              }}
+              onChange={setSkillSubcategory}
             />
 
             <Textarea
               label="Описание"
               value={about}
+              onChange={(event) => setAbout(event.target.value)}
               placeholder="Коротко опишите, чему можете научить"
             />
-            <ImageUploader />
+
+            {images.length < MAX_IMAGES && (
+              <ImageUploader key={images.length} onFileSelect={handleAddImage} />
+            )}
+            <p className={styles.imagesHint}>
+              Загружено {images.length} из {MAX_IMAGES}. JPG, PNG или WebP, до {MAX_IMAGE_SIZE_MB}{' '}
+              МБ каждое
+            </p>
+            {imageError && (
+              <p className={styles.imageError} role="alert">
+                {imageError}
+              </p>
+            )}
+            {images.length > 0 && (
+              <ul className={styles.images}>
+                {images.map((src, index) => (
+                  <li key={`${index}-${src.slice(-16)}`} className={styles.thumb}>
+                    <img src={src} alt={`Изображение навыка ${index + 1}`} />
+                    <button
+                      type="button"
+                      className={styles.thumbRemove}
+                      onClick={() => handleRemoveImage(index)}
+                      aria-label={`Удалить изображение ${index + 1}`}
+                    >
+                      ×
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {isSubmitted && errors.length > 0 && (
+              <ul className={styles.errors} role="alert">
+                {errors.map((error) => (
+                  <li key={error}>{error}</li>
+                ))}
+              </ul>
+            )}
+
             <div className={styles.actions}>
               <Button
                 type="button"
@@ -162,7 +277,7 @@ export default function RegisterStep3Page() {
                 <div className={styles.aboutHeader}>
                   <h3 className={styles.aboutTitle}>{skillName}</h3>
                   <div className={styles.categorySubcategory}>
-                    {skillCategoryName} / {skillSubcategoryName}
+                    {skillCategory} / {skillSubcategory}
                   </div>
                 </div>
                 <p>{about}</p>
@@ -177,15 +292,20 @@ export default function RegisterStep3Page() {
                 >
                   Редактировать <Pencil />
                 </Button>
-                <Button className={styles.button} onClick={handleHome}>
+                <Button className={styles.button} onClick={handleDone}>
                   Готово
                 </Button>
               </div>
+              {saveError && (
+                <p className={styles.imageError} role="alert">
+                  {saveError}
+                </p>
+              )}
             </div>
             <Gallery
-              images={pictures.map((src, index) => ({
+              images={images.map((src, index) => ({
                 src,
-                alt: `Пример фото ${index + 1}`,
+                alt: `Изображение навыка ${index + 1}`,
               }))}
             />
           </div>
