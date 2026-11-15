@@ -1,3 +1,4 @@
+import { lazy } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
@@ -35,5 +36,32 @@ describe('MainLayout', () => {
 
     expect(header.compareDocumentPosition(content) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(content.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
+
+  it('пока страница загружается, показывает лоадер между шапкой и футером', () => {
+    const store = configureStore({
+      reducer: { filter: filterReducer, users: usersReducer, auth: authReducer },
+    })
+    const PendingPage = lazy(() => new Promise<never>(() => {}))
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<PendingPage />} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </Provider>,
+    )
+
+    const header = screen.getByText('Шапка')
+    const loader = screen.getByRole('status', { name: 'Загрузка' })
+    const footer = screen.getByText('Футер')
+
+    expect(screen.queryByText('Загрузка...')).not.toBeInTheDocument()
+    expect(header.compareDocumentPosition(loader) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(loader.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 })

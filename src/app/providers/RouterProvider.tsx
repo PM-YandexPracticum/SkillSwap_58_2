@@ -3,6 +3,8 @@ import { lazy, Suspense } from 'react'
 import { ROUTES } from '@/shared/lib/constants'
 import { MainLayout } from '@/app/layouts/MainLayout'
 import { PrivateRoute } from '@/features/auth/ui/PrivateRoute'
+import { Loader } from '@/shared/ui/Loader'
+import styles from './RouterProvider.module.css'
 
 const CatalogPage = lazy(() => import('@/pages/CatalogPage'))
 const SkillPage = lazy(() => import('@/pages/SkillPage'))
@@ -21,7 +23,13 @@ const AboutPage = lazy(() => import('@/pages/AboutPage'))
 export function AppRouter() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Загрузка...</div>}>
+      <Suspense
+        fallback={
+          <div className={styles.loader}>
+            <Loader />
+          </div>
+        }
+      >
         <Routes>
           <Route element={<MainLayout />}>
             <Route path={ROUTES.HOME} element={<CatalogPage />} />

@@ -10,6 +10,7 @@ import {
   readAllNotifications,
   selectNotifications,
 } from '@/features/exchange/model/exchangeSlice'
+import { Loader } from '@/shared/ui/Loader'
 import { ROUTES } from '@/shared/lib/constants'
 import styles from './MainLayout.module.css'
 
@@ -48,7 +49,13 @@ export function MainLayout() {
         onProfileClick={() => navigate(ROUTES.PROFILE)}
         onLogoutClick={handleLogout}
       />
-      <Suspense fallback={<div>Загрузка...</div>}>
+      <Suspense
+        fallback={
+          <div className={styles.loader}>
+            <Loader />
+          </div>
+        }
+      >
         <Outlet />
       </Suspense>
       <div className={styles.footer}>
