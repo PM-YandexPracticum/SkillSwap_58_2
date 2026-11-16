@@ -133,3 +133,17 @@
 .today {
   color: #253017;
 }
+
+/* Прозрачный слой на весь экран, пока открыт календарь */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: transparent;
+}
+
+/* Открытый календарь (вместе с полем) — над оверлеем */
+.containerOpen {
+  position: relative;
+  z-index: 1001;
+}
