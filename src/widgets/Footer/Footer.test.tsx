@@ -14,14 +14,14 @@ describe('Footer', () => {
     renderWithRouter(<Footer />)
 
     expect(screen.getAllByRole('listitem')).toHaveLength(6)
-    expect(screen.queryAllByRole('link')).toHaveLength(0)
+    expect(screen.queryAllByRole('link')).toHaveLength(1)
     expect(screen.getByText(`SkillSwap — ${new Date().getFullYear()}`)).toBeInTheDocument()
   })
 
   it('превращает только пункты с адресами в ссылки', () => {
     renderWithRouter(<Footer links={{ about: '/about', contacts: 'mailto:hello@example.com' }} />)
 
-    expect(screen.getAllByRole('link')).toHaveLength(2)
+    expect(screen.getAllByRole('link')).toHaveLength(3)
     expect(screen.getByRole('link', { name: 'О проекте' })).toHaveAttribute('href', '/about')
     expect(screen.getByRole('link', { name: 'Контакты' })).toHaveAttribute(
       'href',

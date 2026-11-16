@@ -4,6 +4,7 @@ import { Logotype } from '@/shared/ui/Logo/Logotype'
 
 import styles from './Footer.module.css'
 
+import { ROUTES } from '@/shared/lib/constants'
 
 export type FooterLinkId = 'about' | 'skills' | 'contacts' | 'blog' | 'privacy' | 'terms'
 
@@ -33,7 +34,9 @@ export function Footer({ links, className }: FooterProps) {
 
   return (
     <footer className={classNames}>
-      <Logotype className={styles.logo} />
+      <Link to={ROUTES.HOME} className={styles.logoLink} aria-label="На главную">
+    <Logotype className={styles.logo} />
+  </Link>
 
       <div className={styles.columns}>
         {columns.map((column) => (

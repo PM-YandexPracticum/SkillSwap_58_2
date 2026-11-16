@@ -235,7 +235,9 @@ export function Header({
 
   return (
     <header className={classNames}>
-      <Logotype />
+      <Link to={ROUTES.HOME} aria-label="На главную">
+    <Logotype />
+  </Link>
 
       <nav className={styles.menu} aria-label="Основное меню">
         <Link to={ROUTES.ABOUT}>О проекте</Link>
