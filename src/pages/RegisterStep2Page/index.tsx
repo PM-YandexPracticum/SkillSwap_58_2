@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/shared/lib/constants'
@@ -6,48 +6,86 @@ import { Logotype } from '@/shared/ui/Logo/Logotype'
 import { CloseButton } from '@/shared/ui/CloseButton'
 import { TabStepper } from '@/shared/ui/TabStepper'
 import { Input } from '@/shared/ui/Input/Input'
-import { DateInput } from '@/shared/ui/Input/DateInput/DateInput'
+import { DatePickerComponent } from '@/shared/ui/DatePicker/DatePicker'
 import { ImageInput } from '@/shared/ui/Input/ImageInput/ImageInput'
 import { Select } from '@/shared/ui/Select/Select'
 import { AvatarUploader } from '@/shared/ui/DownloadAvatar/AvatarUploader'
 import { Button } from '@/shared/ui/Button'
+import { MultiSelect } from '@/shared/ui/MultiSelect'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import {
+  loadFilterOptions,
+  selectCategoryOptions,
+  selectCityOptions,
+  selectFilterStatus,
+} from '@/features/catalog-filter/model/filterSlice'
+import {
+  saveRegistrationStep,
+  selectRegistrationDraft,
+} from '@/features/registration/model/registrationSlice'
+import {
+  getSubcategoriesOf,
+  keepSubcategoriesOf,
+} from '@/features/registration/lib/categories'
 import AddIcon from '@/shared/assets/icons/Add.svg?react'
 import userSpeech from '@/shared/assets/images/UserSpeech.svg'
 import styles from './RegisterStep2Page.module.css'
-import { MultiSelect } from '@/shared/ui/MultiSelect'
 
 const GENDER_OPTIONS = [
   { value: 'male', label: 'Мужской' },
   { value: 'female', label: 'Женский' },
 ]
 
-// Заглушки: реальные данные подключим вместе с логикой регистрации
-const CITY_OPTIONS = [
-  { value: 'moscow', label: 'Москва' },
-  { value: 'spb', label: 'Санкт-Петербург' },
-  { value: 'kazan', label: 'Казань' },
-]
-
-const CATEGORY_OPTIONS = [
-  { id: 'health', label: 'Здоровье и лайфстайл' },
-  { id: 'languages', label: 'Иностранные языки' },
-]
-
-const SUBCATEGORY_OPTIONS = [
-  { id: 'yoga', label: 'Йога и медитация' },
-  { id: 'english', label: 'Английский язык' },
-]
-
 export default function RegisterStep2Page() {
   const navigate = useNavigate()
   const location = useLocation()
-  const [avatarUrl, setAvatarUrl] = useState('')
-  const [name, setName] = useState('')
-  const [birthDate, setBirthDate] = useState('')
-  const [gender, setGender] = useState('')
-  const [city, setCity] = useState('')
-  const [category, setCategory] = useState<string[]>([])
-  const [subcategory, setSubcategory] = useState<string[]>([])
+  const dispatch = useAppDispatch()
+  const draft = useAppSelector(selectRegistrationDraft)
+  const categories = useAppSelector(selectCategoryOptions)
+  const cities = useAppSelector(selectCityOptions)
+  const filterStatus = useAppSelector(selectFilterStatus)
+
+  const [avatarUrl, setAvatarUrl] = useState(draft.avatar)
+  const [name, setName] = useState(draft.name)
+  const [birthDate, setBirthDate] = useState(draft.birthDate)
+  const [gender, setGender] = useState(draft.gender)
+  const [city, setCity] = useState(draft.city)
+  const [category, setCategory] = useState<string[]>(draft.learnCategories)
+  const [subcategory, setSubcategory] = useState<string[]>(draft.learnSubcategories)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
+  // Категории и города — те же, что в фильтре каталога
+  useEffect(() => {
+    if (filterStatus === 'idle') dispatch(loadFilterOptions())
+  }, [dispatch, filterStatus])
+
+  const cityOptions = useMemo(
+    () => cities.map((item) => ({ value: item.name, label: item.name })),
+    [cities],
+  )
+  const categoryOptions = useMemo(
+    () => categories.map((item) => ({ id: item.category, label: item.category })),
+    [categories],
+  )
+  // Во втором списке — подкатегории только выбранных категорий
+  const subcategoryOptions = useMemo(
+    () => getSubcategoriesOf(categories, category).map((item) => ({ id: item, label: item })),
+    [categories, category],
+  )
+
+  const handleCategoryChange = (next: string[]) => {
+    setCategory(next)
+    // сняли категорию — убираем и её подкатегории
+    setSubcategory((prev) => keepSubcategoriesOf(categories, next, prev))
+  }
+
+  const errors = [
+    !name.trim() && 'Введите имя',
+    !birthDate && 'Укажите дату рождения',
+    !gender && 'Выберите пол',
+    !city && 'Выберите город',
+    subcategory.length === 0 && 'Выберите хотя бы одну подкатегорию навыка',
+  ].filter((error): error is string => Boolean(error))
 
   // «Закрыть» и «Назад» возвращают на предыдущий роут (шаг 1)
   const handleBack = () => {
@@ -58,8 +96,25 @@ export default function RegisterStep2Page() {
     }
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setIsSubmitted(true)
+    if (errors.length > 0) return
+
+    await dispatch(
+      saveRegistrationStep({
+        step: 2,
+        data: {
+          avatar: avatarUrl,
+          name: name.trim(),
+          birthDate,
+          gender,
+          city,
+          learnCategories: category,
+          learnSubcategories: subcategory,
+        },
+      }),
+    )
     navigate(ROUTES.REGISTER_STEP_3)
   }
 
@@ -76,7 +131,7 @@ export default function RegisterStep2Page() {
 
       <main className={styles.content}>
         <section className={styles.card}>
-          <form className={styles.form} onSubmit={handleSubmit}>
+          <form className={styles.form} onSubmit={handleSubmit} noValidate>
             <div className={styles.avatar}>
               <AvatarUploader
                 size={52}
@@ -103,7 +158,7 @@ export default function RegisterStep2Page() {
               />
 
               <div className={styles.row}>
-                <DateInput value={birthDate} onChange={setBirthDate} />
+                <DatePickerComponent value={birthDate} onChange={setBirthDate} />
                 <Select
                   className={styles.select}
                   label="Пол"
@@ -116,7 +171,8 @@ export default function RegisterStep2Page() {
               <Select
                 className={styles.select}
                 label="Город"
-                options={CITY_OPTIONS}
+                placeholder="Выберите город"
+                options={cityOptions}
                 value={city}
                 onChange={setCity}
               />
@@ -124,18 +180,26 @@ export default function RegisterStep2Page() {
                 className={styles.select}
                 label="Категория навыка, которому хотите научиться"
                 placeholder="Выберите категорию"
-                options={CATEGORY_OPTIONS}
+                options={categoryOptions}
                 selectedIds={category}
-                onChange={setCategory}
+                onChange={handleCategoryChange}
               />
               <MultiSelect
                 className={styles.select}
                 label="Подкатегория навыка, которому хотите научиться"
-                placeholder="Выберите подкатегорию"
-                options={SUBCATEGORY_OPTIONS}
+                placeholder={category.length > 0 ? 'Выберите подкатегорию' : 'Сначала выберите категорию'}
+                options={subcategoryOptions}
                 selectedIds={subcategory}
                 onChange={setSubcategory}
               />
+
+              {isSubmitted && errors.length > 0 && (
+                <ul className={styles.errors} role="alert">
+                  {errors.map((error) => (
+                    <li key={error}>{error}</li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className={styles.actions}>

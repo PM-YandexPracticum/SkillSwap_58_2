@@ -20,6 +20,7 @@ import { ExchangeModal } from './ui/ExchangeModal'
 import { ProfileCard } from './ui/ProfileCard'
 import { SkillDetails } from './ui/SkillDetails'
 import styles from './SkillPage.module.css'
+import { resolveDbAsset } from '@/shared/lib/assets'
 
 const SIMILAR_LIMIT = 8
 
@@ -111,7 +112,7 @@ function SkillPageContent({ user, similarUsers, categories }: SkillPageContentPr
           category={skill.category}
           subcategory={skill.subcategory}
           description={skill.description}
-          images={skill.images.map((path) => ({ src: `/db/${path}` }))}
+          images={skill.images.map((path) => ({ src: resolveDbAsset(path) }))}
           likes={user.likes}
           isExchangeProposed={isExchangeProposed}
           onProposeExchange={handleProposeExchange}
