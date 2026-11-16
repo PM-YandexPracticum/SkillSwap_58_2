@@ -1,8 +1,10 @@
 import { SkillsGrid } from '@/shared/ui/SkillsGrid/SkillsGrid'
+import { LoadError } from '@/shared/ui/LoadError/LoadError'
 import styles from './SkillsPage.module.css'
 import {
   selectLoading,
   selectSkillCategories,
+  selectSkillCategoriesError,
 } from '@/entities/skills/selectors/skillCategoriesSelectors'
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
@@ -10,6 +12,7 @@ import { loadSkillCategories } from '@/entities/skills/model/skillCategoriesSlic
 
 export default function SkillsPage() {
   const skills = useAppSelector(selectSkillCategories)
+  const error = useAppSelector(selectSkillCategoriesError)
   const loading = useAppSelector(selectLoading)
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -19,6 +22,8 @@ export default function SkillsPage() {
     <main>
       {loading ? (
         <div>Загрузка...</div>
+      ) : error ? (
+        <LoadError message={error} />
       ) : (
         <div className={styles.skillsPage}>
           <SkillsGrid categoryList={skills.map(skill => {

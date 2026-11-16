@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { SkillsGrid } from '@/shared/ui/SkillsGrid/SkillsGrid'
 import { useAppSelector } from '@/store/hooks'
 import { createPortal } from 'react-dom'
-import { selectSkillCategories } from '@/entities/skills/selectors/skillCategoriesSelectors'
+import { selectSkillCategories, selectSkillCategoriesError } from '@/entities/skills/selectors/skillCategoriesSelectors'
+import { LoadError } from '@/shared/ui/LoadError/LoadError'
 import styles from './SkillsModal.module.css'
 
 interface SkillsModalProps {
@@ -13,6 +14,7 @@ interface SkillsModalProps {
 
 export const SkillsModal = ({ isOpen, onClose, anchorRef }: SkillsModalProps) => {
   const skills = useAppSelector(selectSkillCategories)
+  const error = useAppSelector(selectSkillCategoriesError)
   const modalRef = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState({ top: 0, left: 0, width: 0 })
 
@@ -72,7 +74,7 @@ export const SkillsModal = ({ isOpen, onClose, anchorRef }: SkillsModalProps) =>
         width: `${position.width}px`,
       }}
     >
-      <SkillsGrid categoryList={categoryList} />
+      {error ? <LoadError message={error} /> : <SkillsGrid categoryList={categoryList} />}
     </div>
   )
 

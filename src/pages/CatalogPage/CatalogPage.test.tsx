@@ -68,14 +68,16 @@ const users: UserProfile[] = [
   },
 ]
 
-function renderCatalog() {
+function renderCatalog(usersError?: Error) {
   const filter = filterReducer(
     undefined,
     loadFilterOptions.fulfilled({ categories, cities }, 'options-request'),
   )
   const usersState = usersReducer(
     undefined,
-    loadUsers.fulfilled({ items: users, recommendedOrder: [1, 2] }, 'users-request', undefined),
+    usersError
+      ? loadUsers.rejected(usersError, 'users-request')
+      : loadUsers.fulfilled({ items: users, recommendedOrder: [1, 2] }, 'users-request', undefined),
   )
   const store = configureStore({
     reducer: { filter: filterReducer, users: usersReducer, auth: authReducer },
@@ -92,6 +94,12 @@ function renderCatalog() {
 }
 
 describe('CatalogPage filtering', () => {
+  it('показывает причину ошибки загрузки пользователей в каталоге', () => {
+    const message = 'Список участников временно недоступен'
+    renderCatalog(new Error(message))
+    expect(screen.getByRole('alert')).toHaveTextContent(message)
+  })
+
   it('switches to filtered results and removes a chip from the sidebar state', async () => {
     const user = userEvent.setup()
     renderCatalog()

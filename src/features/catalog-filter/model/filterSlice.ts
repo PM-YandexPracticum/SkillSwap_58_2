@@ -16,6 +16,7 @@ export interface FilterState {
   searchQuery: string
   cityOptions: City[]
   status: LoadingStatus
+  error: string
 }
 
 export const initialState: FilterState = {
@@ -27,6 +28,7 @@ export const initialState: FilterState = {
   categoryOptions: [],
   cityOptions: [],
   status: 'idle',
+  error: '',
 }
 
 export const loadFilterOptions = createAsyncThunk('filter/loadOptions', async () => {
@@ -65,14 +67,16 @@ const filterSlice = createSlice({
     builder
       .addCase(loadFilterOptions.pending, (state) => {
         state.status = 'loading'
+        state.error = ''
       })
       .addCase(loadFilterOptions.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.categoryOptions = action.payload.categories
         state.cityOptions = action.payload.cities
       })
-      .addCase(loadFilterOptions.rejected, (state) => {
+      .addCase(loadFilterOptions.rejected, (state, action) => {
         state.status = 'failed'
+        state.error = action.error?.message || 'Не удалось загрузить фильтры'
       })
   },
 })
@@ -103,3 +107,5 @@ export const selectActiveFilterCount = (state: StateWithFilter) => {
 }
 
 export default filterSlice.reducer
+
+export const selectFilterError = (state: StateWithFilter) => state.filter.error

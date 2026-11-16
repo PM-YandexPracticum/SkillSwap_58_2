@@ -10,6 +10,7 @@ import {
   selectCategoryOptions,
   selectCityOptions,
   selectFilter,
+  selectFilterError,
   selectFilterStatus,
   setCities,
   setGender,
@@ -28,6 +29,7 @@ import {
   selectPopularUsers,
   selectRecommendedUsers,
   selectUsers,
+  selectUsersError,
   selectUsersStatus,
   showMoreRecommended,
 } from '@/entities/user/model/usersSlice'
@@ -35,6 +37,7 @@ import { loadSkillCategories } from '@/entities/skills/model/skillCategoriesSlic
 import { toSkillCardProps } from './lib/toSkillCardProps'
 import { useFavorite } from '@/features/auth/model/useFavorite'
 import type { UserProfile } from '@/shared/types'
+import { LoadError } from '@/shared/ui/LoadError/LoadError'
 import styles from './CatalogPage.module.css'
 
 type ActiveFilterChip = {
@@ -171,7 +174,9 @@ export default function CatalogPage() {
   const categories = useAppSelector(selectCategoryOptions)
   const cities = useAppSelector(selectCityOptions)
   const filterStatus = useAppSelector(selectFilterStatus)
+  const filterError = useAppSelector(selectFilterError)
   const usersStatus = useAppSelector(selectUsersStatus)
+  const usersError = useAppSelector(selectUsersError)
   const users = useAppSelector(selectUsers)
   const popularUsers = useAppSelector(selectPopularUsers)
   const newUsers = useAppSelector(selectNewUsers)
@@ -216,7 +221,7 @@ export default function CatalogPage() {
     <main>
       <div className={styles.layout}>
         {filterStatus === 'succeeded' && <Sidebar categories={categories} cities={cities} />}
-        {filterStatus === 'failed' && <p>Не удалось загрузить фильтры</p>}
+        {filterStatus === 'failed' && <LoadError message={filterError || 'Не удалось загрузить фильтры'} />}
 
         <div className={styles.catalog}>
           {usersStatus === 'succeeded' &&
@@ -240,7 +245,7 @@ export default function CatalogPage() {
                 </InfinityScrollSection>
               </>
             ))}
-          {usersStatus === 'failed' && <p>Не удалось загрузить пользователей</p>}
+          {usersStatus === 'failed' && <LoadError message={usersError || 'Не удалось загрузить пользователей'} />}
         </div>
       </div>
     </main>

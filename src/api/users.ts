@@ -1,11 +1,9 @@
 import type { User, UserProfile } from '@/shared/types'
 
-const BASE_URL = '/db'
+import { fetchMockData } from './fetchMockData'
 
 export async function fetchUsers(): Promise<User[]> {
-  const response = await fetch(`${BASE_URL}/users.json`)
-  if (!response.ok) throw new Error('Failed to fetch users')
-  return response.json()
+  return fetchMockData<User[]>('users.json', 'Не удалось загрузить пользователей')
 }
 
 export async function fetchUserById(id: string): Promise<User | undefined> {
@@ -14,7 +12,5 @@ export async function fetchUserById(id: string): Promise<User | undefined> {
 }
 
 export async function fetchUserProfiles(): Promise<UserProfile[]> {
-  const response = await fetch(`${BASE_URL}/users.json`)
-  if (!response.ok) throw new Error('Failed to fetch users')
-  return response.json()
+  return fetchMockData<UserProfile[]>('users.json', 'Не удалось загрузить пользователей')
 }

@@ -42,10 +42,13 @@ export const login = createAsyncThunk<AuthUser, LoginCredentials, { rejectValue:
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
     // моки из users.json + пользователи, зарегистрированные в приложении
-    const users = [
-      ...((await fetchUserProfiles()) as UserWithCredentials[]),
-      ...getRegisteredUsers(),
-    ]
+    let mockUsers: UserWithCredentials[]
+    try {
+      mockUsers = (await fetchUserProfiles()) as UserWithCredentials[]
+    } catch {
+      return rejectWithValue('Не удалось загрузить данные для входа. Попробуйте ещё раз')
+    }
+    const users = [...mockUsers, ...getRegisteredUsers()]
     const normalizedEmail = email.trim().toLowerCase()
     const found = users.find(
       (user) => user.login.toLowerCase() === normalizedEmail && user.password === password,

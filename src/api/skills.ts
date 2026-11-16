@@ -1,11 +1,9 @@
 import type { Skill, SkillCategory } from '@/shared/types'
 
-const BASE_URL = '/db'
+import { fetchMockData } from './fetchMockData'
 
 export async function fetchSkills(): Promise<Skill[]> {
-  const response = await fetch(`${BASE_URL}/skills.json`)
-  if (!response.ok) throw new Error('Failed to fetch skills')
-  return response.json()
+  return fetchMockData<Skill[]>('skills.json', 'Не удалось загрузить навыки')
 }
 
 export async function fetchSkillById(id: string): Promise<Skill | undefined> {
@@ -14,7 +12,5 @@ export async function fetchSkillById(id: string): Promise<Skill | undefined> {
 }
 
 export async function fetchSkillCategories(): Promise<SkillCategory[]> {
-  const response = await fetch(`${BASE_URL}/skills.json`)
-  if (!response.ok) throw new Error('Failed to fetch skill categories')
-  return response.json()
+  return fetchMockData<SkillCategory[]>('skills.json', 'Не удалось загрузить категории навыков')
 }
