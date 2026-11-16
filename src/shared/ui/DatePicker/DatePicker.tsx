@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '../Button/Button'
 import { DayPicker, DropdownProps } from 'react-day-picker'
+import type { DayButtonProps } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { format } from 'date-fns'
 import { DateInput } from '../Input/DateInput/DateInput'
@@ -38,8 +39,19 @@ const CustomSelector = (props: DropdownProps) => {
   )
 }
 
+// День календаря — обычная кнопка, а не «отправить форму»:
+// без type="button" клик по дню внутри <form> срабатывал как «Продолжить»
+const DayButton = ({ day: _day, modifiers, ...buttonProps }: DayButtonProps) => {
+  const ref = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (modifiers.focused) ref.current?.focus()
+  }, [modifiers.focused])
+
+  return <button ref={ref} type="button" {...buttonProps} />
+}
+
 export const DatePickerComponent = ({value = '', onChange,}: DatePickerProps) => {
-  const containerRef = useRef<HTMLDivElement>(null)
   const [month, setMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
   const [inputValue, setInputValue] = useState('')
@@ -56,87 +68,86 @@ export const DatePickerComponent = ({value = '', onChange,}: DatePickerProps) =>
     setInputValue(value)
   }, [value])
 
+  // Escape закрывает календарь. Слушатель только пока календарь открыт
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setIsOpen(false)
+    if (!isOpen) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false)
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isOpen])
+
   return (
-    <div ref={containerRef} className={styles.container}>
-      <DateInput
-        value={inputValue}
-        label="Дата рождения"
-        onChange={(value: string) => {
-          setInputValue(value)
-          onChange?.(value)
-        }}
-        onClick={() => {
-          if (!isOpen) setIsOpen(true)
-          else setIsOpen(false)
-        }}
-      />
+    <>
+      {/* Оверлей: пока календарь открыт, клики мимо него не доходят до формы, а только закрывают календарь */}
       {isOpen && (
-        <DayPicker
-          locale={ru}
-          month={month}
-          captionLayout="dropdown"
-          hideNavigation
-          onMonthChange={setMonth}
-          mode="single"
-          selected={selectedDate}
-          onSelect={handleDayPickerSelect}
-          footer={
-            <div className={styles.footer}>
-              <Button
-                variant="secondary"
-                className={styles.declineButton}
-                onClick={() => {
-                  if (!isOpen) return
-                  if (containerRef.current) {
+        <div
+          className={styles.overlay}
+          data-testid="date-picker-overlay"
+          aria-hidden="true"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+      <div className={isOpen ? `${styles.container} ${styles.containerOpen}` : styles.container}>
+        <DateInput
+          value={inputValue}
+          label="Дата рождения"
+          onChange={(value: string) => {
+            setInputValue(value)
+            onChange?.(value)
+          }}
+          onClick={() => setIsOpen((prev) => !prev)}
+        />
+        {isOpen && (
+          <DayPicker
+            locale={ru}
+            month={month}
+            captionLayout="dropdown"
+            hideNavigation
+            onMonthChange={setMonth}
+            mode="single"
+            selected={selectedDate}
+            onSelect={handleDayPickerSelect}
+            footer={
+              <div className={styles.footer}>
+                <Button
+                  variant="secondary"
+                  className={styles.declineButton}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {'Отменить'}
+                </Button>
+                <Button
+                  onClick={() => {
                     setIsOpen(false)
-                  }
-                }}
-              >
-                {'Отменить'}
-              </Button>
-              <Button
-                onClick={() => {
-                  if (!isOpen) return
-                  if (containerRef.current) {
-                    setIsOpen(false)
-                  }
-                  if (!selectedDate) {
-                    return
-                  } else {
+                    if (!selectedDate) return
                     setMonth(selectedDate)
                     const formattedDate = format(selectedDate, 'dd.MM.yyyy')
                     setInputValue(formattedDate)
                     onChange?.(formattedDate)
-                  }
-                }}
-                className={styles.applyButton}
-              >
-                {'Выбрать'}
-              </Button>
-            </div>
-          }
-          components={{
-            MonthsDropdown: CustomSelector,
-            YearsDropdown: CustomSelector,
-          }}
-          fixedWeeks
-          showOutsideDays
-          className={styles.calendar}
-          modifiersClassNames={{
-            selected: styles.selectedDay,
-            today: styles.today,
-          }}
-        />
-      )}
-    </div>
+                  }}
+                  className={styles.applyButton}
+                >
+                  {'Выбрать'}
+                </Button>
+              </div>
+            }
+            components={{
+              MonthsDropdown: CustomSelector,
+              YearsDropdown: CustomSelector,
+              DayButton,
+            }}
+            fixedWeeks
+            showOutsideDays
+            className={styles.calendar}
+            modifiersClassNames={{
+              selected: styles.selectedDay,
+              today: styles.today,
+            }}
+          />
+        )}
+      </div>
+    </>
   )
 }
