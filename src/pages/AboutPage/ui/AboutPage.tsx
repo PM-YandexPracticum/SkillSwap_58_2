@@ -11,11 +11,21 @@ export function AboutPage() {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    let active = true
     const message = 'Не удалось загрузить информацию о команде'
     fetchMockData<TeamMember[]>('team.json', message)
-      .then(setTeam)
-      .catch(() => setError(message))
-      .finally(() => setIsLoading(false))
+      .then((members) => {
+        if (active) setTeam(members)
+      })
+      .catch(() => {
+        if (active) setError(message)
+      })
+      .finally(() => {
+        if (active) setIsLoading(false)
+      })
+    return () => {
+      active = false
+    }
   }, [])
 
   if (isLoading) {

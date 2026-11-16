@@ -34,11 +34,17 @@ const shuffle = <T>(array: T[]): T[] => {
   return result
 }
 
-export const loadUsers = createAsyncThunk('users/load', async () => {
-  // моки из users.json + зарегистрированные пользователи из localStorage
-  const items = [...(await fetchUserProfiles()), ...getRegisteredUsers().map(toProfile)]
-  return { items, recommendedOrder: shuffle(items.map((user) => user.id)) }
-})
+export const loadUsers = createAsyncThunk.withTypes<{ state: { users: UsersState } }>()(
+  'users/load',
+  async () => {
+    const items = [...(await fetchUserProfiles()), ...getRegisteredUsers().map(toProfile)]
+    return { items, recommendedOrder: shuffle(items.map((user) => user.id)) }
+  },
+  {
+    condition: (_, { getState }) =>
+      getState().users.status !== 'loading',
+  },
+)
 
 const usersSlice = createSlice({
   name: 'users',

@@ -14,7 +14,14 @@ const initialState: SkillCategoriesState = {
   error: '',
 }
 
-export const loadSkillCategories = createAsyncThunk('skillCategories/load', async () => fetchSkillCategories())
+export const loadSkillCategories = createAsyncThunk.withTypes<{ state: { skillCategories?: SkillCategoriesState } }>()(
+  'skillCategories/load',
+  async () => fetchSkillCategories(),
+  {
+    condition: (_, { getState }) =>
+      !getState().skillCategories?.loading,
+  },
+)
 
 const skillCategoriesSlice = createSlice({
   name: 'skillCategories',

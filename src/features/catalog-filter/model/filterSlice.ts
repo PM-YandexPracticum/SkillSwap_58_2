@@ -31,10 +31,17 @@ export const initialState: FilterState = {
   error: '',
 }
 
-export const loadFilterOptions = createAsyncThunk('filter/loadOptions', async () => {
-  const [categories, cities] = await Promise.all([fetchSkillCategories(), fetchCities()])
-  return { categories, cities }
-})
+export const loadFilterOptions = createAsyncThunk.withTypes<{ state: { filter: FilterState } }>()(
+  'filter/loadOptions',
+  async () => {
+    const [categories, cities] = await Promise.all([fetchSkillCategories(), fetchCities()])
+    return { categories, cities }
+  },
+  {
+    condition: (_, { getState }) =>
+      getState().filter.status !== 'loading',
+  },
+)
 
 const filterSlice = createSlice({
   name: 'filter',
