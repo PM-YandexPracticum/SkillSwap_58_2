@@ -1,7 +1,7 @@
 // TODO: реализовать страницу FavoritesPage
 
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { generatePath, useNavigate } from 'react-router-dom'
 import { Sidebar } from '@/widgets/Sidebar'
 import { InfinityScrollSection } from '@/widgets/Sections/InfinityScrollSection'
 import { SkillCard } from '@/widgets/SkillCard'
@@ -94,6 +94,9 @@ export default function FavoritesPage() {
                       key={user.id}
                       {...cardProps}
                       user={{ ...cardProps.user, ...getLikeProps(user.id) }}
+                      onDetailsClick={() => {
+                        navigate(generatePath(ROUTES.SKILL, {id: user.id.toString()}))
+                      }}
                     />
                   )
                 })

@@ -36,6 +36,8 @@ import { toSkillCardProps } from './lib/toSkillCardProps'
 import { useFavorite } from '@/features/auth/model/useFavorite'
 import type { UserProfile } from '@/shared/types'
 import styles from './CatalogPage.module.css'
+import { generatePath, useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/shared/lib/constants'
 
 type ActiveFilterChip = {
   id: string
@@ -109,6 +111,7 @@ function FilteredResults({ users, categories, chips }: FilteredResultsProps) {
   const [visibleCount, setVisibleCount] = useState(SECTION_LIMIT)
   const [sortByNewest, setSortByNewest] = useState(true)
   const { getLikeProps } = useFavorite()
+  const navigate = useNavigate()
 
   const sortedUsers = useMemo(
     () =>
@@ -154,6 +157,9 @@ function FilteredResults({ users, categories, chips }: FilteredResultsProps) {
                 key={user.id}
                 {...cardProps}
                 user={{ ...cardProps.user, ...getLikeProps(user.id) }}
+                onDetailsClick={() => {
+                  navigate(generatePath(ROUTES.SKILL, {id: user.id.toString()}))
+                }}
               />
             )
           })
@@ -181,6 +187,7 @@ export default function CatalogPage() {
   const filteredUsers = useMemo(() => filterUsers(users, filter), [filter, users])
   const hasFilters = hasActiveFilters(filter)
   const activeFilterChips = getActiveFilterChips(filter, dispatch)
+  const navigate = useNavigate()
   const filterKey = JSON.stringify([
     filter.skillType,
     filter.skills,
@@ -208,6 +215,9 @@ export default function CatalogPage() {
         key={user.id}
         {...cardProps}
         user={{ ...cardProps.user, ...getLikeProps(user.id) }}
+        onDetailsClick={() => {
+          navigate(generatePath(ROUTES.SKILL, {id: user.id.toString()}))
+        }}
       />
     )
   }

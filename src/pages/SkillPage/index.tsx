@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { generatePath, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { SliderSection } from '@/widgets/Sections/SliderSection'
 import { SkillCard } from '@/widgets/SkillCard'
 import { toSkillCardProps } from '@/pages/CatalogPage/lib/toSkillCardProps'
@@ -103,6 +103,10 @@ function SkillPageContent({ user, similarUsers, categories }: SkillPageContentPr
     setIsToastVisible(true)
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location])
+
   return (
     <main className={styles.page}>
       <div className={styles.skill}>
@@ -127,6 +131,9 @@ function SkillPageContent({ user, similarUsers, categories }: SkillPageContentPr
               key={item.id}
               {...similarProps}
               user={{ ...similarProps.user, ...getLikeProps(item.id) }}
+              onDetailsClick={() => {
+                navigate(generatePath(ROUTES.SKILL, {id: item.id.toString()}))
+              }}
             />
           )
         })}
