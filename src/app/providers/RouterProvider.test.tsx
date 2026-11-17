@@ -42,6 +42,15 @@ describe('AppRouter и общая обёртка страниц', () => {
     localStorage.clear()
   })
 
+  it('пока страница без шапки и футера загружается, показывает лоадер вместо текста', async () => {
+    openPage('/login')
+
+    expect(screen.getByRole('status', { name: 'Загрузка' })).toBeInTheDocument()
+    expect(screen.queryByText('Загрузка...')).not.toBeInTheDocument()
+    expect(await screen.findByText('Вход')).toBeInTheDocument()
+    expect(screen.queryByRole('status')).not.toBeInTheDocument()
+  })
+
   it.each([
     ['/', 'Каталог'],
     ['/unknown-page', '404'],
