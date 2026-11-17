@@ -6,12 +6,13 @@ import { toSkillCardProps } from '@/pages/CatalogPage/lib/toSkillCardProps'
 import {
   loadFilterOptions,
   selectCategoryOptions,
+  selectFilterError,
   selectFilterStatus,
 } from '@/features/catalog-filter/model/filterSlice'
 import { useFavorite } from '@/features/auth/model/useFavorite'
 import { selectIsAuth } from '@/features/auth/model/authSlice'
 import { proposeExchange, selectProposedTo } from '@/features/exchange/model/exchangeSlice'
-import { loadUsers, selectUsers, selectUsersStatus } from '@/entities/user/model/usersSlice'
+import { loadUsers, selectUsers, selectUsersError, selectUsersStatus } from '@/entities/user/model/usersSlice'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { Toast } from '@/shared/ui/Toast'
 import { ROUTES } from '@/shared/lib/constants'
@@ -19,6 +20,7 @@ import type { UserProfile } from '@/shared/types'
 import { ExchangeModal } from './ui/ExchangeModal'
 import { ProfileCard } from './ui/ProfileCard'
 import { SkillDetails } from './ui/SkillDetails'
+import { LoadError } from '@/shared/ui/LoadError/LoadError'
 import styles from './SkillPage.module.css'
 import { resolveDbAsset } from '@/shared/lib/assets'
 
@@ -31,8 +33,10 @@ export default function SkillPage() {
   const dispatch = useAppDispatch()
   const users = useAppSelector(selectUsers)
   const usersStatus = useAppSelector(selectUsersStatus)
+  const usersError = useAppSelector(selectUsersError)
   const categories = useAppSelector(selectCategoryOptions)
   const filterStatus = useAppSelector(selectFilterStatus)
+  const filterError = useAppSelector(selectFilterError)
 
   useEffect(() => {
     if (usersStatus === 'idle') dispatch(loadUsers())
@@ -45,7 +49,7 @@ export default function SkillPage() {
   if (usersStatus === 'failed') {
     return (
       <main className={styles.page}>
-        <p>Не удалось загрузить страницу навыка</p>
+        <LoadError message={usersError || 'Не удалось загрузить страницу навыка'} />
       </main>
     )
   }
@@ -66,6 +70,7 @@ export default function SkillPage() {
       key={user.id}
       user={user}
       similarUsers={similarUsers}
+      filterError={filterStatus === 'failed' ? filterError || 'Не удалось загрузить фильтры' : ''}
       categories={categories}
     />
   )
@@ -74,10 +79,11 @@ export default function SkillPage() {
 interface SkillPageContentProps {
   user: UserProfile
   similarUsers: UserProfile[]
+  filterError: string
   categories: ReturnType<typeof selectCategoryOptions>
 }
 
-function SkillPageContent({ user, similarUsers, categories }: SkillPageContentProps) {
+function SkillPageContent({ user, similarUsers, filterError, categories }: SkillPageContentProps) {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const location = useLocation()
@@ -109,6 +115,7 @@ function SkillPageContent({ user, similarUsers, categories }: SkillPageContentPr
 
   return (
     <main className={styles.page}>
+      {filterError && <LoadError message={filterError} />}
       <div className={styles.skill}>
         <ProfileCard {...cardProps} bio={user.bio} />
         <SkillDetails

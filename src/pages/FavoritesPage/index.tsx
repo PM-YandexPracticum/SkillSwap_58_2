@@ -14,6 +14,7 @@ import {
   selectCategoryOptions,
   selectCityOptions,
   selectFilter,
+  selectFilterError,
   selectFilterStatus,
 } from '@/features/catalog-filter/model/filterSlice'
 import { filterUsers } from '@/features/catalog-filter/model/filterUsers'
@@ -22,11 +23,13 @@ import {
   RECOMMENDED_STEP,
   SECTION_LIMIT,
   selectUsers,
+  selectUsersError,
   selectUsersStatus,
 } from '@/entities/user/model/usersSlice'
 import { toSkillCardProps } from '@/pages/CatalogPage/lib/toSkillCardProps'
 import { ROUTES } from '@/shared/lib/constants'
 import type { UserProfile } from '@/shared/types'
+import { LoadError } from '@/shared/ui/LoadError/LoadError'
 import styles from './FavoritesPage.module.css'
 
 export default function FavoritesPage() {
@@ -35,8 +38,10 @@ export default function FavoritesPage() {
   const favoriteIds = useAppSelector(selectFavoriteIds)
   const users = useAppSelector(selectUsers)
   const usersStatus = useAppSelector(selectUsersStatus)
+  const usersError = useAppSelector(selectUsersError)
   const filter = useAppSelector(selectFilter)
   const filterStatus = useAppSelector(selectFilterStatus)
+  const filterError = useAppSelector(selectFilterError)
   const categories = useAppSelector(selectCategoryOptions)
   const cities = useAppSelector(selectCityOptions)
   const { getLikeProps } = useFavorite()
@@ -67,7 +72,7 @@ export default function FavoritesPage() {
     <main>
       <div className={styles.layout}>
         {filterStatus === 'succeeded' && <Sidebar categories={categories} cities={cities} />}
-        {filterStatus === 'failed' && <p>Не удалось загрузить фильтры</p>}
+        {filterStatus === 'failed' && <LoadError message={filterError || 'Не удалось загрузить фильтры'} />}
 
         <div className={styles.content}>
           {isEmpty && (
@@ -106,7 +111,7 @@ export default function FavoritesPage() {
             </InfinityScrollSection>
           )}
 
-          {usersStatus === 'failed' && <p>Не удалось загрузить пользователей</p>}
+          {usersStatus === 'failed' && <LoadError message={usersError || 'Не удалось загрузить пользователей'} />}
         </div>
       </div>
     </main>

@@ -19,10 +19,12 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
   loadFilterOptions,
   selectCityOptions,
+  selectFilterError,
   selectFilterStatus,
 } from '@/features/catalog-filter/model/filterSlice'
 import { selectAuthStatus, selectAuthUser, updateAuthUser } from '@/features/auth/model/authSlice'
 import type { AuthUser } from '@/shared/types'
+import { LoadError } from '@/shared/ui/LoadError/LoadError'
 import styles from './ProfilePage.module.css'
 
 const genderOptions = [
@@ -90,6 +92,7 @@ export default function ProfilePage() {
     label: city.name,
   }))
   const filterStatus = useAppSelector(selectFilterStatus)
+  const filterError = useAppSelector(selectFilterError)
   const initialForm = getProfileForm(user)
   const [form, setForm] = useState(initialForm)
   const [avatarDraft, setAvatarDraft] = useState('')
@@ -180,6 +183,7 @@ export default function ProfilePage() {
 
         <div className={styles.userInfo}>
           <form className={styles.form} onSubmit={handleSave}>
+            {filterStatus === 'failed' && <LoadError message={filterError || 'Не удалось загрузить фильтры'} />}
             <div className={styles.inputContainer}>
               <div className={styles.privateInfo}>
                 <EmailInput

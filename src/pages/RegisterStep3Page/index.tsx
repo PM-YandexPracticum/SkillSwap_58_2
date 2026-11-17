@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
   loadFilterOptions,
   selectCategoryOptions,
+  selectFilterError,
   selectFilterStatus,
 } from '@/features/catalog-filter/model/filterSlice'
 import {
@@ -33,6 +34,7 @@ import {
 } from '@/features/registration/lib/images'
 import Pencil from '@/shared/assets/icons/Pencil.svg?react'
 import schoolBoard from '@/shared/assets/images/SchoolBoard.svg'
+import { LoadError } from '@/shared/ui/LoadError/LoadError'
 import styles from './RegisterStep3Page.module.css'
 
 export default function RegisterStep3Page() {
@@ -42,6 +44,7 @@ export default function RegisterStep3Page() {
   const draft = useAppSelector(selectRegistrationDraft)
   const categories = useAppSelector(selectCategoryOptions)
   const filterStatus = useAppSelector(selectFilterStatus)
+  const filterError = useAppSelector(selectFilterError)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [skillName, setSkillName] = useState(draft.skillName)
@@ -164,6 +167,7 @@ export default function RegisterStep3Page() {
       <main className={styles.content}>
         <section className={styles.card}>
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            {filterStatus === 'failed' && <LoadError message={filterError || 'Не удалось загрузить фильтры'} />}
             <Input
               containerClassName={styles.input}
               label="Название навыка"

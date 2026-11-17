@@ -1,10 +1,8 @@
 import type { City } from '@/shared/types'
 
-const BASE_URL = '/db'
+import { fetchMockData } from './fetchMockData'
 
 export async function fetchCities(): Promise<City[]> {
-  const response = await fetch(`${BASE_URL}/cities.json`)
-  if (!response.ok) throw new Error('Failed to fetch cities')
-  const data: { cities: City[] } = await response.json()
+  const data = await fetchMockData<{ cities: City[] }>('cities.json', 'Не удалось загрузить города')
   return data.cities
 }

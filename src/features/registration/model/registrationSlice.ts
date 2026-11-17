@@ -91,11 +91,11 @@ export const completeRegistration = createAsyncThunk<
 >('registration/complete', async (_, { getState, dispatch, rejectWithValue }) => {
   const { draft } = getState().registration
 
-  let mockUsers: UserProfile[] = []
+  let mockUsers: UserProfile[]
   try {
     mockUsers = await fetchUserProfiles()
   } catch {
-    // без моков id посчитаем только по зарегистрированным
+    return rejectWithValue(SAVE_ERROR)
   }
   const registered = getRegisteredUsers()
   const id =

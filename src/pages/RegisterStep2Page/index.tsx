@@ -17,6 +17,7 @@ import {
   loadFilterOptions,
   selectCategoryOptions,
   selectCityOptions,
+  selectFilterError,
   selectFilterStatus,
 } from '@/features/catalog-filter/model/filterSlice'
 import {
@@ -29,6 +30,7 @@ import {
 } from '@/features/registration/lib/categories'
 import AddIcon from '@/shared/assets/icons/Add.svg?react'
 import userSpeech from '@/shared/assets/images/UserSpeech.svg'
+import { LoadError } from '@/shared/ui/LoadError/LoadError'
 import styles from './RegisterStep2Page.module.css'
 
 const GENDER_OPTIONS = [
@@ -44,6 +46,7 @@ export default function RegisterStep2Page() {
   const categories = useAppSelector(selectCategoryOptions)
   const cities = useAppSelector(selectCityOptions)
   const filterStatus = useAppSelector(selectFilterStatus)
+  const filterError = useAppSelector(selectFilterError)
 
   const [avatarUrl, setAvatarUrl] = useState(draft.avatar)
   const [name, setName] = useState(draft.name)
@@ -132,6 +135,7 @@ export default function RegisterStep2Page() {
       <main className={styles.content}>
         <section className={styles.card}>
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            {filterStatus === 'failed' && <LoadError message={filterError || 'Не удалось загрузить фильтры'} />}
             <div className={styles.avatar}>
               <AvatarUploader
                 size={52}

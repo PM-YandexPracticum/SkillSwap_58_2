@@ -12,6 +12,7 @@ export type UsersStatus = 'idle' | 'loading' | 'succeeded' | 'failed'
 export interface UsersState {
   items: UserProfile[]
   status: UsersStatus
+  error: string
   recommendedOrder: number[]
   recommendedCount: number
 }
@@ -19,6 +20,7 @@ export interface UsersState {
 export const initialState: UsersState = {
   items: [],
   status: 'idle',
+  error: '',
   recommendedOrder: [],
   recommendedCount: 0,
 }
@@ -32,11 +34,17 @@ const shuffle = <T>(array: T[]): T[] => {
   return result
 }
 
-export const loadUsers = createAsyncThunk('users/load', async () => {
-  // моки из users.json + зарегистрированные пользователи из localStorage
-  const items = [...(await fetchUserProfiles()), ...getRegisteredUsers().map(toProfile)]
-  return { items, recommendedOrder: shuffle(items.map((user) => user.id)) }
-})
+export const loadUsers = createAsyncThunk.withTypes<{ state: { users: UsersState } }>()(
+  'users/load',
+  async () => {
+    const items = [...(await fetchUserProfiles()), ...getRegisteredUsers().map(toProfile)]
+    return { items, recommendedOrder: shuffle(items.map((user) => user.id)) }
+  },
+  {
+    condition: (_, { getState }) =>
+      getState().users.status !== 'loading',
+  },
+)
 
 const usersSlice = createSlice({
   name: 'users',
@@ -61,6 +69,7 @@ const usersSlice = createSlice({
     builder
       .addCase(loadUsers.pending, (state) => {
         state.status = 'loading'
+        state.error = ''
       })
       .addCase(loadUsers.fulfilled, (state, action) => {
         state.status = 'succeeded'
@@ -68,8 +77,9 @@ const usersSlice = createSlice({
         state.recommendedOrder = action.payload.recommendedOrder
         state.recommendedCount = Math.min(RECOMMENDED_STEP, action.payload.recommendedOrder.length)
       })
-      .addCase(loadUsers.rejected, (state) => {
+      .addCase(loadUsers.rejected, (state, action) => {
         state.status = 'failed'
+        state.error = action.error?.message || 'Не удалось загрузить пользователей'
       })
   },
 })
@@ -106,3 +116,4 @@ export const selectHasMoreRecommended = (state: StateWithUsers) =>
   state.users.recommendedCount < state.users.recommendedOrder.length
 
 export default usersSlice.reducer
+export const selectUsersError = (state: StateWithUsers) => state.users.error

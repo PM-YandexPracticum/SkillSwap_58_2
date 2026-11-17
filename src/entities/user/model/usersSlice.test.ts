@@ -49,8 +49,14 @@ describe('usersSlice', () => {
     expect(state.recommendedCount).toBe(RECOMMENDED_STEP)
   })
 
-  it('ставит статус failed при ошибке', () => {
-    expect(reducer(initialState, { type: loadUsers.rejected.type }).status).toBe('failed')
+  it('сохраняет причину ошибки и очищает её при новой загрузке', () => {
+    const message = 'Не удалось загрузить пользователей'
+    const failed = reducer(initialState, loadUsers.rejected(new Error(message), 'request'))
+    expect(failed).toMatchObject({ status: 'failed', error: message })
+    expect(reducer(failed, loadUsers.pending('retry'))).toMatchObject({
+      status: 'loading',
+      error: '',
+    })
   })
 
   it('популярное: сортировка по убыванию лайков', () => {
