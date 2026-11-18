@@ -118,6 +118,29 @@
   z-index: 10;
 }
 
+.subcategories {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.selectedSubcategories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.selectedLabel {
+  max-inline-size: 100%;
+  padding: 8px 12px;
+  background-color: var(--color-tag-counter);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 @media (width <= 1024px) {
   .content {
     flex-direction: column;

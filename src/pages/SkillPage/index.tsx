@@ -13,6 +13,7 @@ import { useFavorite } from '@/features/auth/model/useFavorite'
 import { selectIsAuth } from '@/features/auth/model/authSlice'
 import { proposeExchange, selectProposedTo } from '@/features/exchange/model/exchangeSlice'
 import { loadUsers, selectUsers, selectUsersError, selectUsersStatus } from '@/entities/user/model/usersSlice'
+import { getSimilarUsers } from '@/entities/user/lib/getSimilarUsers'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { Toast } from '@/shared/ui/Toast'
 import { ROUTES } from '@/shared/lib/constants'
@@ -63,7 +64,7 @@ export default function SkillPage() {
 
   if (!user) return <Navigate to={NOT_FOUND_PATH} replace />
 
-  const similarUsers = users.filter((item) => item.id !== user.id).slice(0, SIMILAR_LIMIT)
+  const similarUsers = getSimilarUsers(users, user, SIMILAR_LIMIT)
 
   return (
     <SkillPageContent
@@ -130,21 +131,23 @@ function SkillPageContent({ user, similarUsers, filterError, categories }: Skill
         />
       </div>
 
-      <SliderSection title="Похожие предложения">
-        {similarUsers.map((item) => {
-          const similarProps = toSkillCardProps(item, categories)
-          return (
-            <SkillCard
-              key={item.id}
-              {...similarProps}
-              user={{ ...similarProps.user, ...getLikeProps(item.id) }}
-              onDetailsClick={() => {
-                navigate(generatePath(ROUTES.SKILL, {id: item.id.toString()}))
-              }}
-            />
-          )
-        })}
-      </SliderSection>
+      {similarUsers.length > 0 && (
+        <SliderSection title="Похожие предложения">
+          {similarUsers.map((item) => {
+            const similarProps = toSkillCardProps(item, categories)
+            return (
+              <SkillCard
+                key={item.id}
+                {...similarProps}
+                user={{ ...similarProps.user, ...getLikeProps(item.id) }}
+                onDetailsClick={() => {
+                  navigate(generatePath(ROUTES.SKILL, {id: item.id.toString()}))
+                }}
+              />
+            )
+          })}
+        </SliderSection>
+      )}
 
       <ExchangeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
