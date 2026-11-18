@@ -3,7 +3,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background-color: #fff;
+  background-color: var(--color-surface);
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -12,7 +12,7 @@
   font-weight: 400;
   line-height: var(--line-height-base, 24px);
   letter-spacing: 0.02em;
-  color: var(--color-text-primary, #253017);
+  color: var(--color-text-primary);
   transition: opacity 0.2s ease;
 }
 
@@ -37,7 +37,7 @@
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--color-accent, #abd27a);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 12px;
 }

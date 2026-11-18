@@ -7,7 +7,7 @@
   max-width: 100%;
   padding: 48px 60px;
   text-align: center;
-  color: #253017;
+  color: var(--color-text-primary);
   font-family: Roboto, var(--font-sans);
 }
 

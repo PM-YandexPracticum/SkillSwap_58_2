@@ -11,7 +11,7 @@
   font-family: var(--font-family-main, 'Roboto', sans-serif);
   font-size: 18px;
   font-weight: 600;
-  color: var(--color-text-primary, #253017);
+  color: var(--color-text-primary);
 }
 
 .tree {

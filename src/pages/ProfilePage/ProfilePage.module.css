@@ -16,7 +16,7 @@
   border-radius: 24px;
   padding: 40px;
   list-style: none;
-  background-color: #fff;
+  background-color: var(--color-surface);
 }
 
 .icon path {
@@ -24,7 +24,7 @@
 }
 
 .passwordLink {
-  color: #508826;
+  color: var(--color-accent-text);
   font-family: Roboto, sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -41,6 +41,7 @@
 
 .inputIcon {
   cursor: pointer;
+  color: var(--color-text-muted);
 }
 
 .passwordContainer {
@@ -63,11 +64,11 @@
 }
 
 .sidebar li:hover {
-  background-color: #DEEBC5;
+  background-color: var(--color-surface-hover);
 }
 
 .sidebar .active {
-  background-color: #DEEBC5;
+  background-color: var(--color-surface-hover);
 }
 
 .userInfo {
@@ -75,7 +76,7 @@
   gap: 196px;
   border-radius: 24px 24px 0 0;
   padding: 60px;
-  background-color: #fff;
+  background-color: var(--color-surface);
 }
 
 .form {
@@ -97,7 +98,7 @@
 }
 
 .nameInput {
-  border: 1px solid #69735D;
+  border: 1px solid var(--color-text-muted);
 }
 
 .button {
@@ -111,11 +112,11 @@
 }
 
 .form .selector ul {
-  background-color: #fff;
+  background-color: var(--color-surface);
 }
 
 .error {
   margin: 0;
-  color: #BF3920;
+  color: var(--color-danger);
   font-size: 14px;
 }

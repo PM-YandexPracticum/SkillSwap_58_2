@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import styles from "./SkillLabel.module.css";
 
 interface SkillLabelProps {
@@ -23,7 +24,7 @@ export const SkillLabel = ({
     return (
         <span
         className={`${styles.label} ${className}`}
-        style={{backgroundColor: color}}
+        style={{'--skill-label-color': color} as CSSProperties}
         >
             <span>{content}</span>
         </span>

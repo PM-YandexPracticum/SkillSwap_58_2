@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   min-block-size: 100vh;
-  background-color: #f9faf7;
+  background-color: var(--color-page);
 }
 
 .header {
@@ -31,7 +31,7 @@
   min-block-size: 692px;
   padding: 60px;
   border-radius: 12px;
-  background-color: #fff;
+  background-color: var(--color-surface);
 }
 
 .form {
@@ -67,6 +67,8 @@
 .illustration {
   inline-size: 300px;
   block-size: 300px;
+  border-radius: 12px;
+  background-color: var(--color-illustration-surface);
 }
 
 .text {
@@ -80,13 +82,13 @@
   font-size: 24px;
   font-weight: 500;
   line-height: 28px;
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .description {
   font-size: 16px;
   line-height: 24px;
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 @media (width <= 1024px) {
@@ -104,5 +106,5 @@
 .error {
   font-size: 12px;
   line-height: 16px;
-  color: #bf3920;
+  color: var(--color-danger);
 }

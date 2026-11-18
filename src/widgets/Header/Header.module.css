@@ -9,8 +9,8 @@
   gap: 32px;
   padding-block: 36px 20px;
   padding-inline: max(36px, (100% - 1368px) / 2);
-  background-color: #f9faf7;
-  color: #253017;
+  background-color: var(--color-page);
+  color: var(--color-text-primary);
 }
 
 .menu {
@@ -42,18 +42,18 @@
   width: 24px;
   height: 24px;
   padding: 0;
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .iconButton:focus-visible {
-  outline: 2px solid #abd27a;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* Страница избранного открыта — сердечко зелёное, как в макете */
 .iconButtonActive {
-  color: #abd27a;
+  color: var(--color-accent);
 }
 
 .iconButtonActive path {
@@ -92,11 +92,11 @@
   font-family: Roboto, var(--font-sans);
   font-size: 16px;
   line-height: 24px;
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .userButton:focus-visible {
-  outline: 2px solid #abd27a;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 24px;
 }
@@ -112,9 +112,9 @@
   gap: 24px;
   inline-size: 260px;
   padding: 40px;
-  border: 1px solid #b2b9a9;
+  border: 1px solid var(--color-control-border);
   border-radius: 12px;
-  background-color: #fff;
+  background-color: var(--color-surface);
 }
 
 .menuItem {
@@ -126,7 +126,7 @@
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
-  color: #253017;
+  color: var(--color-text-primary);
   text-align: start;
 }
 
@@ -166,7 +166,7 @@
   inline-size: 8px;
   block-size: 8px;
   border-radius: 50%;
-  background-color: #e43a3a;
+  background-color: var(--color-validation);
 }
 
 .notificationsMenu {
@@ -182,11 +182,11 @@
   box-sizing: border-box;
   padding: 60px;
   overflow-y: auto;
-  border: 1px solid #b2b9a9;
+  border: 1px solid var(--color-control-border);
   border-radius: 24px;
-  background-color: #fff;
+  background-color: var(--color-surface);
   font-family: Roboto, var(--font-sans);
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .notificationsSection {
@@ -254,14 +254,14 @@
   flex-shrink: 0;
   font-size: 16px;
   line-height: 24px;
-  color: #69735d;
+  color: var(--color-text-muted);
 }
 
 .notificationsEmpty {
   margin: 0;
   font-size: 16px;
   line-height: 24px;
-  color: #69735d;
+  color: var(--color-text-muted);
 }
 
 .textButton {
@@ -270,7 +270,7 @@
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
-  color: #508826;
+  color: var(--color-accent-text);
   cursor: pointer;
 }
 

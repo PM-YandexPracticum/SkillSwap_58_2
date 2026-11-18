@@ -3,11 +3,11 @@
 }
 
 .formContainer {
-  --input-border-color: #69735d;
+  --input-border-color: var(--color-text-muted);
 }
 
 .dateInput input {
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .calendarButton {
@@ -26,5 +26,5 @@
 }
 
 .calendarButton:hover svg path {
-  fill: #81e901;
+  fill: var(--color-input-icon);
 }

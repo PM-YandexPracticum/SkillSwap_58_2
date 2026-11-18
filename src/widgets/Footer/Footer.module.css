@@ -6,8 +6,8 @@
   gap: 20px 24px;
   padding-block: 32px;
   padding-inline: max(36px, (100% - 1368px) / 2);
-  color: #253017;
-  background-color: #fff;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
   font-family: Roboto, var(--font-sans);
   font-size: 16px;
   font-weight: 400;
@@ -56,7 +56,7 @@
 }
 
 .link:focus-visible {
-  outline: 2px solid #abd27a;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -64,7 +64,7 @@
 .copyright {
   grid-column: 1 / -1;
   margin: 12px 0 0;
-  color: #69735d;
+  color: var(--color-text-muted);
   font-size: 12px;
   line-height: 16px;
 }

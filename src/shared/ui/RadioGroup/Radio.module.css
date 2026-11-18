@@ -6,7 +6,7 @@
   font-family: var(--font-family-main, 'Roboto', sans-serif);
   font-size: var(--font-size-base, 16px);
   line-height: var(--line-height-base, 24px);
-  color: var(--color-text-primary, #253017);
+  color: var(--color-text-primary);
 }
 
 .label {
@@ -31,7 +31,7 @@
   flex-shrink: 0;
   width: 20px;
   height: 20px;
-  border: 2px solid #000;
+  border: 2px solid var(--color-radio-border);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -45,12 +45,12 @@
   max-width: 10px;
   max-height: 10px;
   border-radius: 50%;
-  background-color: #508826;
+  background-color: var(--color-accent-text);
   opacity: 0;
 }
 
 .hidden:checked + .pseudoradio {
-  border-color: #508826;
+  border-color: var(--color-accent-text);
 }
 
 .hidden:checked + .pseudoradio::after {

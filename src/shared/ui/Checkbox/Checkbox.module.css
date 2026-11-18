@@ -8,7 +8,7 @@
   font-family: var(--font-family-main, 'Roboto', sans-serif);
   font-size: var(--font-size-base, 16px);
   line-height: var(--line-height-base, 24px);
-  color: var(--color-text-primary, #253017);
+  color: var(--color-text-primary);
 }
 
 .input {
@@ -26,7 +26,7 @@
   inline-size: 24px;
   block-size: 24px;
   transition: color 0.2s ease;
-  color: var(--color-text-primary, #253017); 
+  color: var(--color-text-primary); 
 }
 
 .visual svg {
@@ -35,23 +35,23 @@
 }
 
 .input:checked:not(:indeterminate) + .visual {
-  color: var(--color-accent, #abd27a);
+  color: var(--color-accent);
 }
 
 .input:indeterminate + .visual {
-  color: var(--color-accent, #abd27a);
+  color: var(--color-accent);
 }
 
 .wrapper:hover .input:not(:checked, :indeterminate, :disabled) + .visual {
-  color: var(--color-accent, #abd27a);
+  color: var(--color-accent);
 }
 
 .wrapper:hover .input:disabled + .visual {
-  color: var(--color-text-primary, #253017);
+  color: var(--color-text-primary);
 }
 
 .input:focus-visible + .visual {
-  outline: 2px solid var(--color-accent, #abd27a);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 6px;
 }

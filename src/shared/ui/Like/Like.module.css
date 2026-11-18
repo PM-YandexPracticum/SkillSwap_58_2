@@ -41,7 +41,7 @@
 }
 
 .button:hover svg path {
-  stroke: #abd27a;
+  stroke: var(--color-accent);
   transition-duration: 0.3s;
 }
 
@@ -50,7 +50,7 @@
 }
 
 .button:focus-visible {
-  outline: solid 1px #253017;
+  outline: solid 1px var(--color-text-primary);
 }
 
 .button:active svg {
@@ -59,8 +59,8 @@
 }
 
 .isliked {
-  --contour-color: #abd27a;
-  --heart-color: #abd27a;
+  --contour-color: var(--color-accent);
+  --heart-color: var(--color-accent);
 }
 
 .counter {
@@ -70,6 +70,6 @@
 }
 
 :root {
-  --contour-color: #253017;
+  --contour-color: var(--color-text-primary);
   --heart-color: transparent;
 }

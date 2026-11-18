@@ -4,7 +4,8 @@
     border-radius: 20px;
     font-size: 12px;
     line-height: 16px;
-    color: #253017;
+    color: var(--color-text-primary);
+    background-color: color-mix(in srgb, var(--skill-label-color) var(--skill-label-strength), var(--color-surface));
     font-family: Roboto, var(--font-sans, sans-serif);
     letter-spacing: 2%;
 }

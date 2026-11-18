@@ -15,7 +15,7 @@
 .title {
   font-size: 24px;
   font-weight: 500;
-  color: #253017;
+  color: var(--color-text-primary);
   margin-bottom: 4px;
   font-family: var(--font-sans, sans-serif);
 }
@@ -23,7 +23,7 @@
 .subtitle {
   font-size: 16px;
   font-weight: 400;
-  color: #253017;
+  color: var(--color-text-primary);
   margin-bottom: 32px;
   font-family: Roboto, var(--font-sans);
 }

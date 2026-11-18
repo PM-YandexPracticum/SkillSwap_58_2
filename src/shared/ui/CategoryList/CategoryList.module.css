@@ -4,7 +4,7 @@
 
   display: flex;
   gap: 12px;
-  color: #253017;
+  color: var(--color-text-primary);
   font-family: Roboto, var(--font-sans);
 }
 
@@ -15,6 +15,7 @@
 }
 
 .icon {
+  color: var(--color-on-accent);
   display: inline-flex;
   flex-shrink: 0;
   justify-content: center;

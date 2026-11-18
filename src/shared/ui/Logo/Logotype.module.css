@@ -6,7 +6,7 @@
     background: none;
     cursor: pointer;
     padding: 0;
-    color: #ABD27A;
+    color: var(--color-accent);
 }
 
 .logo svg {
@@ -21,5 +21,5 @@
     font-weight: 600;
     line-height: 32px;
     letter-spacing: -0.011em;
-    color: #253017;
+    color: var(--color-text-primary);
 }

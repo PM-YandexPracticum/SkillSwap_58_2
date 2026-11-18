@@ -24,7 +24,7 @@
   align-items: flex-start;
   gap: 24px;
   font-family: Roboto, var(--font-sans);
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .title {

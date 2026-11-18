@@ -12,7 +12,7 @@
   line-height: 28px;
   letter-spacing: -0.011em;
   text-align: center;
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .bars {
@@ -30,9 +30,9 @@
 }
 
 .bar {
-  background-color: #e4e8df;
+  background-color: var(--color-surface-muted);
 }
 
 .barActive {
-  background-color: #abd27a;
+  background-color: var(--color-accent);
 }

@@ -34,6 +34,7 @@ import CalendarIcon from './Calendar.svg?react';
 //Пользователь и тема
 import UserIcon from './User.svg?react';
 import MoonIcon from './Moon.svg?react';
+import SunIcon from './Sun.svg?react';
 
 //Медия
 import LogoIcon from './Logo.svg?react';
@@ -183,6 +184,10 @@ const IconsGallery = () => {
           <div style={{ textAlign: 'center' }}>
             <MoonIcon style={iconStyle} />
             <p style={labelStyle}>Moon</p>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <SunIcon style={iconStyle} />
+            <p style={labelStyle}>Sun</p>
           </div>
         </div>
       </div>

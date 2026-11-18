@@ -8,14 +8,14 @@
   align-items: center;
   gap: 16px;
   padding: 12px 16px;
-  border: 1px solid #abd27a;
+  border: 1px solid var(--color-accent);
   border-radius: 12px;
-  background-color: #fff;
+  background-color: var(--color-surface);
   box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
   font-family: Roboto, var(--font-sans);
   font-size: 16px;
   line-height: 24px;
-  color: #253017;
+  color: var(--color-text-primary);
   animation: toast-in 0.25s ease;
 }
 
@@ -28,13 +28,13 @@
   padding: 4px;
   border: none;
   background: none;
-  color: #69735d;
+  color: var(--color-text-muted);
   cursor: pointer;
   transition: color 0.15s ease;
 }
 
 .close:hover {
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 @keyframes toast-in {

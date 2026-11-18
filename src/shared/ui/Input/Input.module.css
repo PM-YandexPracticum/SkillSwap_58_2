@@ -6,14 +6,14 @@
 
 .label {
   font-size: 16px;
-  color: #253017;
+  color: var(--color-text-primary);
   margin-bottom: 4px;
 }
 
 .container {
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: var(--color-surface);
   border: 1px solid var(--input-border-color, transparent);
   border-radius: 12px;
   padding: 12px;
@@ -22,19 +22,19 @@
 }
 
 .container:hover {
-  background-color: #fff;
-  border-color: var(--input-focus-border-color, #ABD27A);
+  background-color: var(--color-surface);
+  border-color: var(--input-focus-border-color, var(--color-accent));
   box-shadow: 0 2px 8px rgb(0 0 0 / 5%);
 }
 
 .container:focus-within {
-  background-color: #fff;
-  border-color: var(--input-focus-border-color, #ABD27A);
+  background-color: var(--color-surface);
+  border-color: var(--input-focus-border-color, var(--color-accent));
   box-shadow: 0 2px 8px rgb(0 0 0 / 5%);
 }
 
 .container.error {
-  border-color: #BF3920;
+  border-color: var(--color-danger);
 }
 
 .input {
@@ -44,14 +44,14 @@
   background: transparent;
   font-size: 16px;
   line-height: 24px;
-  color: #69735D;
+  color: var(--color-text-muted);
   padding: 0;
   margin: 0;
   width: 100%;
 }
 
 .input::placeholder {
-  color: #69735D;
+  color: var(--color-text-muted);
 }
 
 .leftIcon,
@@ -85,7 +85,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #69735D;
+  color: var(--color-text-muted);
   padding: 0;
   width: 15px;
   height: 15px;
@@ -97,18 +97,18 @@
 }
 
 .clearButton:hover {
-  background-color: #ebe8e8;
-  color: #4e4e4e;
+  background-color: var(--color-surface-neutral);
+  color: var(--color-text-hover);
 }
 
 .helperText {
   margin-top: 4px;
   font-size: 13px;
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .errorText {
   margin-top: 4px;
   font-size: 13px;
-  color: #BF3920 ;
+  color: var(--color-danger) ;
 }
