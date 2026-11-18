@@ -5,6 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { MainLayout } from './MainLayout'
+import { ThemeProvider } from '@/app/providers/ThemeProvider'
 import filterReducer from '@/features/catalog-filter/model/filterSlice'
 import usersReducer from '@/entities/user/model/usersSlice'
 import authReducer from '@/features/auth/model/authSlice'
@@ -19,15 +20,17 @@ describe('MainLayout', () => {
     })
 
     render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={['/']}>
-          <Routes>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<main>Содержимое</main>} />
-            </Route>
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
+      <ThemeProvider>
+        <Provider store={store}>
+          <MemoryRouter initialEntries={['/']}>
+            <Routes>
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<main>Содержимое</main>} />
+              </Route>
+            </Routes>
+          </MemoryRouter>
+        </Provider>
+      </ThemeProvider>,
     )
 
     const header = screen.getByText('Шапка')
@@ -45,15 +48,17 @@ describe('MainLayout', () => {
     const PendingPage = lazy(() => new Promise<never>(() => {}))
 
     render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={['/']}>
-          <Routes>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<PendingPage />} />
-            </Route>
-          </Routes>
-        </MemoryRouter>
-      </Provider>,
+      <ThemeProvider>
+        <Provider store={store}>
+          <MemoryRouter initialEntries={['/']}>
+            <Routes>
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<PendingPage />} />
+              </Route>
+            </Routes>
+          </MemoryRouter>
+        </Provider>
+      </ThemeProvider>,
     )
 
     const header = screen.getByText('Шапка')

@@ -47,6 +47,42 @@
   --color-border: #e5e7eb;
   --color-error: #ef4444;
   --color-success: #22c55e;
+  --color-page: #f9faf7;
+  --color-surface: #fff;
+  --color-surface-hover: #deebc5;
+  --color-surface-muted: #e4e8df;
+  --color-surface-neutral: #ebe8e8;
+  --color-upload-hover: #f8faf5;
+  --color-upload-active: #e8f0e0;
+  --color-upload-control: rgb(255 255 255 / 9%);
+  --color-upload-button-hover: rgb(105 115 93 / 8%);
+  --color-text-primary: #253017;
+  --color-text-muted: #69735d;
+  --color-text-subtle: #58664a;
+  --color-text-input: #3f3f3f;
+  --color-text-hover: #4e4e4e;
+  --color-placeholder: #9ca197;
+  --color-control-border: #b2b9a9;
+  --color-radio-border: #000;
+  --color-accent: #abd27a;
+  --color-accent-hover: #deebc5;
+  --color-accent-active: #508826;
+  --color-accent-text: #508826;
+  --color-accent-text-hover: #416e1e;
+  --color-on-accent: #253017;
+  --color-on-accent-active: #fff;
+  --color-danger: #bf3920;
+  --color-validation: #e43a3a;
+  --color-input-icon: #81e901;
+  --color-tag-counter: #e8ecf7;
+  --color-overlay: rgb(142 142 142 / 60%);
+  --color-image-control: rgb(255 255 255 / 80%);
+  --color-image-overlay: rgb(255 255 255 / 50%);
+  --color-image-remove: rgb(255 255 255 / 85%);
+  --color-illustration-surface: transparent;
+  --skill-label-strength: 100%;
+
+  color-scheme: light;
 
   /* Spacing */
   --space-xs: 4px;
@@ -74,13 +110,43 @@
   --shadow-md: 0 4px 6px rgb(0 0 0 / 7%);
 }
 
-/* Тёмная тема — добавить поддержку через data-theme="dark" */
 [data-theme='dark'] {
   --color-bg: #0f172a;
   --color-bg-secondary: #1e293b;
   --color-text: #f1f5f9;
   --color-text-secondary: #94a3b8;
   --color-border: #334155;
+  --color-page: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-hover: #304437;
+  --color-surface-muted: #334155;
+  --color-surface-neutral: #334155;
+  --color-upload-hover: #263647;
+  --color-upload-active: #304437;
+  --color-upload-control: rgb(30 41 59 / 90%);
+  --color-upload-button-hover: rgb(171 210 122 / 12%);
+  --color-text-primary: #f1f5f9;
+  --color-text-muted: #a8b5c6;
+  --color-text-subtle: #a8b5c6;
+  --color-text-input: #f1f5f9;
+  --color-text-hover: #f1f5f9;
+  --color-placeholder: #a8b5c6;
+  --color-control-border: #64748b;
+  --color-radio-border: #a8b5c6;
+  --color-accent-text: #abd27a;
+  --color-accent-active: #416e1e;
+  --color-accent-text-hover: #deebc5;
+  --color-danger: #ff9a88;
+  --color-validation: #ff9a88;
+  --color-tag-counter: #364257;
+  --color-overlay: rgb(0 0 0 / 65%);
+  --color-image-control: rgb(30 41 59 / 90%);
+  --color-image-overlay: rgb(15 23 42 / 70%);
+  --color-image-remove: rgb(30 41 59 / 90%);
+  --color-illustration-surface: #deebc5;
+  --skill-label-strength: 20%;
+
+  color-scheme: dark;
 }
 
 /* ─── Reset ──────────────────────────────────────────────── */

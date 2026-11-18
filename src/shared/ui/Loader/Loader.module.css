@@ -3,8 +3,8 @@
 
   inline-size: var(--loader-size);
   block-size: var(--loader-size);
-  border: calc(var(--loader-size) / 10) solid #deebc5;
-  border-block-start-color: #abd27a;
+  border: calc(var(--loader-size) / 10) solid var(--color-surface-hover);
+  border-block-start-color: var(--color-accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }

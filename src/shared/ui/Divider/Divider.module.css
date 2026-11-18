@@ -1,7 +1,7 @@
 .divider {
   width: 100%;
   height: 1px;
-  background-color: #e4e8df;
+  background-color: var(--color-surface-muted);
 }
 
 .labeled {
@@ -19,5 +19,5 @@
 .label {
   font-size: 16px;
   line-height: 24px;
-  color: #253017;
+  color: var(--color-text-primary);
 }

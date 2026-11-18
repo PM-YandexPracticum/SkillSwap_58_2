@@ -10,13 +10,13 @@
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.02em;
-  color: #508826;
+  color: var(--color-accent-text);
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .text {
-  color: #508826;
+  color: var(--color-accent-text);
   transition: color 0.2s ease;
 }
 
@@ -26,7 +26,7 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  color: #253017;
+  color: var(--color-text-primary);
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
@@ -41,5 +41,5 @@
 
 .linkButton:hover .text,
 .linkButton:hover .iconWrapper {
-  color: #ABD27A;
+  color: var(--color-accent);
 }

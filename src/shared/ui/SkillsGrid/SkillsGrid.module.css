@@ -4,7 +4,7 @@
   border-radius: 12px;
   padding: 60px 60px 20px;
   list-style: none;
-  background-color: #fff;
+  background-color: var(--color-surface);
   column-count: 2;
 }
 

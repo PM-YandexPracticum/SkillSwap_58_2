@@ -7,7 +7,7 @@
 
 .label {
   font-size: 16px;
-  color: #253017;
+  color: var(--color-text-primary);
   margin-bottom: 4px;
   font-family: var(--font-sans, sans-serif);
 }
@@ -15,9 +15,9 @@
 .container {
   position: relative;
   width: 100%;
-  border: 1px solid #69735d;
+  border: 1px solid var(--color-text-muted);
   border-radius: 12px;
-  background-color: #fff;
+  background-color: var(--color-surface);
 }
 
 .trigger {
@@ -32,7 +32,7 @@
   font-family: var(--font-sans, sans-serif);
   font-size: 16px;
   line-height: 24px;
-  color: #69735d;
+  color: var(--color-text-muted);
   border-radius: 12px;
 }
 
@@ -49,9 +49,9 @@
   top: calc(100% - 10px);
   left: -1px;
   right: -1px;
-  background-color: #fff;
+  background-color: var(--color-surface);
   border-radius: 0 0 12px 12px;
-  border: 1px solid #69735d;
+  border: 1px solid var(--color-text-muted);
   border-top: none;
   padding: 8px 4px;
   list-style: none;
@@ -66,14 +66,14 @@
   cursor: pointer;
   font-size: 16px;
   line-height: 24px;
-  color: #253017;
+  color: var(--color-text-primary);
   font-family: var(--font-sans, sans-serif);
 }
 
 .arrow {
   width: 20px;
   height: 20px;
-  color: #253017;
+  color: var(--color-text-primary);
   transition: transform 0.2s ease;
 }
 

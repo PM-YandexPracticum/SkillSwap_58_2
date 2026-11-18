@@ -5,8 +5,8 @@
   width: 324px;
   padding: 20px;
   border-radius: 12px;
-  background-color: #fff;
-  color: #253017;
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
   font-family: Roboto, var(--font-sans);
 }
 

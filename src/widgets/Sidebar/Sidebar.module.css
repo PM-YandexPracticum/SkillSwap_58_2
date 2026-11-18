@@ -6,7 +6,7 @@
   max-inline-size: 324px;
   padding: 20px;
   border-radius: 12px;
-  background-color: #fff;
+  background-color: var(--color-surface);
 }
 
 .header {
@@ -21,14 +21,14 @@
   font-size: 24px;
   line-height: 28px;
   font-weight: 500;
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .reset {
   padding: 0;
   border: 0;
   background: transparent;
-  color: #58664a;
+  color: var(--color-text-subtle);
   font: inherit;
   font-size: 14px;
   cursor: pointer;

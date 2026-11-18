@@ -7,6 +7,7 @@ import filterReducer from '@/features/catalog-filter/model/filterSlice'
 import usersReducer from '@/entities/user/model/usersSlice'
 import { LOCAL_STORAGE_KEYS } from '@/shared/lib/constants'
 import { AppRouter } from './RouterProvider'
+import { ThemeProvider } from './ThemeProvider'
 
 vi.mock('@/widgets/Header', () => ({ Header: () => <header>Шапка</header> }))
 vi.mock('@/widgets/Footer', () => ({ Footer: () => <footer>Футер</footer> }))
@@ -30,9 +31,11 @@ const openPage = (path: string, isAuth = false) => {
   })
   window.history.pushState({}, '', path)
   render(
-    <Provider store={store}>
-      <AppRouter />
-    </Provider>,
+    <ThemeProvider>
+      <Provider store={store}>
+        <AppRouter />
+      </Provider>
+    </ThemeProvider>,
   )
 }
 

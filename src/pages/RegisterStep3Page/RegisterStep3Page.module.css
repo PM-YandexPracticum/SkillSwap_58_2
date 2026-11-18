@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   min-block-size: 100vh;
-  background-color: #f9faf7;
+  background-color: var(--color-page);
 }
 
 .header {
@@ -35,7 +35,7 @@
   max-inline-size: 556px;
   padding: 40px 60px;
   border-radius: 12px;
-  background-color: #fff;
+  background-color: var(--color-surface);
 }
 
 .form {
@@ -62,10 +62,12 @@
 .illustration {
   inline-size: 300px;
   block-size: 300px;
+  border-radius: 12px;
+  background-color: var(--color-illustration-surface);
 }
 
 .input {
-  border: 1px solid #69735D;
+  border: 1px solid var(--color-text-muted);
 }
 
 .text {
@@ -79,13 +81,13 @@
   font-size: 24px;
   font-weight: 500;
   line-height: 28px;
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .description {
   font-size: 16px;
   line-height: 24px;
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .headerModal {
@@ -127,7 +129,7 @@
 }
 
 .colorStepper span {
-  background-color: #69735D;
+  background-color: var(--color-text-muted);
 }
 
 .about {
@@ -150,7 +152,7 @@
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 2%;
-  color: #69735D
+  color: var(--color-text-muted)
 }
 
 .buttons {
@@ -181,7 +183,7 @@
   font-family: Roboto, var(--font-sans);
   font-size: 12px;
   line-height: 16px;
-  color: #69735d;
+  color: var(--color-text-muted);
 }
 
 .imageError {
@@ -189,7 +191,7 @@
   font-family: Roboto, var(--font-sans);
   font-size: 12px;
   line-height: 16px;
-  color: #e43a3a;
+  color: var(--color-validation);
 }
 
 .images {
@@ -226,8 +228,8 @@
   block-size: 20px;
   padding: 0;
   border-radius: 50%;
-  background-color: rgb(255 255 255 / 85%);
-  color: #253017;
+  background-color: var(--color-image-remove);
+  color: var(--color-text-primary);
   font-size: 14px;
   line-height: 1;
   cursor: pointer;
@@ -243,5 +245,5 @@
   font-family: Roboto, var(--font-sans);
   font-size: 12px;
   line-height: 16px;
-  color: #e43a3a;
+  color: var(--color-validation);
 }

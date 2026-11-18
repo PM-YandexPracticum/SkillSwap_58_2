@@ -4,7 +4,7 @@
 
 .description {
   font-family: var(--font-family-main, 'Jost', sans-serif);
-  color: var(--color-text-primary, #253017);
+  color: var(--color-text-primary);
   font-size: 20px;
   line-height: 24px;
   letter-spacing: -1.1%;

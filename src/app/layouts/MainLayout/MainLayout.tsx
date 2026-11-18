@@ -12,6 +12,7 @@ import {
 } from '@/features/exchange/model/exchangeSlice'
 import { Loader } from '@/shared/ui/Loader'
 import { ROUTES } from '@/shared/lib/constants'
+import { useTheme } from '@/app/providers/ThemeProvider'
 import styles from './MainLayout.module.css'
 
 const links = {
@@ -20,6 +21,7 @@ const links = {
 }
 
 export function MainLayout() {
+  const { theme, toggleTheme } = useTheme()
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useAppDispatch()
@@ -35,6 +37,8 @@ export function MainLayout() {
   return (
     <div className={styles.layout}>
       <Header
+        theme={theme}
+        onThemeToggle={toggleTheme}
         user={user}
         searchValue={searchQuery}
         onSearchChange={(query) => dispatch(setSearchQuery(query))}

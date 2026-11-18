@@ -8,6 +8,7 @@ import { SkillsModal } from '@/shared/ui/SkillsModal/SkillsModal'
 import { ROUTES } from '@/shared/lib/constants'
 import ChevronDownIcon from '@/shared/assets/icons/ChevronDown.svg?react'
 import MoonIcon from '@/shared/assets/icons/Moon.svg?react'
+import SunIcon from '@/shared/assets/icons/Sun.svg?react'
 import NotificationIcon from '@/shared/assets/icons/Notification.svg?react'
 import LikeIcon from '@/shared/assets/icons/Like.svg?react'
 import LogoutIcon from '@/shared/assets/icons/Logout.svg?react'
@@ -35,7 +36,7 @@ export interface HeaderProps {
   onSearchChange?: (query: string) => void
   onLoginClick?: () => void
   onRegisterClick?: () => void
-  /** Пока только иконка по макету, смена темы будет отдельной задачей */
+  theme?: 'light' | 'dark'
   onThemeToggle?: () => void
   /** Авторизованный пользователь. Если не передан — показываются кнопки входа и регистрации */
   user?: HeaderUser | null
@@ -115,6 +116,7 @@ export function Header({
   onLoginClick,
   onRegisterClick,
   onThemeToggle,
+  theme = 'light',
   user,
   onNotificationsClick,
   notifications = [],
@@ -153,9 +155,11 @@ export function Header({
         type="button"
         className={styles.iconButton}
         aria-label="Переключить тему"
+        aria-pressed={theme === 'dark'}
+        title={theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'}
         onClick={onThemeToggle}
       >
-        <MoonIcon aria-hidden="true" />
+        {theme === 'dark' ? <SunIcon aria-hidden="true" /> : <MoonIcon aria-hidden="true" />}
       </button>
       {user && (
         <>

@@ -32,17 +32,18 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background-color: rgb(255 255 255 / 80%);
-  color: #253017;
+  background-color: var(--color-image-control);
+  color: var(--color-text-primary);
   cursor: pointer;
 }
 
 .arrow:hover {
-  background-color: #deebc5;
+  background-color: var(--color-surface-hover);
 }
 
 .arrow:active {
-  background-color: #abd27a;
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
 }
 
 .prev {
@@ -87,8 +88,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background-color: rgb(255 255 255 / 50%);
-  color: #253017;
+  background-color: var(--color-image-overlay);
+  color: var(--color-text-primary);
   font-size: 16px;
   line-height: 24px;
   pointer-events: none;

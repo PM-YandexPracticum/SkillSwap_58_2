@@ -6,7 +6,7 @@
   font-family: var(--font-family-main, 'Roboto', sans-serif);
   font-size: 12px;
   line-height: 16px;
-  color: var(--color-text-primary, #253017);
+  color: var(--color-text-primary);
   letter-spacing: 2%;
 }
 

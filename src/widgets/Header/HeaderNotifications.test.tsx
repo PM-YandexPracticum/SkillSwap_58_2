@@ -6,6 +6,7 @@ import { Header, type HeaderNotification } from './Header'
 
 vi.mock('@/shared/assets/icons/ChevronDown.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Moon.svg?react', () => ({ default: () => null }))
+vi.mock('@/shared/assets/icons/Sun.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Notification.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Like.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Logout.svg?react', () => ({ default: () => null }))

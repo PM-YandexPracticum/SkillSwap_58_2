@@ -1,6 +1,6 @@
 .button {
-  --button-text: #253017;
-  --button-text-disabled: #69735d;
+  --button-text: var(--color-text-primary);
+  --button-text-disabled: var(--color-text-muted);
 
   display: inline-flex;
   align-items: center;
@@ -27,38 +27,40 @@
 }
 
 .primary {
-  background-color: #abd27a;
+  --button-text: var(--color-on-accent);
+
+  background-color: var(--color-accent);
 }
 
 .primary:hover:not(:disabled) {
-  background-color: #deebc5;
+  background-color: var(--color-accent-hover);
 }
 
 .primary:active:not(:disabled) {
-  background-color: #508826;
-  color: #fff;
+  background-color: var(--color-accent-active);
+  color: var(--color-on-accent-active);
 }
 
 .primary:disabled {
-  background-color: #e4e8df;
+  background-color: var(--color-surface-muted);
   color: var(--button-text-disabled);
 }
 
 .secondary {
-  background-color: #fff;
-  border-color: #abd27a;
+  background-color: var(--color-surface);
+  border-color: var(--color-accent);
 }
 
 .secondary:hover:not(:disabled) {
-  border-color: #deebc5;
+  border-color: var(--color-accent-hover);
   color: var(--button-text-disabled);
 }
 
 .secondary:active:not(:disabled) {
-  border-color: #508826;
+  border-color: var(--color-accent-text);
 }
 
 .secondary:disabled {
-  border-color: #e4e8df;
-  color: #9ca197;
+  border-color: var(--color-surface-muted);
+  color: var(--color-placeholder);
 }

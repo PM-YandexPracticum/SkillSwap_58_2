@@ -7,7 +7,7 @@
   height: var(--avatar-size);
   overflow: hidden;
   border-radius: 100px;
-  background-color: #e4e8df;
+  background-color: var(--color-surface-muted);
 }
 
 .image {
@@ -25,6 +25,6 @@
   font-family: Roboto, var(--font-sans);
   font-size: calc(var(--avatar-size) * 0.4);
   line-height: 1;
-  color: #253017;
+  color: var(--color-text-primary);
   user-select: none;
 }

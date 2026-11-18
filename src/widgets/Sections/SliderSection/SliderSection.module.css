@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 24px;
   font-family: Roboto, var(--font-sans);
-  color: #253017;
+  color: var(--color-text-primary);
 }
 
 .title {
@@ -29,19 +29,20 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background-color: #e4e8df;
-  color: #253017;
+  background-color: var(--color-surface-muted);
+  color: var(--color-text-primary);
   cursor: pointer;
   transform: translateY(-50%);
   transition: background-color 0.15s ease;
 }
 
 .arrow:hover {
-  background-color: #deebc5;
+  background-color: var(--color-surface-hover);
 }
 
 .arrow:active {
-  background-color: #abd27a;
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
 }
 
 .prev {

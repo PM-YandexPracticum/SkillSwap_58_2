@@ -1,6 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from './app/App'
+import { applyTheme, getInitialTheme } from './shared/lib/theme'
+
+applyTheme(getInitialTheme())
 
 const rootElement = document.getElementById('root')
 

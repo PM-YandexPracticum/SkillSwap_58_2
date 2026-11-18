@@ -3,14 +3,14 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background-color: #fff;
+  background-color: var(--color-surface);
   border-radius: 12px;
   font-family: Roboto, var(--font-sans, sans-serif);
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
   letter-spacing: 0.02em;
-  color: #253017;
+  color: var(--color-text-primary);
   white-space: nowrap;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .label:hover .cross {
-  color: #69735d;
+  color: var(--color-text-muted);
 }
 
 .cross:active {
@@ -42,7 +42,7 @@
 }
 
 .cross:focus-visible {
-  outline: 2px solid #abd27a;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 4px;
 }

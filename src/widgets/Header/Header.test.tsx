@@ -14,6 +14,7 @@ vi.mock('@/shared/assets/icons/Like.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Logout.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/ChevronDown.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Moon.svg?react', () => ({ default: () => null }))
+vi.mock('@/shared/assets/icons/Sun.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Logo.svg?react', () => ({ default: () => null }))
 vi.mock('@/shared/assets/icons/Search.svg?react', () => ({ default: () => null }))
 
@@ -30,6 +31,16 @@ const renderWithStore = (ui: React.ReactElement) => {
 }
 
 describe('Header', () => {
+  it('показывает состояние темы и вызывает переключение', async () => {
+    const onThemeToggle = vi.fn()
+    renderWithStore(<Header theme="dark" onThemeToggle={onThemeToggle} />)
+    const button = screen.getByRole('button', { name: 'Переключить тему' })
+    expect(button).toHaveAttribute('aria-pressed', 'true')
+    expect(button).toHaveAttribute('title', 'Включить светлую тему')
+    await userEvent.click(button)
+    expect(onThemeToggle).toHaveBeenCalledTimes(1)
+  })
+
   it('показывает логотип, меню, кнопки и переключатель темы', () => {
     renderWithStore(<Header />)
     expect(screen.getByText('SkillSwap')).toBeInTheDocument()
