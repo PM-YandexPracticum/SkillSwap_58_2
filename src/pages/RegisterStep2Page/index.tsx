@@ -12,6 +12,7 @@ import { Select } from '@/shared/ui/Select/Select'
 import { AvatarUploader } from '@/shared/ui/DownloadAvatar/AvatarUploader'
 import { Button } from '@/shared/ui/Button'
 import { MultiSelect } from '@/shared/ui/MultiSelect'
+import { FilterLabel } from '@/shared/ui/FilterLabel'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import {
   loadFilterOptions,
@@ -25,6 +26,7 @@ import {
   selectRegistrationDraft,
 } from '@/features/registration/model/registrationSlice'
 import {
+  findCategoryOf,
   getSubcategoriesOf,
   keepSubcategoriesOf,
 } from '@/features/registration/lib/categories'
@@ -53,7 +55,7 @@ export default function RegisterStep2Page() {
   const [birthDate, setBirthDate] = useState(draft.birthDate)
   const [gender, setGender] = useState(draft.gender)
   const [city, setCity] = useState(draft.city)
-  const [category, setCategory] = useState<string[]>(draft.learnCategories)
+  const [categoryFilter, setCategoryFilter] = useState<string[]>(draft.learnCategories)
   const [subcategory, setSubcategory] = useState<string[]>(draft.learnSubcategories)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -70,14 +72,26 @@ export default function RegisterStep2Page() {
     () => categories.map((item) => ({ id: item.category, label: item.category })),
     [categories],
   )
-  // Во втором списке — подкатегории только выбранных категорий
+  const category = useMemo(
+    () => [
+      ...new Set([
+        ...categoryFilter,
+        ...subcategory.map((item) => findCategoryOf(categories, item)).filter(Boolean),
+      ]),
+    ],
+    [categories, categoryFilter, subcategory],
+  )
   const subcategoryOptions = useMemo(
-    () => getSubcategoriesOf(categories, category).map((item) => ({ id: item, label: item })),
-    [categories, category],
+    () =>
+      getSubcategoriesOf(
+        categories,
+        categoryFilter.length > 0 ? categoryFilter : categories.map((item) => item.category),
+      ).map((item) => ({ id: item, label: item })),
+    [categories, categoryFilter],
   )
 
   const handleCategoryChange = (next: string[]) => {
-    setCategory(next)
+    setCategoryFilter(next)
     // сняли категорию — убираем и её подкатегории
     setSubcategory((prev) => keepSubcategoriesOf(categories, next, prev))
   }
@@ -188,14 +202,31 @@ export default function RegisterStep2Page() {
                 selectedIds={category}
                 onChange={handleCategoryChange}
               />
-              <MultiSelect
-                className={styles.select}
-                label="Подкатегория навыка, которому хотите научиться"
-                placeholder={category.length > 0 ? 'Выберите подкатегорию' : 'Сначала выберите категорию'}
-                options={subcategoryOptions}
-                selectedIds={subcategory}
-                onChange={setSubcategory}
-              />
+              <div className={styles.subcategories}>
+                <MultiSelect
+                  className={styles.select}
+                  label="Подкатегория навыка, которому хотите научиться"
+                  placeholder="Выберите подкатегорию"
+                  options={subcategoryOptions}
+                  selectedIds={subcategory}
+                  onChange={setSubcategory}
+                />
+                {subcategory.length > 0 && (
+                  <ul className={styles.selectedSubcategories} aria-label="Выбранные подкатегории">
+                    {subcategory.map((item) => (
+                      <li key={item}>
+                        <FilterLabel
+                          text={item}
+                          className={styles.selectedLabel}
+                          onRemove={() =>
+                            setSubcategory((prev) => prev.filter((value) => value !== item))
+                          }
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
 
               {isSubmitted && errors.length > 0 && (
                 <ul className={styles.errors} role="alert">
