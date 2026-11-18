@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { ReactNode } from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { configureStore } from '@reduxjs/toolkit'
 import { Provider } from 'react-redux'
@@ -35,7 +35,13 @@ vi.mock('@/widgets/Sections/SliderSection', () => ({
   ),
 }))
 
-const makeUser = (id: number, name: string, teach: string): UserProfile => ({
+const makeUser = (
+  id: number,
+  name: string,
+  teach: string,
+  category = 'Творчество и искусство',
+  subcategory = 'Музыка и звук',
+): UserProfile => ({
   id,
   name,
   avatar: `images/avatars/${id}.jpg`,
@@ -47,8 +53,8 @@ const makeUser = (id: number, name: string, teach: string): UserProfile => ({
   bio: `О себе: ${name}`,
   can_teach: {
     name: teach,
-    category: 'Творчество и искусство',
-    subcategory: 'Музыка и звук',
+    category,
+    subcategory,
     description: `Описание: ${teach}`,
     images: [`images/skills/${id}-1.jpg`, `images/skills/${id}-2.jpg`],
   },
@@ -57,8 +63,9 @@ const makeUser = (id: number, name: string, teach: string): UserProfile => ({
 
 const users = [
   makeUser(0, 'Иван', 'Игра на барабанах'),
-  makeUser(1, 'Илона', 'Английский язык'),
-  makeUser(2, 'Михаил', 'Фотография'),
+  makeUser(1, 'Илона', 'Английский язык', 'Иностранные языки', 'Английский'),
+  makeUser(2, 'Михаил', 'Фотография', 'Творчество и искусство', 'Фотография'),
+  makeUser(3, 'Анна', 'Игра на гитаре'),
 ]
 
 const renderPage = (path: string, usersStatus: 'succeeded' | 'failed' | 'idle' = 'succeeded') => {
@@ -121,13 +128,25 @@ describe('SkillPage', () => {
     )
   })
 
-  it('в «Похожих предложениях» показывает других пользователей, но не выбранного', () => {
+  it('в «Похожих предложениях» показывает людей из той же категории, но не выбранного', () => {
     renderPage('/skill/0')
 
     expect(screen.getByRole('heading', { name: 'Похожие предложения' })).toBeInTheDocument()
-    expect(screen.getAllByRole('article')).toHaveLength(2)
-    expect(screen.getByText('Илона')).toBeInTheDocument()
-    expect(screen.getByText('Михаил')).toBeInTheDocument()
+    const cards = screen.getAllByRole('article')
+    expect(cards).toHaveLength(2)
+    expect(screen.queryByText('Илона')).not.toBeInTheDocument()
+    expect(screen.queryByText('Иван', { selector: 'article *' })).not.toBeInTheDocument()
+    // сначала тот, у кого совпала подкатегория («Музыка и звук»)
+    expect(within(cards[0]).getByText('Анна')).toBeInTheDocument()
+    expect(within(cards[1]).getByText('Михаил')).toBeInTheDocument()
+  })
+
+  it('если похожих предложений нет, блок не показывается', () => {
+    renderPage('/skill/1')
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Английский язык' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Похожие предложения' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('article')).not.toBeInTheDocument()
   })
 
   it('кнопка «Предложить обмен» открывает окно, а после закрытия кнопка меняется', async () => {
